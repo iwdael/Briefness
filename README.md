@@ -15,7 +15,7 @@ Add it in your root build.gradle at the end of repositories:
 ## Step 2. Add the dependency
 
 	dependencies {
-          compile 'com.github.mr-absurd:briefness:v1.0.6'
+          compile 'com.github.mr-absurd:briefness:v1.0.8'
           
 	}
   
