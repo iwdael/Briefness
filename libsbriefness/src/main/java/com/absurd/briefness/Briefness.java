@@ -77,7 +77,7 @@ public class Briefness {
     private static void bindViews(Object context, View view) {
         Class<?> clazz = context.getClass();
         Class<?> viewClazz = view.getClass();
-        Field[] fields = clazz.getDeclaredFields();
+        Field[] fields = clazz.getFields();
         for (Field field : fields) {
             BindViews bindView = field.getAnnotation(BindViews.class);
             if (bindView == null) continue;
@@ -105,7 +105,7 @@ public class Briefness {
 
     private static void bindView(Object context, View view) {
         Class<?> clazz = context.getClass();
-        Field[] fields = clazz.getDeclaredFields();
+        Field[] fields = clazz.getFields();
         for (Field field : fields) {
             BindView bindView = field.getAnnotation(BindView.class);
             if (bindView == null) continue;
