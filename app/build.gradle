@@ -30,5 +30,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':briefness')
     apt project(':briefness-compiler')
-    compile project(path: ':briefness-annotation')
+    
 }
