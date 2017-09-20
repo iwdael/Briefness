@@ -1,4 +1,4 @@
-# Briefness
+# Briefness  [![](https://www.jitpack.io/v/mr-absurd/briefness.svg)](https://www.jitpack.io/#mr-absurd/briefness)
 Briefness is a android framework ,which keeps the code remarkably concise,and it likes butterknife. However , it supports binding layout .
 # How to
 To get a Git project into your build:
@@ -12,14 +12,20 @@ Add it in your root build.gradle at the end of repositories:
 		}
 	}
   
-## Step 2. Add the dependency
+## Step 2. Add the dependency in your app build.gradle
+
+	dependencies { 
+          compile 'com.github.mr-absurd.briefness:briefness:v1.1.2'
+    	  apt 'com.github.mr-absurd.briefness:briefness-compiler:v1.1.2'
+	}
+## Step 3. Add the classpath in your root build.gradle
 
 	dependencies {
-          compile 'com.github.mr-absurd:briefness:v1.0.8'
-          
+          classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+         
 	}
-  
-
+##  Step 4. Add the plugin in your app build.gradle
+	apply plugin: 'com.neenbedankt.android-apt'
 # Instructions
 You should initialize briefness before you used it in activity. If many activity requires briefness , you'd better initialize briefness in baseactivity.
 ```Java
@@ -57,8 +63,8 @@ or
 ```Java
 @BindLayout(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
-    @BindView(R.id.tv_test)
-    List<TextView> textViews;
+    @BindViews({R.id.tv_test,R.id.tv_test1,R.id.tv_test2})
+    TextView[] textViews;
     ...
 }
 
