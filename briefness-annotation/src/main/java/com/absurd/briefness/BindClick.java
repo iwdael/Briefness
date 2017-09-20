@@ -1,4 +1,4 @@
-package com.absurd.briefness.base;
+package com.absurd.briefness;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,10 +8,11 @@ import java.lang.annotation.Target;
 /**
  * Author: mr-absurd
  * Github: http://github.com/mr-absurd
- * Data: 2017/8/15.
+ * Data: 2017/9/16.
  */
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface BindViews {
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.CLASS)
+public @interface BindClick {
     int[] value();
 }

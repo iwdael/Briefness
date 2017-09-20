@@ -8,10 +8,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.absurd.briefness.base.BindClick;
-import com.absurd.briefness.base.BindLayout;
-import com.absurd.briefness.base.BindView;
-import com.absurd.briefness.base.BindViews;
+import com.absurd.briefness.BindLayout;
+import com.absurd.briefness.BindView;
+import com.absurd.briefness.BindViews;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity {
 
     @BindViews({R.id.tv_test, R.id.tv_test1})
-    List<TextView> textViews;
+    TextView[] textViews;
     @BindView(R.id.tv_test)
     TextView view1;
     @BindView(R.id.tv_test1)
@@ -28,13 +27,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        textViews.get(0).setOnClickListener(new View.OnClickListener() {
+        textViews[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "TEST ONE", Toast.LENGTH_SHORT).show();
             }
         });
-        textViews.get(1).setOnClickListener(new View.OnClickListener() {
+        textViews[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "TEST ONE", Toast.LENGTH_SHORT).show();
