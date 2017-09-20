@@ -1,1 +1,1 @@
-include ':app', ':libsbriefness', ':briefness-annotation', ':briefness-compiler'
+include ':app', ':briefness', ':briefness-annotation', ':briefness-compiler'

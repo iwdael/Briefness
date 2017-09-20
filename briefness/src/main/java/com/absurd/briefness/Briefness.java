@@ -19,7 +19,6 @@ public class Briefness {
         Class<?> clazz = activity.getClass();
         while (true) {
             clazz = clazz.getSuperclass();
-            Log.v("TAG", "----classname----" + clazz.getName());
             if (clazz.getName().startsWith("android.app.") | clazz.getName().startsWith("android.support.") | clazz.getName().startsWith("java.lang."))
                 break;
             Briefnessor proxy = findProxySuperActivity(clazz);
@@ -35,7 +34,6 @@ public class Briefness {
         Class<?> clazz = activity.getClass();
         while (true) {
             clazz = clazz.getSuperclass();
-            Log.v("TAG", "----classname----" + clazz.getName());
             if (clazz.getName().startsWith("android.app.") | clazz.getName().startsWith("android.support.") | clazz.getName().startsWith("java.lang."))
                 break;
             Briefnessor proxy = findProxySuperActivity(clazz);
@@ -47,7 +45,6 @@ public class Briefness {
     private static Briefnessor findProxyActivity(Object activity) {
         try {
             Class clazz = activity.getClass();
-            Log.v("TAG", "------clazz-----" + clazz.getName());
             Class briefnessClass = Class.forName(clazz.getName() + SUFFIX);
             return (Briefnessor) briefnessClass.newInstance();
         } catch (Exception e) {
@@ -58,7 +55,6 @@ public class Briefness {
 
     private static Briefnessor findProxySuperActivity(Class<?> clazz) {
         try {
-            Log.v("TAG", "------clazz-----" + clazz.getName());
             Class briefnessClass = Class.forName(clazz.getName() + SUFFIX);
             return (Briefnessor) briefnessClass.newInstance();
 
