@@ -91,7 +91,7 @@ There are a little different
 public abstract class BaseFragment extends Fragment {
 
     @BindViews({R.id.tv_test, R.id.tv_test1})
-    List<TextView> list;
+    TextView[] list;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
