@@ -25,9 +25,11 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
         for (Element element : elementsWithBind) {
             if (!checkAnnotationValid(element, BindClick.class)) continue;
             TypeElement typeElement = (TypeElement) element.getEnclosingElement();
-            ProxyInfo proxyInfo = mProxyMap.get(typeElement.getQualifiedName().toString());
+            String fullClassName = typeElement.getQualifiedName().toString();
+            ProxyInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
                 proxyInfo = new ProxyInfo(elementUtils, typeElement);
+                mProxyMap.put(fullClassName, proxyInfo);
             }
             BindClick bindViewAnnotation = element.getAnnotation(BindClick.class);
             int[] id = bindViewAnnotation.value();

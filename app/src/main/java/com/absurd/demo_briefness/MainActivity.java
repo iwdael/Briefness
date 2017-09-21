@@ -8,52 +8,31 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.absurd.briefness.BindClick;
 import com.absurd.briefness.BindLayout;
 import com.absurd.briefness.BindView;
 import com.absurd.briefness.BindViews;
 
 import java.util.List;
 
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
+ public class MainActivity extends BaseActivity {
 
-    @BindViews({R.id.tv_test, R.id.tv_test1})
-    TextView[] textViews;
-    @BindView(R.id.tv_test)
-    TextView view1;
-    @BindView(R.id.tv_test1)
-    TextView view2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        textViews[0].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "TEST ONE", Toast.LENGTH_SHORT).show();
-            }
-        });
-        textViews[1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "TEST ONE", Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
-//    @BindClick({R.id.tv_test, R.id.tv_test1})
-//    public void onClick(View v) {
-//
-//        if (v.getId() == R.id.tv_test) {
-//            Toast.makeText(MainActivity.this, "TEST ONE", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(MainActivity.this, "TEST TWO", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    @BindClick({R.id.tv_test, R.id.tv_test1})
+    public void onClick(View v) {
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-          Log.v("TAG", "------------------>>" + view1.hashCode());
+        if (v.getId() == R.id.tv_test) {
+            Toast.makeText(MainActivity.this, "TEST ONE", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, "TEST TWO", Toast.LENGTH_SHORT).show();
+        }
     }
+
+
 }
