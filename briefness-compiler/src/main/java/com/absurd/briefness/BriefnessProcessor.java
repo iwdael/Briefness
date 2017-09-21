@@ -23,7 +23,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     protected void processClick(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindClick.class);
         for (Element element : elementsWithBind) {
-            if (!checkAnnotationValid(element, BindLayout.class)) continue;
+            if (!checkAnnotationValid(element, BindClick.class)) continue;
             TypeElement typeElement = (TypeElement) element.getEnclosingElement();
             ProxyInfo proxyInfo = mProxyMap.get(typeElement.getQualifiedName().toString());
             if (proxyInfo == null) {
@@ -79,7 +79,6 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
         Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindLayout.class);
         for (Element element : elementsWithBind) {
             if (!checkAnnotationValid(element, BindLayout.class)) continue;
-
             String fullClassName = element.asType().toString();
             ProxyInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
