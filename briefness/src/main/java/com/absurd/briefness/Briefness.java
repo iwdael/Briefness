@@ -29,8 +29,8 @@ public class Briefness {
 
     public static void bind(Object activity, View view) {
         Briefnessor proxyActivity = findProxyActivity(activity);
-        proxyActivity.bind(activity, view);
-
+		if (proxyActivity != null)
+			proxyActivity.bind(activity, view);
         Class<?> clazz = activity.getClass();
         while (true) {
             clazz = clazz.getSuperclass();
