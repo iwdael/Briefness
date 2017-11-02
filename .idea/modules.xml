@@ -4,14 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Briefness.iml" filepath="$PROJECT_DIR$/Briefness.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/briefness/briefness.iml" filepath="$PROJECT_DIR$/briefness/briefness.iml" />
-      <module fileurl="file://$PROJECT_DIR$/briefness.iml" filepath="$PROJECT_DIR$/briefness.iml" />
-      <module fileurl="file://$PROJECT_DIR$/briefness/briefness.iml" filepath="$PROJECT_DIR$/briefness/briefness.iml" />
-      <module fileurl="file://$PROJECT_DIR$/briefness-annotation/briefness-annotation.iml" filepath="$PROJECT_DIR$/briefness-annotation/briefness-annotation.iml" />
       <module fileurl="file://$PROJECT_DIR$/briefness-annotation/briefness-annotation.iml" filepath="$PROJECT_DIR$/briefness-annotation/briefness-annotation.iml" />
       <module fileurl="file://$PROJECT_DIR$/briefness/briefness-briefness.iml" filepath="$PROJECT_DIR$/briefness/briefness-briefness.iml" />
-      <module fileurl="file://$PROJECT_DIR$/briefness-compiler/briefness-compiler.iml" filepath="$PROJECT_DIR$/briefness-compiler/briefness-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/briefness-compiler/briefness-compiler.iml" filepath="$PROJECT_DIR$/briefness-compiler/briefness-compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo_Briefness.iml" filepath="$PROJECT_DIR$/demo_Briefness.iml" />
       <module fileurl="file://$PROJECT_DIR$/libsbriefness/libsbriefness.iml" filepath="$PROJECT_DIR$/libsbriefness/libsbriefness.iml" />
