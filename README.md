@@ -1,4 +1,4 @@
-# Briefness  [![](https://www.jitpack.io/v/mr-absurd/briefness.svg)](https://www.jitpack.io/#mr-absurd/briefness)
+# Briefness  [![](https://jitpack.io/v/aliletter/briefness.svg)](https://jitpack.io/#aliletter/briefness)
 Briefness is a android framework ,which keeps the code remarkably concise,and it likes butterknife. However , it supports binding layout .
 # How to
 To get a Git project into your build:
@@ -15,8 +15,8 @@ Add it in your root build.gradle at the end of repositories:
 ## Step 2. Add the dependency in your app build.gradle
 
 	dependencies { 
-          compile 'com.github.mr-absurd.briefness:briefness:v1.1.2'
-    	  apt 'com.github.mr-absurd.briefness:briefness-compiler:v1.1.2'
+          compile 'com.github.aliletter.briefness:briefness:v1.1.2'
+    	  apt 'com.github.aliletter.briefness:briefness-compiler:v1.1.2'
 	}
 ## Step 3. Add the classpath in your root build.gradle
 
