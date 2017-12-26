@@ -1,8 +1,8 @@
 # Briefness  [![](https://jitpack.io/v/aliletter/briefness.svg)](https://jitpack.io/#aliletter/briefness)
-Briefness is a android framework ,which keeps the code remarkably concise,and it likes butterknife. However , it supports binding layout .
-## Instructions
-Briefness can simplify development and remove some repetitive and boring jobs.
-### Code Sample
+Briefness是一个安卓框架，它使代码非常简洁，并支持结合布局，控件，单击。
+## 使用说明
+Briefness 能够简化开发，去掉一些重复且枯燥的工作。
+### 代码示例
 You should initialize briefness before you used it in activity. If many activity requires briefness , you'd better initialize briefness in baseactivity.
 ```Java
 public class BaseActivity extends Activity {
@@ -79,9 +79,6 @@ public abstract class BaseFragment extends Fragment {
     }
 }
 ```
- 
-
-
 
 # How to
 To get a Git project into your build:
@@ -109,3 +106,5 @@ Add it in your root build.gradle at the end of repositories:
 	}
 ##  Step 4. Add the plugin in your app build.gradle
 	apply plugin: 'com.neenbedankt.android-apt'
+
+ 
