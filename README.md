@@ -1,5 +1,5 @@
 # Briefness  [![](https://jitpack.io/v/aliletter/briefness.svg)](https://jitpack.io/#aliletter/briefness)
-Briefness is a android framework ,which keeps the code remarkably concise,and it likes butterknife. However , it supports binding layout .
+Briefness is a android framework ,which keeps the code remarkably concise,and it likes butterknife. However , it supports binding layout . [[中文文档]](https://github.com/aliletter/Briefness/blob/master/README_CHINESE.md)
 ## Instructions
 Briefness can simplify development and remove some repetitive and boring jobs.
 ### Code Sample
@@ -35,7 +35,6 @@ public class MainActivity extends BaseActivity {
 }
 
 ```
-or
 ```Java
 @BindLayout(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
@@ -45,8 +44,6 @@ public class MainActivity extends BaseActivity {
 }
 
 ```
-
-
 Annotate Method that the parameter is View , and you don'd need to realize the method -- setOnClickListener(View.OnClickListener)
 ```Java
 @BindLayout(R.layout.activity_main)
@@ -61,8 +58,7 @@ public class MainActivity extends BaseActivity {
 }
 
 ```
-## Fragment is also used in a similar way, in addition to binding layout .
-There are a little different
+Fragment is also used in a similar way, in addition to binding layout. There are a little different.
 ```Java
 public abstract class BaseFragment extends Fragment {
 
@@ -80,32 +76,29 @@ public abstract class BaseFragment extends Fragment {
 }
 ```
  
-
-
-
-# How to
+## How to
 To get a Git project into your build:
-## Step 1. Add the JitPack repository to your build file
-Add it in your root build.gradle at the end of repositories:
-
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
-  
-## Step 2. Add the dependency in your app build.gradle
-
-	dependencies { 
+### Step 1. Add the JitPack repository to your build file
+Add it in your root build.gradle at the end of repositories.   [click here for details](https://github.com/aliletter/CarouselBanner/blob/master/root_build.gradle.png)
+ ```Java
+ 	allprojects {
+ 		repositories {
+ 			...
+ 			maven { url 'https://jitpack.io' }
+ 		}
+ 	}
+ ```
+### Step 2. Add the dependency
+Add it in your application module build.gradle at the end of dependencies where you want to use.[click here for details](https://github.com/aliletter/CarouselBanner/blob/master/application_build.gradle.png)
+ ```Java
+ 	dependencies {
+          ...
           compile 'com.github.aliletter.briefness:briefness:v1.1.5'
     	  apt 'com.github.aliletter.briefness:briefness-compiler:v1.1.5'
-	}
-## Step 3. Add the classpath in your root build.gradle
-
-	dependencies {
-          classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-         
-	}
-##  Step 4. Add the plugin in your app build.gradle
-	apply plugin: 'com.neenbedankt.android-apt'
+ 	}
+ ```
+<br><br><br>
+## Thank you for your browsing
+If you have any questions, please join the QQ group. I will do my best to answer it for you. Welcome to star and fork this repository, alse follow me.
+<br>
+![Image Text](https://github.com/aliletter/CarouselBanner/blob/master/qq_group.png)
