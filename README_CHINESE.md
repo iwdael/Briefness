@@ -92,7 +92,7 @@ public abstract class BaseFragment extends Fragment {
 	dependencies {
                 ...
           compile 'com.github.aliletter.briefness:briefness:v1.1.5'
-    	  apt 'com.github.aliletter.briefness:briefness-compiler:v1.1.5'
+    	  annotationProcessor 'com.github.aliletter.briefness:briefness-compiler:v1.1.5'
 	}
 ```
 <br><br><br>
