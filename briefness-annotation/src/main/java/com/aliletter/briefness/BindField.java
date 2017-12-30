@@ -19,5 +19,5 @@ public @interface BindField {
 
     String name();
 
-    String type();
+    String method() default "";
 }

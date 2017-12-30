@@ -11,12 +11,12 @@ public class Field {
 
     public String field;
     public String name;
-    public String type;
+    public String method;
 
-    public Field(String field, String name, String type) {
+    public Field(String field, String name, String method) {
         this.field = field;
         this.name = name;
-        this.type = type;
+        this.method = method;
     }
 
 }

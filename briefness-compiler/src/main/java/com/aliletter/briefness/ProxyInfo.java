@@ -2,7 +2,6 @@ package com.aliletter.briefness;
 
 
 import com.aliletter.briefness.filed.Field;
-import com.aliletter.briefness.filed.FiledUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -56,6 +55,7 @@ public class ProxyInfo {
         builder.append("import android.view.View;\n");
         builder.append("import android.widget.*;\n");
         builder.append("import java.util.ArrayList;\n\n");
+        builder.append("import com.aliletter.briefness.ViewInjector;\n\n");
 
         builder.append("public class ").append(proxyClassName).append(" implements " + PROXY + "<" + typeElement.getQualifiedName() + ">");
         builder.append("{\n");
@@ -69,6 +69,7 @@ public class ProxyInfo {
 
         builder.append("@Override\n ");
         builder.append("public void bind(final " + typeElement.getQualifiedName() + " host, Object source ) {\n");
+        builder.append("if(source == null){return ;}");
         builder.append("if (source instanceof android.app.Activity) {\n");
         for (int[] ids : briefnessVariable.keySet()) {
             switch (ids.length) {
@@ -110,11 +111,15 @@ public class ProxyInfo {
                 if (fieldElementMap.getKey().name.equalsIgnoreCase(entry.getValue())) {
                     String name = fieldElementMap.getValue().getSimpleName().toString();
                     String type = fieldElementMap.getValue().asType().toString();
-                    String method = FiledUtils.getMethod(type, fieldElementMap.getKey().type);
-                    if (method == null) continue;
-                    //host.textView.setText(source.getName())
+                    String method = fieldElementMap.getKey().method;
                     String field = fieldElementMap.getKey().field.substring(0, 1).toUpperCase() + fieldElementMap.getKey().field.substring(1);
-                    builder.append("host.").append(name).append(".").append(method).append("(").append("((").append(entry.getKey()).append(")").append("source").append(").get").append(field).append("());");
+                    if (method.length() > 0) {
+                        builder.append("host.").append(name).append(".").append(method).append("(").append("((").append(entry.getKey()).append(")").append("source").append(").get").append(field).append("());");
+                    } else {
+                        builder.append("ViewInjector.inject(").append("host.").append(name).append(",((").append(entry.getKey()).append(")").append("source)").append(".get").append(field).append("());");
+                    }
+
+                    //host.textView.setText(source.getName())
                 }
             }
             builder.append("}");

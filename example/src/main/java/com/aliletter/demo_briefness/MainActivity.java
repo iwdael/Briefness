@@ -16,11 +16,11 @@ import com.aliletter.briefness.Briefness;
 @BindLayout(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
 
-    @BindField(name = "name", field = "username", type = "String")
+    @BindField(name = "name", field = "username",method = "setText")
     @BindView(R.id.tv_test)
     TextView tv_test;
 
-    @BindField(name = "name", field = "name", type = "String")
+    @BindField(name = "name", field = "name")
     @BindView(R.id.tv_test1)
 
     TextView tv_test1;
@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity {
     public void onClick(View v) {
 
         if (v.getId() == R.id.tv_test) {
-            Briefness.bind(this,new Entity("123","321"));
+            Briefness.bind(this, new Entity("123", "321"));
 
             Toast.makeText(MainActivity.this, "TEST ONE", Toast.LENGTH_SHORT).show();
         } else {

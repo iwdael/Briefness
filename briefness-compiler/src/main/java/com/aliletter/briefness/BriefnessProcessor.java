@@ -93,8 +93,8 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             BindField bindFieldAnnotation = variableElement.getAnnotation(BindField.class);
             String filed = bindFieldAnnotation.field();
             String name = bindFieldAnnotation.name();
-            String type = bindFieldAnnotation.type();
-            proxyInfo.fieldVariable.put(new Field(filed, name, type), variableElement);
+            String method = bindFieldAnnotation.method();
+            proxyInfo.fieldVariable.put(new Field(filed, name, method), variableElement);
         }
     }
 
