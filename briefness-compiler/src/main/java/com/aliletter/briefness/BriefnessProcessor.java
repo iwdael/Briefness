@@ -1,5 +1,6 @@
 package com.aliletter.briefness;
 
+import com.aliletter.briefness.filed.Field;
 import com.google.auto.service.AutoService;
 
 import java.io.Writer;
@@ -36,6 +37,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             proxyInfo.briefnessMethod.put(id, element);
         }
     }
+
 
     @Override
     protected void processViews(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -76,6 +78,27 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     }
 
     @Override
+    protected void processField(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindField.class);
+        for (Element element : elementsWithBind) {
+            if (!checkAnnotationValid(element, BindField.class)) continue;
+            VariableElement variableElement = (VariableElement) element;
+            TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
+            String fullClassName = classElement.getQualifiedName().toString();
+            ProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            if (proxyInfo == null) {
+                proxyInfo = new ProxyInfo(elementUtils, classElement);
+                mProxyMap.put(fullClassName, proxyInfo);
+            }
+            BindField bindFieldAnnotation = variableElement.getAnnotation(BindField.class);
+            String filed = bindFieldAnnotation.field();
+            String name = bindFieldAnnotation.name();
+            String type = bindFieldAnnotation.type();
+            proxyInfo.fieldVariable.put(new Field(filed, name, type), variableElement);
+        }
+    }
+
+    @Override
     protected void processLayout(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
         Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindLayout.class);
@@ -90,6 +113,24 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             BindLayout bindViewAnnotation = element.getAnnotation(BindLayout.class);
             int id = bindViewAnnotation.value();
             proxyInfo.briefnessVariable.put(new int[]{id}, null);
+        }
+    }
+
+    @Override
+    protected void processClass(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindClass.class);
+        for (Element element : elementsWithBind) {
+            if (!checkAnnotationValid(element, BindClass.class)) continue;
+            String fullClassName = element.asType().toString();
+            ProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            if (proxyInfo == null) {
+                proxyInfo = new ProxyInfo(elementUtils, (TypeElement) element);
+                mProxyMap.put(fullClassName, proxyInfo);
+            }
+            BindClass bindClassAnnotation = element.getAnnotation(BindClass.class);
+            String clazz = bindClassAnnotation.clazz();
+            String name = bindClassAnnotation.name();
+            proxyInfo.classVariable.put(clazz, name);
         }
     }
 

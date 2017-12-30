@@ -18,5 +18,6 @@ public class BaseActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Briefness.bind(this);
+
     }
 }

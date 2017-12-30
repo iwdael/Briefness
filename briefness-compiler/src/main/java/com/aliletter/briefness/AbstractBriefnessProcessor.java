@@ -36,9 +36,15 @@ public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
         processView(annotations, roundEnv);
         processViews(annotations, roundEnv);
         processClick(annotations, roundEnv);
+        processClass(annotations, roundEnv);
+        processField(annotations, roundEnv);
         process();
         return true;
     }
+
+    protected abstract void processField(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
+
+    protected abstract void processClass(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
     protected abstract void processViews(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
@@ -48,7 +54,7 @@ public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
 
     protected abstract void processLayout(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
-    protected abstract  void process() ;
+    protected abstract void process();
 
 
     @Override
@@ -65,6 +71,8 @@ public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
         supportType.add(BindView.class.getCanonicalName());
         supportType.add(BindViews.class.getCanonicalName());
         supportType.add(BindClick.class.getCanonicalName());
+        supportType.add(BindClass.class.getCanonicalName());
+        supportType.add(BindField.class.getCanonicalName());
 
         return supportType;
     }

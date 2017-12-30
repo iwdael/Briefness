@@ -1,5 +1,9 @@
 package com.aliletter.briefness;
 
+
+import com.aliletter.briefness.filed.Field;
+import com.aliletter.briefness.filed.FiledUtils;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -23,6 +27,8 @@ public class ProxyInfo {
     public Map<int[], Element> briefnessVariable = new LinkedHashMap<>();
     public static final String PROXY = "Briefnessor";
     public Map<int[], Element> briefnessMethod = new LinkedHashMap<>();
+    public Map<String, String> classVariable = new LinkedHashMap<>();
+    public Map<Field, Element> fieldVariable = new LinkedHashMap<>();
 
     public ProxyInfo(Elements elementUtils, TypeElement classElement) {
         this.typeElement = classElement;
@@ -78,7 +84,7 @@ public class ProxyInfo {
             }
         }
         generateMethodCode(builder, true);
-        builder.append("\n}else{\n");
+        builder.append("\n}else if(source instanceof android.view.View ){\n");
         for (int[] ids : briefnessVariable.keySet()) {
             switch (ids.length) {
                 case 0:
@@ -94,6 +100,26 @@ public class ProxyInfo {
         }
         generateMethodCode(builder, false);
         builder.append("  }\n");
+
+        //--------------------
+        //绑定数据
+        //entry.key:clazz,
+        for (Map.Entry<String, String> entry : classVariable.entrySet()) {
+            builder.append("else if(source instanceof ").append(entry.getKey()).append(" ){");
+            for (Map.Entry<Field, Element> fieldElementMap : fieldVariable.entrySet()) {
+                if (fieldElementMap.getKey().name.equalsIgnoreCase(entry.getValue())) {
+                    String name = fieldElementMap.getValue().getSimpleName().toString();
+                    String type = fieldElementMap.getValue().asType().toString();
+                    String method = FiledUtils.getMethod(type, fieldElementMap.getKey().type);
+                    if (method == null) continue;
+                    //host.textView.setText(source.getName())
+                    String field = fieldElementMap.getKey().field.substring(0, 1).toUpperCase() + fieldElementMap.getKey().field.substring(1);
+                    builder.append("host.").append(name).append(".").append(method).append("(").append("((").append(entry.getKey()).append(")").append("source").append(").get").append(field).append("());");
+                }
+            }
+            builder.append("}");
+        }
+        //--------------------------
 
 
         builder.append("  }\n");
