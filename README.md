@@ -50,7 +50,7 @@ package com.aliletter.demo_briefness
 public class Entity {
     private String username;
     private String password;
-    //此字段为别名字段，当Activity等类中，Entity的对象需要绑定不同的View集合时，需要别名字段，若只有一个View集合则不需要。
+    //This field is an alias field, when the Activity class, Entity objects need to bind different View collection, you need an alias field, if only a View collection is not required.
     private String alias;
 
     public Entity(String username, String password, String alias) {
