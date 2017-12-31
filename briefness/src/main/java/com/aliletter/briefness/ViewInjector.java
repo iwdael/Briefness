@@ -58,7 +58,11 @@ public class ViewInjector {
     }
 
     private static void injectTextView(TextView view, Object value) {
-        throwInjector(view, value);
+        if (value instanceof String) {
+            view.setText((String) value);
+        } else {
+            throwInjector(view, value);
+        }
     }
 
     private static void throwInjector(View view, Object value) {
