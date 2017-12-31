@@ -16,16 +16,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@BindClass(clazz = {"com.aliletter.demo_briefness.Message", "com.aliletter.demo_briefness.Entity"},
-        name = {"map", "entity"})
+@BindClass(clazz = {"com.aliletter.demo_briefness.Entity"}, name = {"entity"})
 @BindLayout(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
 
-    @BindField(name = "entity", field = "username", method = "setText")
+    @BindField(name = "entity", field = "username", method = "setText", alias = "user")
     @BindView(R.id.tv_test)
     TextView tv_test;
 
-    @BindField(name = "map", field = "name", alias = "okhttp")
+    @BindField(name = "entity", field = "password", method = "setText", alias = "user")
     @BindView(R.id.tv_test1)
     TextView tv_test1;
 

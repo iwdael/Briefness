@@ -32,7 +32,6 @@ public class MainActivity extends BaseActivity {
     TextView textView;
     ...
 }
-
 ```
 ```Java
 @BindLayout(R.layout.activity_main)
@@ -41,6 +40,58 @@ public class MainActivity extends BaseActivity {
     TextView[] textViews;
     ...
 }
+@BindField和@BindClass组合使用实现绑定数据，目前只支持JavaBean对象绑定，后面会支持更多的数据类型。@BindClass将需要绑定的数据类型绑定到当前类，@BindField将View绑定到JavaBean中的字段。通过Briefness.bind(this,JavaBean)方法绑定数据。注意：JavaBean中需要绑定的字段都必须有标准的get方法，同时View对象不能为空，建议和@BindView组合使用。
+<br>若同一类型，需要绑定不同的View集合，则可以采用别名的方式，同样，JavaBean中必须有alias的String字段，并有getAlias()方法。
+<br>若绑定的View为自定义控件，则需要设置绑定方法。
+```Java
+package com.aliletter.demo_briefness
+public class Entity {
+    private String username;
+    private String password;
+    //此字段为别名字段，当Activity等类中，Entity的对象需要绑定不同的View集合时，需要别名字段，若只有一个View集合则不需要。
+    private String alias;
+
+    public Entity(String username, String password, String alias) {
+        this.username = username;
+        this.password = password;
+        this.alias = alias;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+}
+```
+```Java
+//将Entity绑定到MainActivity中，同时命名为entity。MainActivity可以绑定多个JavaBean。clazz绑定的是Class的JavaBean的全类名数据，name则是命名数据，他们之间的关系是按照顺序一一对应的。
+@BindClass(clazz = {"com.aliletter.demo_briefness.Entity"}, name = {"entity"})
+@BindLayout(R.layout.activity_main)
+public class MainActivity extends BaseActivity {
+    //name = "entity",表示tv_test与命名为"entity"的com.aliletter.demo_briefness.Entity的对象绑定。
+    //field = "username"，表示tv_test与JavaBean中的username字段绑定。同时tv_view不能为空，所以有@BindView。
+    //method = "setText",表示使用tv_test的setText方法绑定数据，这里省略不写，在Briefness中常见的绑定数据的方法已经实现。比如TextView、EditText、Button的setText的setText方法，以及ImageView.setImageBitmap方法。
+    //如果有一些特殊的View，Briefness没有绑定成功，或者需要特殊方法绑定，则可以建立包名为com.aliletter.briefness，类名为BriefnessInjector的类，同时实现Injector接口，未绑定成功的View都会通过Inject(View view,Onject obj)回调。
+    //alias = "user" 表示当Briefness.bind的对象的alias字段必须为user才能成功绑定到tv_view,这里我们只绑定了两个View，同时这两个View绑定所需的数据均在同一个对象中，所以不需要别名alias。
+    //所以对于SDK自带的TextView、EditText、Button，ImageView以及他们的子类不需要指定method。
+    //@BindField可以简化为以下方式。
+    // @BindField(name = "entity", field = "username")
+    @BindField(name = "entity", field = "username", method = "setText", alias = "user")
+    @BindView(R.id.tv_test)
+    TextView tv_test;
+
+    @BindField(name = "entity", field = "password", method = "setText", alias = "user")
+    @BindView(R.id.tv_test1)
+    TextView tv_test1;
+    ...
+```
 
 ```
 @BindClick可以代替setOnClickListener(View.OnClickListener)，并且它支持绑定单个或多个Id。

@@ -9,29 +9,21 @@ package com.aliletter.demo_briefness;
 
 public class Entity {
     private String username;
-    private String name;
+    private String password;
     private String alias;
+
+    public Entity(String username, String password, String alias) {
+        this.username = username;
+        this.password = password;
+        this.alias = alias;
+    }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Entity(String username, String name, String alias) {
-        this.username = username;
-        this.alias = alias;
-        this.name = name;
+    public String getPassword() {
+        return password;
     }
 
     public String getAlias() {
