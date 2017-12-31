@@ -1,6 +1,7 @@
 package com.aliletter.briefness;
 
-import com.aliletter.briefness.filed.Field;
+import com.aliletter.briefness.databinding.Class;
+import com.aliletter.briefness.databinding.Field;
 import com.google.auto.service.AutoService;
 
 import java.io.Writer;
@@ -94,7 +95,8 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             String filed = bindFieldAnnotation.field();
             String name = bindFieldAnnotation.name();
             String method = bindFieldAnnotation.method();
-            proxyInfo.fieldVariable.put(new Field(filed, name, method), variableElement);
+            String alias = bindFieldAnnotation.alias();
+            proxyInfo.fieldVariable.put(new Field(filed, name, method, alias), variableElement);
         }
     }
 
@@ -128,9 +130,14 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindClass bindClassAnnotation = element.getAnnotation(BindClass.class);
-            String clazz = bindClassAnnotation.clazz();
-            String name = bindClassAnnotation.name();
-            proxyInfo.classVariable.put(clazz, name);
+            String[] clazz = bindClassAnnotation.clazz();
+            String[] name = bindClassAnnotation.name();
+
+            for (int i = 0; i < clazz.length; i++) {
+
+                proxyInfo.classVariable.add(new Class(clazz[i], name[i]));
+            }
+
         }
     }
 

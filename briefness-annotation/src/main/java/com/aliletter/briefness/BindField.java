@@ -19,5 +19,7 @@ public @interface BindField {
 
     String name();
 
+    String alias() default "";
+
     String method() default "";
 }

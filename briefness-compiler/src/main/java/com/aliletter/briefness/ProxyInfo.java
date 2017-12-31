@@ -1,9 +1,12 @@
 package com.aliletter.briefness;
 
 
-import com.aliletter.briefness.filed.Field;
+import com.aliletter.briefness.databinding.Class;
+import com.aliletter.briefness.databinding.Field;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.element.Element;
@@ -26,7 +29,7 @@ public class ProxyInfo {
     public Map<int[], Element> briefnessVariable = new LinkedHashMap<>();
     public static final String PROXY = "Briefnessor";
     public Map<int[], Element> briefnessMethod = new LinkedHashMap<>();
-    public Map<String, String> classVariable = new LinkedHashMap<>();
+    public List<Class> classVariable = new ArrayList<>();
     public Map<Field, Element> fieldVariable = new LinkedHashMap<>();
 
     public ProxyInfo(Elements elementUtils, TypeElement classElement) {
@@ -105,18 +108,94 @@ public class ProxyInfo {
         //--------------------
         //绑定数据
         //entry.key:clazz,
-        for (Map.Entry<String, String> entry : classVariable.entrySet()) {
-            builder.append("else if(source instanceof ").append(entry.getKey()).append(" ){");
+        generateDataBindingCode(builder);
+
+//        for (Map.Entry<String, String> entry : classVariable.entrySet()) {
+//
+//        }
+        //--------------------------
+
+
+        builder.append("  }\n");
+    }
+
+    private void generateDataBindingCode(StringBuilder builder) {
+        for (Class clazz : classVariable) {
+//            if (clazz.clazz.equalsIgnoreCase("java.util.Map")) {
+//                builder.append("else if(source instanceof ").append(clazz.clazz).append(" ){");
+//                for (Map.Entry<Field, Element> fieldElementMap : fieldVariable.entrySet()) {
+//                    if (fieldElementMap.getKey().name.equalsIgnoreCase(clazz.name)) {
+//                        if (fieldElementMap.getKey().alias.length() > 0) {
+//                            String name = fieldElementMap.getValue().getSimpleName().toString();
+//                            String alias = fieldElementMap.getKey().alias;
+//                            String method = fieldElementMap.getKey().method;
+//                            builder.append("if( ((").append(clazz.clazz).append(")source).get(\"alias\")==\"").append(alias).append("\"){");
+//                            builder.append("if(").append("((").append(clazz.clazz).append(")").append("source").append(").containsKey(\"").append(fieldElementMap.getKey().field).append("\")){");
+//                            if (method.length() > 0) {
+//                                builder.append("host.").append(name).append(".").append(method).append("(").append("((").append(clazz.clazz).append(")").append("source").append(").get(\"").append(fieldElementMap.getKey().field).append("\"));");
+//
+//                            } else {
+//                                builder.append("ViewInjector.inject(").append("host.").append(name).append(",((").append(clazz.clazz).append(")").append("source)").append(".get(\"").append(fieldElementMap.getKey().field).append("\"));");
+//                            }
+//                            builder.append("}");
+//                            builder.append("}");
+//                        } else {
+//                            String name = fieldElementMap.getValue().getSimpleName().toString();
+//                            String type = fieldElementMap.getValue().asType().toString();
+//                            String method = fieldElementMap.getKey().method;
+//                            builder.append("if(").append("((").append(clazz.clazz).append(")").append("source").append(").containsKey(\"").append(fieldElementMap.getKey().field).append("\")){");
+//
+//                            if (method.length() > 0) {
+//                                builder.append("host.").append(name).append(".").append(method).append("(").append("((").append(clazz.clazz).append(")").append("source").append(").get(\"").append(fieldElementMap.getKey().field).append("\"));");
+//
+//                            } else {
+//                                builder.append("ViewInjector.inject(").append("host.").append(name).append(",((").append(clazz.clazz).append(")").append("source)").append(".get(\"").append(fieldElementMap.getKey().field).append("\"));");
+//                            }
+//                            builder.append("}");
+//                        }
+//
+//                        //host.textView.setText(source.getName())
+//                    }
+//                }
+//                builder.append("}");
+//
+//                continue;
+//            }
+//
+//            if (clazz.clazz.equalsIgnoreCase("android.os.Bundle")) {
+//
+//
+//                continue;
+//            }
+            builder.append("else if(source instanceof ").append(clazz.clazz).append(" ){");
             for (Map.Entry<Field, Element> fieldElementMap : fieldVariable.entrySet()) {
-                if (fieldElementMap.getKey().name.equalsIgnoreCase(entry.getValue())) {
-                    String name = fieldElementMap.getValue().getSimpleName().toString();
-                    String type = fieldElementMap.getValue().asType().toString();
-                    String method = fieldElementMap.getKey().method;
-                    String field = fieldElementMap.getKey().field.substring(0, 1).toUpperCase() + fieldElementMap.getKey().field.substring(1);
-                    if (method.length() > 0) {
-                        builder.append("host.").append(name).append(".").append(method).append("(").append("((").append(entry.getKey()).append(")").append("source").append(").get").append(field).append("());");
+                if (fieldElementMap.getKey().name.equalsIgnoreCase(clazz.name)) {
+                    if (fieldElementMap.getKey().alias.length() > 0) {
+                        String name = fieldElementMap.getValue().getSimpleName().toString();
+                        String alias = fieldElementMap.getKey().alias;
+                        String method = fieldElementMap.getKey().method;
+                        String field = fieldElementMap.getKey().field.substring(0, 1).toUpperCase() + fieldElementMap.getKey().field.substring(1);
+                        builder.append("if( ((").append(clazz.clazz).append(")source).getAlias()==\"").append(alias).append("\"){");
+                        if (method.length() > 0) {
+                            builder.append("if(").append("((").append(clazz.clazz).append(")").append("source").append(").get").append(field).append("()!=null){");
+                            builder.append("host.").append(name).append(".").append(method).append("(").append("((").append(clazz.clazz).append(")").append("source").append(").get").append(field).append("());");
+                            builder.append("}");
+                        } else {
+                            builder.append("ViewInjector.inject(").append("host.").append(name).append(",((").append(clazz.clazz).append(")").append("source)").append(".get").append(field).append("());");
+                        }
+                        builder.append("}");
                     } else {
-                        builder.append("ViewInjector.inject(").append("host.").append(name).append(",((").append(entry.getKey()).append(")").append("source)").append(".get").append(field).append("());");
+                        String name = fieldElementMap.getValue().getSimpleName().toString();
+                        String type = fieldElementMap.getValue().asType().toString();
+                        String method = fieldElementMap.getKey().method;
+                        String field = fieldElementMap.getKey().field.substring(0, 1).toUpperCase() + fieldElementMap.getKey().field.substring(1);
+                        if (method.length() > 0) {
+                            builder.append("if(").append("((").append(clazz.clazz).append(")").append("source").append(").get").append(field).append("()!=null){");
+                            builder.append("host.").append(name).append(".").append(method).append("(").append("((").append(clazz.clazz).append(")").append("source").append(").get").append(field).append("());");
+                            builder.append("}");
+                        } else {
+                            builder.append("ViewInjector.inject(").append("host.").append(name).append(",((").append(clazz.clazz).append(")").append("source)").append(".get").append(field).append("());");
+                        }
                     }
 
                     //host.textView.setText(source.getName())
@@ -124,10 +203,6 @@ public class ProxyInfo {
             }
             builder.append("}");
         }
-        //--------------------------
-
-
-        builder.append("  }\n");
     }
 
     private void generateMethodCode(StringBuilder builder, boolean isActivity) {

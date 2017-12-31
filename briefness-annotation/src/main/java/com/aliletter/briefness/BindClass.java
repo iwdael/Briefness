@@ -15,8 +15,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
 public @interface BindClass {
-    String clazz();
+    String[] clazz();
 
-    String name();
+    String[] name();
 
 }

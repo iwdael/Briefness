@@ -7,7 +7,7 @@ package com.aliletter.demo_briefness;
  * data: 2017/12/30
  */
 
-public class Entity {
+public class Message {
     private String username;
     private String name;
     private String alias;
@@ -28,7 +28,7 @@ public class Entity {
         this.name = name;
     }
 
-    public Entity(String username, String name, String alias) {
+    public Message(String username, String name, String alias) {
         this.username = username;
         this.alias = alias;
         this.name = name;

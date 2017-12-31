@@ -1,5 +1,6 @@
 package com.aliletter.briefness;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,11 +42,19 @@ public class ViewInjector {
 
 
     private static void injectButton(Button view, Object value) {
-
+        if (value instanceof String) {
+            view.setText((String) value);
+        } else {
+            throwInjector(view, value);
+        }
     }
 
     private static void injectImageView(ImageView view, Object value) {
-
+        if (value instanceof Bitmap) {
+            view.setImageBitmap((Bitmap) value);
+        } else {
+            throwInjector(view, value);
+        }
     }
 
     private static void injectTextView(TextView view, Object value) {
