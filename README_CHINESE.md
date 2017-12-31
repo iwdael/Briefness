@@ -91,8 +91,8 @@ public abstract class BaseFragment extends Fragment {
 ```Java
 	dependencies {
                 ...
-          compile 'com.github.aliletter.briefness:briefness:v1.1.5'
-    	  annotationProcessor 'com.github.aliletter.briefness:briefness-compiler:v1.1.5'
+          compile 'com.github.aliletter.briefness:briefness:v1.1.8'
+    	  annotationProcessor 'com.github.aliletter.briefness:briefness-compiler:v1.1.8'
 	}
 ```
 <br><br><br>
