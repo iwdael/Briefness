@@ -1,5 +1,5 @@
 # Briefness  [![](https://jitpack.io/v/aliletter/briefness.svg)](https://jitpack.io/#aliletter/briefness)
-Briefness是一个安卓框架，它使代码非常简洁，并支持结合布局，控件，单击。
+Briefness让移动开发更加简单，它支持数据绑定，控件绑定，布局绑定，点击事件绑定。
 ## 使用说明
 Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：findViewById,setContentView,setOnClickListener等等。
 ### 代码示例
@@ -75,13 +75,16 @@ public class Entity {
 @BindClass(clazz = {"com.aliletter.demo_briefness.Entity"}, name = {"entity"})
 @BindLayout(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
+
     //name = "entity",表示tv_test与命名为"entity"的com.aliletter.demo_briefness.Entity的对象绑定。
-    //field = "username"，表示tv_test与JavaBean中的username字段绑定。同时tv_view不能为空，所以有@BindView。
-    //method = "setText",表示使用tv_test的setText方法绑定数据，这里省略不写，在Briefness中常见的绑定数据的方法已经实现。比如TextView、EditText、Button的setText的setText方法，以及ImageView.setImageBitmap方法。
+    //field = "username"，表示tv_test与JavaBean中的username字段绑定。同时tv_view不能为空，所以需要@BindView。
+    //method = "setText",表示使用tv_test的setText方法绑定数据，这里省略不写，在Briefness中常见的绑定数据的方法已经实现。比如TextView、EditText、Button的setText方法，以及ImageView.setImageBitmap方法。
     //如果有一些特殊的View，Briefness没有绑定成功，或者需要特殊方法绑定，则可以建立包名为com.aliletter.briefness，类名为BriefnessInjector的类，同时实现Injector接口，未绑定成功的View都会通过Inject(View view,Onject obj)回调。
+    //比如ImageView绑定String，其目的是ImageView展示网络上的图片，而Briefness没有方法可以匹配，如果com.aliletter.briefness.BriefnessInjector类存在，则会通过这个类暴露出来，自行实现绑定过程。
     //alias = "user" 表示当Briefness.bind的对象的alias字段必须为user才能成功绑定到tv_view,这里我们只绑定了两个View，同时这两个View绑定所需的数据均在同一个对象中，所以不需要别名alias。
     //所以对于SDK自带的TextView、EditText、Button，ImageView以及他们的子类不需要指定method。
     //@BindField可以简化为以下方式。
+
     // @BindField(name = "entity", field = "username")
     @BindField(name = "entity", field = "username", method = "setText", alias = "user")
     @BindView(R.id.tv_test)
@@ -92,8 +95,11 @@ public class MainActivity extends BaseActivity {
     TextView tv_test1;
     ...
 ```
-
+```Java
+    //绑定数据，某些字段为空也不会出现空指针异常。
+    Briefness.bind(this, new Entity("Tom", "admin123", "user"));
 ```
+
 @BindClick可以代替setOnClickListener(View.OnClickListener)，并且它支持绑定单个或多个Id。
 ```Java
 @BindLayout(R.layout.activity_main)

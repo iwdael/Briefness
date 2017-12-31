@@ -1,5 +1,5 @@
 # Briefness  [![](https://jitpack.io/v/aliletter/briefness.svg)](https://jitpack.io/#aliletter/briefness)
-Briefness is a android framework ,which keeps the code remarkably concise,and it likes butterknife. However , it supports binding layout . [[中文文档]](https://github.com/aliletter/Briefness/blob/master/README_CHINESE.md)
+Briefness makes mobile development easier, with support for data bindings, control bindings, layout bindings, and click event bindings.
 ## Instructions
 Briefness can simplify development and remove some repetitive and boring jobs.
 ### Code Sample
@@ -73,17 +73,20 @@ public class Entity {
 }
 ```
 ```Java
-//将Entity绑定到MainActivity中，同时命名为entity。MainActivity可以绑定多个JavaBean。clazz绑定的是Class的JavaBean的全类名数据，name则是命名数据，他们之间的关系是按照顺序一一对应的。
+//Entity bound to MainActivity at the same time named entity. MainActivity can bind multiple JavaBeans. Clazz binding is Class JavaBean class name data, name is named data, the relationship between them is in accordance with the order of the corresponding.
 @BindClass(clazz = {"com.aliletter.demo_briefness.Entity"}, name = {"entity"})
 @BindLayout(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
-    //name = "entity",表示tv_test与命名为"entity"的com.aliletter.demo_briefness.Entity的对象绑定。
-    //field = "username"，表示tv_test与JavaBean中的username字段绑定。同时tv_view不能为空，所以有@BindView。
-    //method = "setText",表示使用tv_test的setText方法绑定数据，这里省略不写，在Briefness中常见的绑定数据的方法已经实现。比如TextView、EditText、Button的setText的setText方法，以及ImageView.setImageBitmap方法。
-    //如果有一些特殊的View，Briefness没有绑定成功，或者需要特殊方法绑定，则可以建立包名为com.aliletter.briefness，类名为BriefnessInjector的类，同时实现Injector接口，未绑定成功的View都会通过Inject(View view,Onject obj)回调。
-    //alias = "user" 表示当Briefness.bind的对象的alias字段必须为user才能成功绑定到tv_view,这里我们只绑定了两个View，同时这两个View绑定所需的数据均在同一个对象中，所以不需要别名alias。
-    //所以对于SDK自带的TextView、EditText、Button，ImageView以及他们的子类不需要指定method。
-    //@BindField可以简化为以下方式。
+
+    //name = "entity" indicating that tv_test is bound to an object of com.aliletter.demo_briefness.Entity named "entity".
+    //field = "username" indicates that tv_test is bound to the username field in the JavaBean. At the same time tv_view can not be empty, so you need @BindView.
+    //method = "setText" means that the data is bound using the setText method of tv_test, and the method of binding data common in Briefness has been implemented. Such as TextView, EditText, Button's setText method, and ImageView.setImageBitmap method.
+    //If there are some special View, Briefness did not bind successfully, or need a special method binding, you can create a package named com.aliletter.briefness class called BriefnessInjector at the same time achieve Injector interface, unbound successful View Will be Inject (View view, Onject obj) callback.
+    //Such as ImageView binding String, the purpose is ImageView display pictures on the network, and Briefness no method to match, if the com.aliletter.briefness.BriefnessInjector class exists, it will be exposed through this class, the binding process to achieve their own.
+    //alias = "user" means that when the alias field of the Briefness.bind object must be user to be successfully bound to tv_view, here we only bind two View, at the same time the two View binding data are in the same Object, so you do not need alias alias.
+    //So for the SDK comes with TextView, EditText, Button, ImageView and their subclasses do not need to specify the method.
+    //@BindField can be reduced to the following ways.
+
     // @BindField(name = "entity", field = "username")
     @BindField(name = "entity", field = "username", method = "setText", alias = "user")
     @BindView(R.id.tv_test)
@@ -94,15 +97,10 @@ public class MainActivity extends BaseActivity {
     TextView tv_test1;
     ...
 ```
-
-
-
-
-
-
-
-
-
+```Java
+    //Binding data, some fields are empty nor null pointer exception occurs.
+    Briefness.bind(this, new Entity("Tom", "admin123", "user"));
+```
 
 Annotate Method that the parameter is View , and you don'd need to realize the method -- setOnClickListener(View.OnClickListener)
 ```Java

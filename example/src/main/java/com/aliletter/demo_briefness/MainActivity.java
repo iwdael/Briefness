@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
     @BindClick({R.id.tv_test, R.id.tv_test1})
     public void onClick(View v) {
         if (v.getId() == R.id.tv_test) {
-            Briefness.bind(this, new Message("123", "321", "okhttp"));
+            Briefness.bind(this, new Entity("Tom", "admin123", "user"));
 
             Toast.makeText(MainActivity.this, "TEST ONE", Toast.LENGTH_SHORT).show();
         } else {
