@@ -1,7 +1,7 @@
 # Briefness  [![](https://jitpack.io/v/aliletter/briefness.svg)](https://jitpack.io/#aliletter/briefness)
 Briefness makes mobile development easier, with support for data bindings, control bindings, layout bindings, and click event bindings.
 ## Instructions
-Briefness can simplify development and remove some repetitive and boring jobs.
+Briefness can simplify development and remove some repetitive and boring jobs.[中文文档](https://github.com/aliletter/Briefness/blob/master/README_CHINESE.md)
 ### Code Sample
 You should initialize briefness before you used it in activity. If many activity requires briefness , you'd better initialize briefness in baseactivity.
 ```Java
