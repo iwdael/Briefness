@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity {
     TextView[] textViews;
     ...
 }
+```
 @BindField和@BindClass组合使用实现绑定数据，目前只支持JavaBean对象绑定，后面会支持更多的数据类型。@BindClass将需要绑定的数据类型绑定到当前类，@BindField将View绑定到JavaBean中的字段。通过Briefness.bind(this,JavaBean)方法绑定数据。注意：JavaBean中需要绑定的字段都必须有标准的get方法，同时View对象不能为空，建议和@BindView组合使用。
 <br>若同一类型，需要绑定不同的View集合，则可以采用别名的方式，同样，JavaBean中必须有alias的String字段，并有getAlias()方法。
 <br>若绑定的View为自定义控件，则需要设置绑定方法。
