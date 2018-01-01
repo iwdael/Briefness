@@ -48,6 +48,13 @@ public class MainActivity extends BaseActivity {
 ```Java
 package com.aliletter.demo_briefness
 public class Entity {
+
+
+
+
+
+
+}
     private String username;
     private String password;
     //This field is an alias field, when the Activity class, Entity objects need to bind different View collection, you need an alias field, if only a View collection is not required.
