@@ -1,9 +1,11 @@
 apply plugin: 'java'
 apply plugin: 'com.github.dcendents.android-maven'
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.auto.service:auto-service:1.0-rc2'
     compile project(':briefness-annotation')
+    implementation files('src/libs/xmlpull_1_1_3_4c.jar')
+    implementation files('src/libs/kxml2-2.3.0.jar')
 }
 
 sourceCompatibility = "1.7"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="briefness">
+        <attr name="imports" format="string" />
+        <attr name="click" format="string" />
+        <attr name="longclick" format="string" />
+        <attr name="action" format="string" />
+        <attr name="bind" format="string" />
+    </declare-styleable>
+</resources>
