@@ -27,10 +27,11 @@ public class XmlProxyInfo {
     public static final String bind = "briefness:bind";
     public static final String id = "android:id";
     public static final String SPLIT = "\\";
+
     public String xml;
 
-    protected List<XmlBind> binds = new ArrayList<>();
-    protected List<XmlViewInfo> viewInfos = new ArrayList<>();
+    private List<XmlBind> binds = new ArrayList<>();
+    private List<XmlViewInfo> viewInfos = new ArrayList<>();
 
 
     public XmlProxyInfo(String path) {
@@ -109,19 +110,25 @@ public class XmlProxyInfo {
 
         StringBuilder builder = new StringBuilder();
         if (source.endsWith(";")) {
-            String[] methods = source.split(";");
-            for (String s : methods) {
-                int start = s.indexOf("@{") + 2;
-                int end = s.indexOf("}");
-                String variable = s.substring(start, end);
-                String[] split = variable.split(".");
-                String method = split[0] + ".get" + split[1].substring(0, 1).toUpperCase() + split[1].substring(1) + "()";
-                builder.append(s.substring(0, start - 2)).append(method).append(s.substring(end, s.length())).append(";");
+            String[] binds = source.split(";");
+            for (String bind : binds) {
+                int start = bind.indexOf("@{") + 2;
+                int end = bind.indexOf("}");
+                String var = bind.substring(start, end);
+                System.out.print(var + "\n");
+                String startStr = var.substring(0, var.lastIndexOf("."));
+                String endStr = var.substring(var.lastIndexOf(".") + 1);
+                System.out.print(startStr + "\n");
+                System.out.print(endStr + "\n");
+                String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
+                System.out.print(method + "\n");
+                builder.append(bind.substring(0, start - 2)).append(method).append(bind.substring(end + 1, bind.length())).append(";");
             }
         } else {
-            int start = source.indexOf("@{") + 2;
-            int end = source.indexOf("}");
-            String var = source.substring(start, end);
+            String bind = source;
+            int start = bind.indexOf("@{") + 2;
+            int end = bind.indexOf("}");
+            String var = bind.substring(start, end);
             System.out.print(var + "\n");
             String startStr = var.substring(0, var.lastIndexOf("."));
             String endStr = var.substring(var.lastIndexOf(".") + 1);
@@ -129,12 +136,12 @@ public class XmlProxyInfo {
             System.out.print(endStr + "\n");
 
             String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
-//            String method = spl[0] + ".get" + spl[1].substring(0, 1).toUpperCase() + spl[1].substring(1) + "()";
             System.out.print(method + "\n");
-//            builder.append(source.substring(0, start - 2)).append(method).append(source.substring(end, source.length())).append(";");
+            builder.append(bind.substring(0, start - 2)).append(method).append(bind.substring(end + 1, bind.length()));
+            if (!source.endsWith("}")) builder.append(";");
         }
 
-        System.out.print(builder.toString());
+        System.out.print(builder.toString() + "\n");
         System.out.print("---------------------------------------------------------------->>\n");
         return builder.toString();
     }
@@ -156,7 +163,6 @@ public class XmlProxyInfo {
 
 
     public List<XmlViewInfo> getViewInfos() {
-
         return viewInfos;
     }
 

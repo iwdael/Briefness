@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.aliletter.briefness.Briefness;
+import com.aliletter.briefness.Briefnessor;
 
 
 /**
@@ -14,10 +15,12 @@ import com.aliletter.briefness.Briefness;
  */
 
 public class BaseActivity extends Activity {
+    protected Briefnessor briefnessor;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Briefness.bind(this);
+        briefnessor = Briefness.bind(this);
 
     }
 }

@@ -12,10 +12,10 @@ public class Entity {
     private String password;
     private String alias;
 
-    public Entity(String username, String password, String alias) {
+    public Entity(String username, String password) {
         this.username = username;
         this.password = password;
-        this.alias = alias;
+
     }
 
     public String getUsername() {
@@ -24,9 +24,5 @@ public class Entity {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getAlias() {
-        return alias;
     }
 }

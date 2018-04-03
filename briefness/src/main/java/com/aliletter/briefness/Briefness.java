@@ -1,7 +1,6 @@
 package com.aliletter.briefness;
 
 import android.util.Log;
-import android.view.View;
 
 /**
  * Author: aliletter
@@ -12,12 +11,12 @@ import android.view.View;
 public class Briefness {
     private static final String SUFFIX = "$$Briefnessor";
 
-    public static void bind(Object target) {
-        bind(target, target);
+    public static Briefnessor bind(Object target) {
+        return bind(target, target);
     }
 
 
-    public static void bind(Object target, Object source) {
+    public static Briefnessor bind(Object target, Object source) {
         Briefnessor proxyActivity = findProxyActivity(target);
         if (proxyActivity != null)
             proxyActivity.bind(target, source);
@@ -29,10 +28,11 @@ public class Briefness {
             Briefnessor proxy = findProxySuperActivity(clazz);
             if (proxy != null) proxy.bind(target, source);
         }
+        return proxyActivity;
     }
 
-    public static void bind(Briefnessor briefnessor, Object source, String alisa) {
-        briefnessor.bind(source, alisa);
+    public static void bind(Briefnessor briefnessor, Object source) {
+        briefnessor.bind(source, null);
     }
 
 

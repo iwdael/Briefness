@@ -65,7 +65,7 @@ public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         HashSet<String> supportType = new LinkedHashSet<>();
-        supportType.add(JavaLayout.class.getCanonicalName());
+        supportType.add(BindLayout.class.getCanonicalName());
         supportType.add(BindView.class.getCanonicalName());
         supportType.add(BindViews.class.getCanonicalName());
         supportType.add(BindClick.class.getCanonicalName());

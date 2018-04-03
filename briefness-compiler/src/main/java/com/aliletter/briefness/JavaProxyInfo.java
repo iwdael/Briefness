@@ -2,6 +2,7 @@ package com.aliletter.briefness;
 
 
 import com.aliletter.briefness.databinding.JavaLayout;
+import com.aliletter.briefness.databinding.XmlBind;
 import com.aliletter.briefness.databinding.XmlViewInfo;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import javax.lang.model.util.Elements;
 
 public class JavaProxyInfo {
     public static final String PROXY = "Briefnessor";
-
+    StringBuilder importBuilder = new StringBuilder();
     private String packageName;
     private String proxyClassName;
     private TypeElement typeElement;
@@ -54,45 +55,51 @@ public class JavaProxyInfo {
 
     public String generateJavaCode() {
         StringBuilder builder = new StringBuilder();
-        builder.append("// Generated code. Do not modify! \n");
+
+        importBuilder.append("// Generated code. Do not modify! \n");
 
         XmlProxyInfo proxyInfo1 = new XmlProxyInfo(bindLayout.get(0).layout);
-        builder.append(proxyInfo1.binds.toString()).append("\n");
+        importBuilder.append("//").append(proxyInfo1.getBinds().toString()).append("\n");
 
 
-        builder.append("package ").append(packageName).append(";\n");
-        builder.append("import com.aliletter.briefness.*;\n");
-        builder.append("import android.view.View;\n");
-        builder.append("import android.widget.*;\n");
-        builder.append("import android.app.Activity;\n");
-        builder.append("import java.util.ArrayList;\n\n");
-        builder.append("import com.aliletter.briefness.ViewInjector;\n\n");
+        importBuilder.append("package ").append(packageName).append(";\n");
+        importBuilder.append("import com.aliletter.briefness.*;\n");
+        importBuilder.append("import android.view.View;\n");
+        importBuilder.append("import android.widget.*;\n");
+        importBuilder.append("import android.app.Activity;\n");
+        importBuilder.append("import java.util.ArrayList;\n\n");
+        importBuilder.append("import com.aliletter.briefness.ViewInjector;\n\n");
+        importBuilder.append("import " + typeElement.getQualifiedName()).append(";\n\n");
 
         builder.append("public class ").append(proxyClassName).append(" implements " + PROXY);
         builder.append("{\n");
-        if (bindClick.size() > 0) {
+
+        generateComplierCode(builder);
+        builder.append("\n").append("}\n");
+
+        return importBuilder.append(builder.toString()).toString();
+    }
+
+    private void generateFieldCode(StringBuilder builder) {
+        if (bindLayout.size() > 0 & bindLayout.get(0).layout != null) {
             XmlProxyInfo proxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
-            List<XmlViewInfo> infos = proxyInfo.viewInfos;
+            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 builder.append(infos.get(i).view).append(" ").append(infos.get(i).ID).append(";\n");
             }
         }
-        generateComplierCode(builder);
-        builder.append("\n").append("}\n");
-        return builder.toString();
     }
 
     private void generateComplierCode(StringBuilder builder) {
-        if (bindClick.size() > 0) {
-            XmlProxyInfo info = new XmlProxyInfo(bindLayout.get(0).layout);
-        }
+
+        generateFieldCode(builder);
         builder.append("@Override\n ");
         builder.append("public void bind(final " + "Object" + " host, Object source ) {\n");
-        builder.append("if ((source instanceof Activity)&&(source != null)) {\n");
+        builder.append("if ((source != null)&&(source instanceof Activity)) {\n");
         generateLayoutCode(builder, true);
-        if (bindClick.size() > 0) {
+        if (bindLayout.size() > 0 & bindLayout.get(0).layout != null) {
             XmlProxyInfo proxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
-            List<XmlViewInfo> infos = proxyInfo.viewInfos;
+            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 builder.append(infos.get(i).ID).append("=");
                 builder.append("(" + infos.get(i).view + ")(((Activity)source).findViewById( R.id." + infos.get(i).ID + "));\n");
@@ -109,11 +116,12 @@ public class JavaProxyInfo {
             }
         }
         generateMethodCode(builder, true);
-        builder.append("\n}else if((source instanceof View )&&(source != null)){\n");
+        generateXmlClickCode(builder, true);
+        builder.append("\n}else if((source != null)&&(source instanceof View )){\n");
         generateLayoutCode(builder, false);
-        if (bindClick.size() > 0) {
+        if (bindLayout.size() > 0 & bindLayout.get(0).layout != null) {
             XmlProxyInfo proxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
-            List<XmlViewInfo> infos = proxyInfo.viewInfos;
+            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 builder.append(infos.get(i).ID).append("=");
                 builder.append("(" + infos.get(i).view + ")(((View)source).findViewById( R.id." + infos.get(i).ID + "));\n");
@@ -130,20 +138,76 @@ public class JavaProxyInfo {
             }
         }
         generateMethodCode(builder, false);
+        generateXmlClickCode(builder, true);
         builder.append("  \n}");
-
-
+        generateXMLBindCode(builder);
         builder.append("  }\n");
     }
 
+    private void generateXmlClickCode(StringBuilder builder, boolean isActivity) {
+        String clazzName = typeElement.getQualifiedName().toString();
+        String name = clazzName.substring(clazzName.lastIndexOf(".") + 1);
+
+        if (bindLayout.size() > 0 & bindLayout.get(0).layout != null) {
+            XmlProxyInfo proxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
+            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
+            for (XmlViewInfo info : infos) {
+                if (info.click != null) {
+                    builder.append(info.ID).append(".setOnClickListener(new View.OnClickListener() {\n" +
+                            "                @Override\n" +
+                            "                public void onClick(View v) {\n" +
+                            "                    ((" + name + ")host)." + info.click + "\n" +
+                            "                }\n" +
+                            "            });");
+                }
+                if (info.longClick != null) {
+                    builder.append(info.ID).append(".setOnLongClickListener(new View.OnLongClickListener() {\n" +
+                            "            @Override\n" +
+                            "            public boolean onLongClick(View v) {\n" +
+                            "            ((" + name + ")host)." + info.longClick + "\n" +
+                            "                return false;\n" +
+                            "            }\n" +
+                            "        });");
+                }
+            }
+        }
+    }
+
+    private void generateXMLBindCode(StringBuilder builder) {
+        if (bindLayout.size() > 0 & bindLayout.get(0).layout != null) {
+            XmlProxyInfo proxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
+            List<XmlBind> binds = proxyInfo.getBinds();
+            for (XmlBind bind : binds) {
+                importBuilder.append("import " + bind.clazz).append(";\n");
+                builder.append("else if((host != null)&&(host instanceof " + bind.clazz.substring(bind.clazz.lastIndexOf(".") + 1) + " )){\n");
+                builder.append(bind.clazz.substring(bind.clazz.lastIndexOf(".") + 1) + " ").append(bind.name).append(" =").append("(")
+                        .append(bind.clazz.substring(bind.clazz.lastIndexOf(".") + 1) + ")host;\n");
+                for (XmlViewInfo info : bind.list) {
+                    if (info.bind == null) continue;
+                    if (info.bind.endsWith(";")) {
+                        String[] method = info.bind.split(";");
+                        for (String s : method) {
+                            builder.append(info.ID).append(".").append(s).append(";\n");
+                        }
+                    } else {
+                        builder.append("ViewInjector.inject(").append(info.ID).append(",").append(info.bind).append(");\n");
+                    }
+                }
+                builder.append("}");
+            }
+        }
+    }
+
     private void generateMethodCode(StringBuilder builder, boolean isActivity) {
+        String clazzName = null;
+        if (!bindClick.isEmpty()) clazzName = typeElement.getQualifiedName().toString();
         if (isActivity) {
             for (Map.Entry<int[], Element> entry : bindClick.entrySet()) {
                 for (int id : entry.getKey()) {
-                    builder.append("((android.app.Activity)source).findViewById(").append(id + ").setOnClickListener(new View.OnClickListener() {\n");
+                    builder.append("((Activity)source).findViewById(").append(id + ").setOnClickListener(new View.OnClickListener() {\n");
                     builder.append("@Override\n");
                     builder.append("public void onClick(View view) {\n");
-                    builder.append("((" + typeElement.getQualifiedName() + ")host).").append(entry.getValue().getSimpleName()).append("(view);\n");
+                    builder.append("((" + clazzName.substring(clazzName.lastIndexOf(".") + 1) + ")host).").append(entry.getValue().getSimpleName()).append("(view);\n");
                     builder.append("}\n");
                     builder.append(" });\n");
                 }
@@ -151,10 +215,10 @@ public class JavaProxyInfo {
         } else {
             for (Map.Entry<int[], Element> entry : bindClick.entrySet()) {
                 for (int id : entry.getKey()) {
-                    builder.append("((android.view.View)source).findViewById(").append(id + ").setOnClickListener(new View.OnClickListener() {\n");
+                    builder.append("((View)source).findViewById(").append(id + ").setOnClickListener(new View.OnClickListener() {\n");
                     builder.append("@Override\n");
                     builder.append("public void onClick(View view) {\n");
-                    builder.append("((" + typeElement.getQualifiedName() + ")host).").append(entry.getValue().getSimpleName()).append("(view);\n");
+                    builder.append("((" + clazzName.substring(clazzName.lastIndexOf(".") + 1) + ")host).").append(entry.getValue().getSimpleName()).append("(view);\n");
                     builder.append("}\n");
                     builder.append(" });\n");
                 }
@@ -171,7 +235,7 @@ public class JavaProxyInfo {
                 builder.append("((" + typeElement.getQualifiedName() + ")host)." + name).append(" = ");
                 builder.append("new " + type + "{\n");
                 for (int id : ids) {
-                    builder.append("(" + type.replace("[", "").replace("]", "") + ")(((android.app.Activity)source).findViewById( " + id + ")),\n");
+                    builder.append("(" + type.replace("[", "").replace("]", "") + ")(((Activity)source).findViewById( " + id + ")),\n");
                 }
                 builder.delete(builder.length() - 2, builder.length()).append("\n");
                 builder.append("};\n");
@@ -187,7 +251,7 @@ public class JavaProxyInfo {
                 builder.append("((" + typeElement.getQualifiedName() + ")host)." + name).append(" = ");
                 builder.append("new " + type + "{\n");
                 for (int id : ids) {
-                    builder.append("(" + type.replace("[", "").replace("]", "") + ")(((android.view.View)source).findViewById( " + id + ")),\n");
+                    builder.append("(" + type.replace("[", "").replace("]", "") + ")(((View)source).findViewById( " + id + ")),\n");
                 }
                 builder.delete(builder.length() - 2, builder.length()).append("\n");
                 builder.append("};\n");
@@ -199,21 +263,22 @@ public class JavaProxyInfo {
     }
 
     private void generateLayoutCode(StringBuilder builder, boolean isActivity) {
-
+        String clazzName = typeElement.getQualifiedName().toString();
         if (bindLayout.size() > 0)
-            builder.append("((" + typeElement.getQualifiedName() + ")host).setContentView(").append(bindLayout.get(0).id).append(");\n");
+            builder.append("((" + clazzName.substring(clazzName.lastIndexOf(".") + 1) + ")host).setContentView(").append(bindLayout.get(0).id).append(");\n");
 
     }
 
     private void generateVariableCode(int[] ids, StringBuilder builder, boolean isActivity) {
+        String clazzName = typeElement.getQualifiedName().toString();
         if (isActivity) {
             try {
                 if (bindView.get(ids) == null) return;
                 VariableElement element = (VariableElement) bindView.get(ids);
                 String name = element.getSimpleName().toString();
                 String type = element.asType().toString();
-                builder.append("((" + typeElement.getQualifiedName() + ")host)." + name).append(" = ");
-                builder.append("(" + type + ")(((android.app.Activity)source).findViewById( " + ids[0] + "));\n");
+                builder.append("((" + clazzName.substring(clazzName.lastIndexOf("0") + 1) + ")host)." + name).append(" = ");
+                builder.append("(" + type + ")(((Activity)source).findViewById( " + ids[0] + "));\n");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -223,8 +288,8 @@ public class JavaProxyInfo {
                 VariableElement element = (VariableElement) bindView.get(ids);
                 String name = element.getSimpleName().toString();
                 String type = element.asType().toString();
-                builder.append("((" + typeElement.getQualifiedName() + ")host)." + name).append(" = ");
-                builder.append("(" + type + ")(((android.view.View)source).findViewById( " + ids[0] + "));\n");
+                builder.append("((" + clazzName.substring(clazzName.lastIndexOf("0") + 1) + ")host)." + name).append(" = ");
+                builder.append("(" + type + ")(((View)source).findViewById( " + ids[0] + "));\n");
             } catch (Exception e) {
                 e.printStackTrace();
             }
