@@ -1,6 +1,5 @@
-package com.aliletter.briefness;
+package  briefness;
 
-import com.aliletter.briefness.databinding.JavaLayout;
 import com.google.auto.service.AutoService;
 
 import java.io.Writer;
@@ -13,10 +12,13 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
 
+import briefness.databinding.JavaLayout;
+
 /**
- * Author: aliletter
- * Github: http://github.com/aliletter
- * Data: 2017/9/16.
+ * author  : Black Chopper
+ * e-mail  : 4884280@qq.com
+ * github  : http://github.com/BlackChopper
+ * project : Briefness
  */
 @AutoService(Processor.class)
 public class BriefnessProcessor extends AbstractBriefnessProcessor {

@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.aliletter.briefness.Briefness;
-import com.aliletter.briefness.Briefnessor;
+import briefness.Briefness;
+import briefness.Briefnessor;
 
 
 /**
- * Author: mr-absurd
- * Github: http://github.com/mr-absurd
- * Data: 2017/8/16.
+ * author  : Black Chopper
+ * e-mail  : 4884280@qq.com
+ * github  : http://github.com/BlackChopper
+ * project : Briefness
  */
 
 public class BaseActivity extends Activity {

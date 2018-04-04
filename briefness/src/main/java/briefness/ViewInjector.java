@@ -1,4 +1,4 @@
-package com.aliletter.briefness;
+package briefness;
 
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -11,9 +11,10 @@ import android.widget.TextView;
 import java.lang.reflect.Method;
 
 /**
- * Author: aliletter
- * Github：https://github.com/aliletter
- * Emile:4884280@qq.com
+ * author  : Black Chopper
+ * e-mail  : 4884280@qq.com
+ * github  : http://github.com/BlackChopper
+ * project : Briefness
  */
 
 public class ViewInjector {

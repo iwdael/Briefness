@@ -1,13 +1,13 @@
-package com.aliletter.briefness.databinding;
+package  briefness.databinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * e-mail : aliletter@qq.com
- * time   : 2018/04/02
- * desc   :
- * version: 1.0
+ * author  : Black Chopper
+ * e-mail  : 4884280@qq.com
+ * github  : http://github.com/BlackChopper
+ * project : Briefness
  */
 public class XmlBind {
     public String clazz;

@@ -1,11 +1,12 @@
-package com.aliletter.briefness;
+package briefness;
 
 import android.util.Log;
 
 /**
- * Author: aliletter
- * Github: http://github.com/aliletter
- * Data: 2017/9/15.
+ * author  : Black Chopper
+ * e-mail  : 4884280@qq.com
+ * github  : http://github.com/BlackChopper
+ * project : Briefness
  */
 
 public class Briefness {

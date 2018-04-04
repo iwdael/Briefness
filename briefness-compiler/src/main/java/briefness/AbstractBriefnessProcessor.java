@@ -1,6 +1,5 @@
-package com.aliletter.briefness;
+package briefness;
 
-import com.aliletter.briefness.databinding.JavaLayout;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -19,9 +18,10 @@ import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 
 /**
- * Author: aliletter
- * Github: http://github.com/aliletter
- * Data: 2017/9/15.
+ * author  : Black Chopper
+ * e-mail  : 4884280@qq.com
+ * github  : http://github.com/BlackChopper
+ * project : Briefness
  */
 
 

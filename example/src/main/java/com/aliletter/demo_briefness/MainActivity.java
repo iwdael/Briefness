@@ -4,8 +4,8 @@ package com.aliletter.demo_briefness;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.aliletter.briefness.BindLayout;
-import com.aliletter.briefness.Briefness;
+import briefness.BindLayout;
+import briefness.Briefness;
 
 
 @BindLayout(id = R.layout.activity_main, name = "activity_main")

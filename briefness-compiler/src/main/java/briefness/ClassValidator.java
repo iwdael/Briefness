@@ -1,4 +1,4 @@
-package com.aliletter.briefness;
+package briefness;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;

@@ -1,7 +1,4 @@
-package com.aliletter.briefness;
-
-import com.aliletter.briefness.databinding.XmlBind;
-import com.aliletter.briefness.databinding.XmlViewInfo;
+package  briefness;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -13,12 +10,15 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import briefness.databinding.XmlBind;
+import briefness.databinding.XmlViewInfo;
+
 
 /**
- * e-mail : aliletter@qq.com
- * time   : 2018/04/02
- * desc   :
- * version: 1.0
+ * author  : Black Chopper
+ * e-mail  : 4884280@qq.com
+ * github  : http://github.com/BlackChopper
+ * project : Briefness
  */
 public class XmlProxyInfo {
     public static final String imports = "briefness:imports";

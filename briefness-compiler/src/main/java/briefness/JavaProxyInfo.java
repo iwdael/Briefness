@@ -1,9 +1,5 @@
-package com.aliletter.briefness;
+package  briefness;
 
-
-import com.aliletter.briefness.databinding.JavaLayout;
-import com.aliletter.briefness.databinding.XmlBind;
-import com.aliletter.briefness.databinding.XmlViewInfo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,10 +12,15 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 
+import briefness.databinding.JavaLayout;
+import briefness.databinding.XmlBind;
+import briefness.databinding.XmlViewInfo;
+
 /**
- * Author: aliletter
- * Github: http://github.com/aliletter
- * Data: 2017/9/15.
+ * author  : Black Chopper
+ * e-mail  : 4884280@qq.com
+ * github  : http://github.com/BlackChopper
+ * project : Briefness
  */
 
 public class JavaProxyInfo {
@@ -63,12 +64,11 @@ public class JavaProxyInfo {
 
 
         importBuilder.append("package ").append(packageName).append(";\n");
-        importBuilder.append("import com.aliletter.briefness.*;\n");
+        importBuilder.append("import briefness.*;\n");
         importBuilder.append("import android.view.*;\n");
         importBuilder.append("import android.widget.*;\n");
         importBuilder.append("import android.app.Activity;\n");
         importBuilder.append("import java.util.ArrayList;\n\n");
-        importBuilder.append("import com.aliletter.briefness.ViewInjector;\n\n");
         importBuilder.append("import " + typeElement.getQualifiedName()).append(";\n\n");
 
         builder.append("public class ").append(proxyClassName).append(" implements " + PROXY);
