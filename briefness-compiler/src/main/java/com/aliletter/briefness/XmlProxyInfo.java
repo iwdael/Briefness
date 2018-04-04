@@ -6,7 +6,6 @@ import com.aliletter.briefness.databinding.XmlViewInfo;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +72,7 @@ public class XmlProxyInfo {
                             for (int i = 0; i < count; i++) {
                                 String name = parser.getAttributeName(i);
                                 String value = parser.getAttributeValue(i);
-                                System.out.print(name + "\n");
-                                if (name.equalsIgnoreCase(id)) {
+                                 if (name.equalsIgnoreCase(id)) {
                                     info.ID = id2String(value);
                                 }
                                 if (name.equalsIgnoreCase(click)) {
@@ -105,8 +103,7 @@ public class XmlProxyInfo {
     }
 
     private String bind2String(String source) {
-        System.out.print("---------------------------------------------------------------->>\n");
-        System.out.print(source + "\n");
+
 
         StringBuilder builder = new StringBuilder();
         if (source.endsWith(";")) {
@@ -115,13 +112,12 @@ public class XmlProxyInfo {
                 int start = bind.indexOf("@{") + 2;
                 int end = bind.indexOf("}");
                 String var = bind.substring(start, end);
-                System.out.print(var + "\n");
+
                 String startStr = var.substring(0, var.lastIndexOf("."));
                 String endStr = var.substring(var.lastIndexOf(".") + 1);
-                System.out.print(startStr + "\n");
-                System.out.print(endStr + "\n");
+
                 String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
-                System.out.print(method + "\n");
+
                 builder.append(bind.substring(0, start - 2)).append(method).append(bind.substring(end + 1, bind.length())).append(";");
             }
         } else {
@@ -129,20 +125,17 @@ public class XmlProxyInfo {
             int start = bind.indexOf("@{") + 2;
             int end = bind.indexOf("}");
             String var = bind.substring(start, end);
-            System.out.print(var + "\n");
+
             String startStr = var.substring(0, var.lastIndexOf("."));
             String endStr = var.substring(var.lastIndexOf(".") + 1);
-            System.out.print(startStr + "\n");
-            System.out.print(endStr + "\n");
+
 
             String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
-            System.out.print(method + "\n");
+
             builder.append(bind.substring(0, start - 2)).append(method).append(bind.substring(end + 1, bind.length()));
             if (!source.endsWith("}")) builder.append(";");
         }
 
-        System.out.print(builder.toString() + "\n");
-        System.out.print("---------------------------------------------------------------->>\n");
         return builder.toString();
     }
 
