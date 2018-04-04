@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 public class ViewInjector {
     public static void inject(View view, Object value) {
         if (value == null | view == null) {
+        } else if (throwInjector(view, value)) {
         } else if (view instanceof ImageView) {
             injectImageView((ImageView) view, value);
         } else if (view instanceof Button) {
@@ -28,7 +29,7 @@ public class ViewInjector {
         } else if (view instanceof TextView) {
             injectTextView((TextView) view, value);
         } else {
-            throwInjector(view, value);
+            Log.e("Briefness", "No match method and can not inject " + view.getClass().getSimpleName());
         }
     }
 
@@ -65,16 +66,17 @@ public class ViewInjector {
         }
     }
 
-    private static void throwInjector(View view, Object value) {
-
+    private static boolean throwInjector(View view, Object value) {
+        boolean res = false;
         try {
             Log.v("Briefness", "can not inject " + view.getClass().getSimpleName());
-            Class<?> injector = Class.forName("com.aliletter.briefness.BriefnessInjector");
+            Class<?> injector = Class.forName(view.getContext().getPackageName() + ".briefness.BriefnessInjector");
             Method inject = injector.getDeclaredMethod("inject", new Class[]{View.class, Object.class});
-            inject.invoke(injector.newInstance(), new Object[]{view, value});
+            res = (boolean) inject.invoke(null, new Object[]{view, value});
         } catch (Exception e) {
             Log.e("Briefness", "not find BriefnessInjector and can not inject " + view.getClass().getSimpleName());
             e.printStackTrace();
         }
+        return res;
     }
 }

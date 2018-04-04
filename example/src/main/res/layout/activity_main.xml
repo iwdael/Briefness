@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:text="Hello World ONE"
         android:textSize="20sp"
-        briefness:bind="@{entity.password}" />
+        briefness:bind="@{entity.password}"
+        briefness:touch="onChangeClick(tv_test1.getText().toString(),tv_test);" />
 
     <TextView
         android:id="@+id/tv_test1"
@@ -22,5 +23,5 @@
         android:text="Hello World TWO"
         android:textSize="20sp"
         briefness:bind="@{entity.username}"
-        briefness:click="onClick( v);" />
+        briefness:click="onClick();" />
 </LinearLayout>

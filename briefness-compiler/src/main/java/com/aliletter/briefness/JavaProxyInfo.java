@@ -64,7 +64,7 @@ public class JavaProxyInfo {
 
         importBuilder.append("package ").append(packageName).append(";\n");
         importBuilder.append("import com.aliletter.briefness.*;\n");
-        importBuilder.append("import android.view.View;\n");
+        importBuilder.append("import android.view.*;\n");
         importBuilder.append("import android.widget.*;\n");
         importBuilder.append("import android.app.Activity;\n");
         importBuilder.append("import java.util.ArrayList;\n\n");
@@ -165,6 +165,15 @@ public class JavaProxyInfo {
                             "            @Override\n" +
                             "            public boolean onLongClick(View v) {\n" +
                             "            ((" + name + ")host)." + info.longClick + "\n" +
+                            "                return false;\n" +
+                            "            }\n" +
+                            "        });");
+                }
+                if (info.touch != null) {
+                    builder.append(info.ID).append(".setOnTouchListener(new View.OnTouchListener() {\n" +
+                            "            @Override\n" +
+                            "            public boolean onTouch(View v, MotionEvent event) {\n" +
+                            "            ((" + name + ")host)." + info.touch + "\n" +
                             "                return false;\n" +
                             "            }\n" +
                             "        });");

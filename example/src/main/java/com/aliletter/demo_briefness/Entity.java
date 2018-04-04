@@ -10,7 +10,7 @@ package com.aliletter.demo_briefness;
 public class Entity {
     private String username;
     private String password;
-    private String alias;
+
 
     public Entity(String username, String password) {
         this.username = username;

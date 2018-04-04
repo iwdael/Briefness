@@ -22,7 +22,7 @@ public class XmlProxyInfo {
     public static final String imports = "briefness:imports";
     public static final String click = "briefness:click";
     public static final String longclick = "briefness:longclick";
-    public static final String action = "briefness:action";
+    public static final String touch = "briefness:touch";
     public static final String briefness = "briefness:";
     public static final String bind = "briefness:bind";
     public static final String id = "android:id";
@@ -83,8 +83,8 @@ public class XmlProxyInfo {
                                 if (name.equalsIgnoreCase(longclick)) {
                                     info.longClick = value;
                                 }
-                                if (name.equalsIgnoreCase(action)) {
-                                    info.action = value;
+                                if (name.equalsIgnoreCase(touch)) {
+                                    info.touch = value;
                                 }
                                 if (name.equalsIgnoreCase(bind)) {
                                     info.bind = bind2String(value);

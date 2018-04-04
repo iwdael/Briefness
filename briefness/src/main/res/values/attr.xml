@@ -4,7 +4,7 @@
         <attr name="imports" format="string" />
         <attr name="click" format="string" />
         <attr name="longclick" format="string" />
-        <attr name="action" format="string" />
+        <attr name="touch" format="string" />
         <attr name="bind" format="string" />
     </declare-styleable>
 </resources>

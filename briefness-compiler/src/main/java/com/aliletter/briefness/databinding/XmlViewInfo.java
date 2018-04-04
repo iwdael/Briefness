@@ -10,7 +10,7 @@ public class XmlViewInfo {
     public String ID;
     public String click;
     public String longClick;
-    public String action;
+    public String touch;
     public String view;
     public String bind;
     public String clazz;
@@ -21,7 +21,7 @@ public class XmlViewInfo {
                 "ID='" + ID + '\'' +
                 ", click='" + click + '\'' +
                 ", longClick='" + longClick + '\'' +
-                ", action='" + action + '\'' +
+                ", action='" + touch + '\'' +
                 ", view='" + view + '\'' +
                 ", bind='" + bind + '\'' +
                 ", clazz='" + clazz + '\'' +
