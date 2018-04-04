@@ -6,7 +6,6 @@ package com.aliletter.demo_briefness;
  * github  : http://github.com/BlackChopper
  * project : Briefness
  */
-
 public class Message {
     private String username;
     private String name;

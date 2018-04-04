@@ -1,23 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:briefness="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
-    briefness:imports="com.aliletter.demo_briefness.Entity,entity;">
+    briefness:imports="com.aliletter.demo_briefness,entity">
 
     <TextView
         android:id="@+id/tv_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World ONE"
-        android:textSize="20sp"  />
+        android:textSize="20sp"
+        briefness:bind="@{entity.username}"
+        tools:ignore="MissingPrefix" />
 
     <TextView
         android:id="@+id/tv_test1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World TWO"
-        android:textSize="20sp"  />
+        android:textSize="20sp"
+        briefness:bind="@{entity.password}"
+        tools:ignore="MissingPrefix" />
 </LinearLayout>
