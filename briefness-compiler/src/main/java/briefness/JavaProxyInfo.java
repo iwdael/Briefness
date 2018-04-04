@@ -22,7 +22,6 @@ import briefness.databinding.XmlViewInfo;
  * github  : http://github.com/BlackChopper
  * project : Briefness
  */
-
 public class JavaProxyInfo {
     public static final String PROXY = "Briefnessor";
     StringBuilder importBuilder = new StringBuilder();
