@@ -59,7 +59,7 @@ public class JavaProxyInfo {
         importBuilder.append("// Generated code. Do not modify! \n");
 
         XmlProxyInfo proxyInfo1 = new XmlProxyInfo(bindLayout.get(0).layout);
-        importBuilder.append("//").append(proxyInfo1.getBinds().toString()).append("\n");
+        importBuilder.append("//").append(proxyInfo1.module).append("\n");
 
 
         importBuilder.append("package ").append(packageName).append(";\n");
