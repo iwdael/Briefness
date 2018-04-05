@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    briefness:imports="com.aliletter.demo_briefness,entity">
+    briefness:imports="com.aliletter.demo_briefness.Entity,entity">
 
     <TextView
         android:id="@+id/tv_test"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Hello World ONE"
         android:textSize="20sp"
-        briefness:bind="@{entity.username}"
+
         tools:ignore="MissingPrefix" />
 
     <TextView
@@ -22,6 +22,5 @@
         android:layout_height="wrap_content"
         android:text="Hello World TWO"
         android:textSize="20sp"
-        briefness:bind="@{entity.password}"
         tools:ignore="MissingPrefix" />
 </LinearLayout>

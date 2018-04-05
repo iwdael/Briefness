@@ -60,7 +60,8 @@ public class JavaProxyInfo {
 
         XmlProxyInfo proxyInfo1 = new XmlProxyInfo(bindLayout.get(0).layout);
         importBuilder.append("//").append(proxyInfo1.module).append("\n");
-
+        importBuilder.append("// ").append(proxyInfo1.xml).append("\n");
+        importBuilder.append("//  ").append(proxyInfo1.getBinds().toString());
 
         importBuilder.append("package ").append(packageName).append(";\n");
         importBuilder.append("import briefness.*;\n");
