@@ -1,4 +1,4 @@
-package  briefness;
+package briefness;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -29,6 +29,7 @@ public class XmlProxyInfo {
     public static final String bind = "briefness:bind";
     public static final String id = "android:id";
     public static final String SPLIT = "/";
+    public String packageName;
     public String module;
 
     public String xml;
@@ -101,6 +102,25 @@ public class XmlProxyInfo {
                 }
                 eventType = parser.next();
 
+            }
+
+            xml = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "AndroidManifest.xml";
+            factory = XmlPullParserFactory.newInstance();
+            // 获得xml解析类的引用
+            parser = factory.newPullParser();
+            parser.setInput(new FileReader(xml));
+            eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                switch (eventType) {
+                    case XmlPullParser.START_TAG:
+                        for (int i = 0; i < parser.getAttributeCount(); i++) {
+                            if (parser.getAttributeName(i).equalsIgnoreCase("package")) {
+                                packageName = parser.getAttributeValue(i);
+                            }
+                        }
+                        break;
+                }
+                eventType = parser.next();
             }
         } catch (Exception e) {
         }

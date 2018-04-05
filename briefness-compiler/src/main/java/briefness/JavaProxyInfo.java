@@ -1,4 +1,4 @@
-package  briefness;
+package briefness;
 
 
 import java.util.ArrayList;
@@ -58,17 +58,22 @@ public class JavaProxyInfo {
 
         importBuilder.append("// Generated code. Do not modify! \n");
 
-        XmlProxyInfo proxyInfo1 = new XmlProxyInfo(bindLayout.get(0).layout);
-        importBuilder.append("//").append(proxyInfo1.module).append("\n");
-        importBuilder.append("// ").append(proxyInfo1.xml).append("\n");
-        importBuilder.append("//  ").append(proxyInfo1.getBinds().toString());
+//        XmlProxyInfo proxyInfo1 = new XmlProxyInfo(bindLayout.get(0).layout);
+//        importBuilder.append("//").append(proxyInfo1.module).append("\n");
+//        importBuilder.append("// ").append(proxyInfo1.xml).append("\n");
+//        importBuilder.append("//  ").append(proxyInfo1.getBinds().toString());
 
         importBuilder.append("package ").append(packageName).append(";\n");
+        if (bindLayout.size() > 0 & bindLayout.get(0).layout != null) {
+            XmlProxyInfo proxyInfo1 = new XmlProxyInfo(bindLayout.get(0).layout);
+            importBuilder.append("import " + proxyInfo1.packageName + ".R;");
+        }
         importBuilder.append("import briefness.*;\n");
         importBuilder.append("import android.view.*;\n");
         importBuilder.append("import android.widget.*;\n");
         importBuilder.append("import android.app.Activity;\n");
         importBuilder.append("import java.util.ArrayList;\n\n");
+
         importBuilder.append("import " + typeElement.getQualifiedName()).append(";\n\n");
 
         builder.append("public class ").append(proxyClassName).append(" implements " + PROXY);
