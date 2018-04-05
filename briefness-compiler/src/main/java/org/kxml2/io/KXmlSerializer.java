@@ -1,434 +1,547 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
+/* Copyright (c) 2002,2003, Stefan Haustein, Oberhausen, Rhld., Germany
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The  above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE. */
+ 
 
 package org.kxml2.io;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import org.xmlpull.v1.XmlSerializer;
+import java.io.*;
+import org.xmlpull.v1.*;
 
 public class KXmlSerializer implements XmlSerializer {
-	private Writer writer;
-	private boolean pending;
-	private int auto;
-	private int depth;
-	private String[] elementStack = new String[12];
-	private int[] nspCounts = new int[4];
-	private String[] nspStack = new String[8];
-	private boolean[] indent = new boolean[4];
-	private boolean unicode;
-	private String encoding;
 
-	public KXmlSerializer() {
-	}
+    //    static final String UNDEFINED = ":";
 
-	private final void check(boolean var1) throws IOException {
-		if(this.pending) {
-			++this.depth;
-			this.pending = false;
-			if(this.indent.length <= this.depth) {
-				boolean[] var2 = new boolean[this.depth + 4];
-				System.arraycopy(this.indent, 0, var2, 0, this.depth);
-				this.indent = var2;
-			}
+    private Writer writer;
 
-			this.indent[this.depth] = this.indent[this.depth - 1];
+    private boolean pending;
+    private int auto;
+    private int depth;
 
-			for(int var3 = this.nspCounts[this.depth - 1]; var3 < this.nspCounts[this.depth]; ++var3) {
-				this.writer.write(32);
-				this.writer.write("xmlns");
-				if(!"".equals(this.nspStack[var3 * 2])) {
-					this.writer.write(58);
-					this.writer.write(this.nspStack[var3 * 2]);
-				} else if("".equals(this.getNamespace()) && !"".equals(this.nspStack[var3 * 2 + 1])) {
-					throw new IllegalStateException("Cannot set default namespace for elements in no namespace");
-				}
+    private String[] elementStack = new String[12];
+    //nsp/prefix/name
+    private int[] nspCounts = new int[4];
+    private String[] nspStack = new String[8];
+    //prefix/nsp; both empty are ""
+    private boolean[] indent = new boolean[4];
+    private boolean unicode;
+    private String encoding;
 
-				this.writer.write("=\"");
-				this.writeEscaped(this.nspStack[var3 * 2 + 1], 34);
-				this.writer.write(34);
-			}
+    private final void check(boolean close) throws IOException {
+        if (!pending)
+            return;
 
-			if(this.nspCounts.length <= this.depth + 1) {
-				int[] var4 = new int[this.depth + 8];
-				System.arraycopy(this.nspCounts, 0, var4, 0, this.depth + 1);
-				this.nspCounts = var4;
-			}
+        depth++;
+        pending = false;
 
-			this.nspCounts[this.depth + 1] = this.nspCounts[this.depth];
-			this.writer.write(var1?" />":">");
-		}
-	}
+        if (indent.length <= depth) {
+            boolean[] hlp = new boolean[depth + 4];
+            System.arraycopy(indent, 0, hlp, 0, depth);
+            indent = hlp;
+        }
+        indent[depth] = indent[depth - 1];
 
-	private final void writeEscaped(String var1, int var2) throws IOException {
-		for(int var3 = 0; var3 < var1.length(); ++var3) {
-			char var4 = var1.charAt(var3);
-			switch(var4) {
-				case '\t':
-				case '\n':
-				case '\r':
-					if(var2 == -1) {
-						this.writer.write(var4);
-					} else {
-						this.writer.write("&#" + var4 + ';');
-					}
-					continue;
-				case '"':
-				case '\'':
-					if(var4 == var2) {
-						this.writer.write(var4 == 34?"&quot;":"&apos;");
-						continue;
-					}
-					break;
-				case '&':
-					this.writer.write("&amp;");
-					continue;
-				case '<':
-					this.writer.write("&lt;");
-					continue;
-				case '>':
-					this.writer.write("&gt;");
-					continue;
-			}
+        for (int i = nspCounts[depth - 1];
+            i < nspCounts[depth];
+            i++) {
+            writer.write(' ');
+            writer.write("xmlns");
+            if (!"".equals(nspStack[i * 2])) {
+                writer.write(':');
+                writer.write(nspStack[i * 2]);
+            }
+            else if ("".equals(getNamespace()) && !"".equals(nspStack[i * 2 + 1]))
+                throw new IllegalStateException("Cannot set default namespace for elements in no namespace");
+            writer.write("=\"");
+            writeEscaped(nspStack[i * 2 + 1], '"');
+            writer.write('"');
+        }
 
-			if(var4 < 32 || var4 == 64 || var4 >= 127 && !this.unicode) {
-				this.writer.write("&#" + var4 + ";");
-			} else {
-				this.writer.write(var4);
-			}
-		}
+        if (nspCounts.length <= depth + 1) {
+            int[] hlp = new int[depth + 8];
+            System.arraycopy(nspCounts, 0, hlp, 0, depth + 1);
+            nspCounts = hlp;
+        }
 
-	}
+        nspCounts[depth + 1] = nspCounts[depth];
+        //   nspCounts[depth + 2] = nspCounts[depth];
 
-	public void docdecl(String var1) throws IOException {
-		this.writer.write("<!DOCTYPE");
-		this.writer.write(var1);
-		this.writer.write(">");
-	}
+        writer.write(close ? " />" : ">");
+    }
 
-	public void endDocument() throws IOException {
-		while(this.depth > 0) {
-			this.endTag(this.elementStack[this.depth * 3 - 3], this.elementStack[this.depth * 3 - 1]);
-		}
+    private final void writeEscaped(String s, int quot)
+        throws IOException {
 
-		this.flush();
-	}
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+            	case '\n':
+            	case '\r':
+            	case '\t':
+            		if(quot == -1) 
+            			writer.write(c);
+            		else 
+            			writer.write("&#"+((int) c)+';');
+            		break;
+                case '&' :
+                    writer.write("&amp;");
+                    break;
+                case '>' :
+                    writer.write("&gt;");
+                    break;
+                case '<' :
+                    writer.write("&lt;");
+                    break;
+                case '"' :
+                case '\'' :
+                    if (c == quot) {
+                        writer.write(
+                            c == '"' ? "&quot;" : "&apos;");
+                        break;
+                    }
+                default :
+                	//if(c < ' ')
+					//	throw new IllegalArgumentException("Illegal control code:"+((int) c));
 
-	public void entityRef(String var1) throws IOException {
-		this.check(false);
-		this.writer.write(38);
-		this.writer.write(var1);
-		this.writer.write(59);
-	}
+                    if (c >= ' ' && c !='@' && (c < 127 || unicode))
+                        writer.write(c);
+                    else
+                        writer.write("&#" + ((int) c) + ";");
 
-	public boolean getFeature(String var1) {
-		return "http://xmlpull.org/v1/doc/features.html#indent-output".equals(var1)?this.indent[this.depth]:false;
-	}
+            }
+        }
+    }
 
-	public String getPrefix(String var1, boolean var2) {
-		try {
-			return this.getPrefix(var1, false, var2);
-		} catch (IOException var4) {
-			throw new RuntimeException(var4.toString());
-		}
-	}
+    /*
+    	private final void writeIndent() throws IOException {
+    		writer.write("\r\n");
+    		for (int i = 0; i < depth; i++)
+    			writer.write(' ');
+    	}*/
 
-	private final String getPrefix(String var1, boolean var2, boolean var3) throws IOException {
-		for(int var4 = this.nspCounts[this.depth + 1] * 2 - 2; var4 >= 0; var4 -= 2) {
-			if(this.nspStack[var4 + 1].equals(var1) && (var2 || !this.nspStack[var4].equals(""))) {
-				String var5 = this.nspStack[var4];
+    public void docdecl(String dd) throws IOException {
+        writer.write("<!DOCTYPE");
+        writer.write(dd);
+        writer.write(">");
+    }
 
-				for(int var6 = var4 + 2; var6 < this.nspCounts[this.depth + 1] * 2; ++var6) {
-					if(this.nspStack[var6].equals(var5)) {
-						var5 = null;
-						break;
-					}
-				}
+    public void endDocument() throws IOException {
+        while (depth > 0) {
+            endTag(
+                elementStack[depth * 3 - 3],
+                elementStack[depth * 3 - 1]);
+        }
+        flush();
+    }
 
-				if(var5 != null) {
-					return var5;
-				}
-			}
-		}
+    public void entityRef(String name) throws IOException {
+        check(false);
+        writer.write('&');
+        writer.write(name);
+        writer.write(';');
+    }
 
-		if(!var3) {
-			return null;
-		} else {
-			String var7;
-			if("".equals(var1)) {
-				var7 = "";
-			} else {
-				do {
-					var7 = "n" + this.auto++;
+    public boolean getFeature(String name) {
+        //return false;
+        return (
+            "http://xmlpull.org/v1/doc/features.html#indent-output"
+                .equals(
+                name))
+            ? indent[depth]
+            : false;
+    }
 
-					for(int var8 = this.nspCounts[this.depth + 1] * 2 - 2; var8 >= 0; var8 -= 2) {
-						if(var7.equals(this.nspStack[var8])) {
-							var7 = null;
-							break;
-						}
-					}
-				} while(var7 == null);
-			}
+    public String getPrefix(String namespace, boolean create) {
+        try {
+            return getPrefix(namespace, false, create);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e.toString());
+        }
+    }
 
-			boolean var9 = this.pending;
-			this.pending = false;
-			this.setPrefix(var7, var1);
-			this.pending = var9;
-			return var7;
-		}
-	}
+    private final String getPrefix(
+        String namespace,
+        boolean includeDefault,
+        boolean create)
+        throws IOException {
 
-	public Object getProperty(String var1) {
-		throw new RuntimeException("Unsupported property");
-	}
+        for (int i = nspCounts[depth + 1] * 2 - 2;
+            i >= 0;
+            i -= 2) {
+            if (nspStack[i + 1].equals(namespace)
+                && (includeDefault || !nspStack[i].equals(""))) {
+                String cand = nspStack[i];
+                for (int j = i + 2;
+                    j < nspCounts[depth + 1] * 2;
+                    j++) {
+                    if (nspStack[j].equals(cand)) {
+                        cand = null;
+                        break;
+                    }
+                }
+                if (cand != null)
+                    return cand;
+            }
+        }
 
-	public void ignorableWhitespace(String var1) throws IOException {
-		this.text(var1);
-	}
+        if (!create)
+            return null;
 
-	public void setFeature(String var1, boolean var2) {
-		if("http://xmlpull.org/v1/doc/features.html#indent-output".equals(var1)) {
-			this.indent[this.depth] = var2;
-		} else {
-			throw new RuntimeException("Unsupported Feature");
-		}
-	}
+        String prefix;
 
-	public void setProperty(String var1, Object var2) {
-		throw new RuntimeException("Unsupported Property:" + var2);
-	}
+        if ("".equals(namespace))
+            prefix = "";
+        else {
+            do {
+                prefix = "n" + (auto++);
+                for (int i = nspCounts[depth + 1] * 2 - 2;
+                    i >= 0;
+                    i -= 2) {
+                    if (prefix.equals(nspStack[i])) {
+                        prefix = null;
+                        break;
+                    }
+                }
+            }
+            while (prefix == null);
+        }
 
-	public void setPrefix(String var1, String var2) throws IOException {
-		this.check(false);
-		if(var1 == null) {
-			var1 = "";
-		}
+		boolean p = pending;
+		pending = false;
+        setPrefix(prefix, namespace);
+        pending = p;
+        return prefix;
+    }
 
-		if(var2 == null) {
-			var2 = "";
-		}
+    public Object getProperty(String name) {
+        throw new RuntimeException("Unsupported property");
+    }
 
-		String var3 = this.getPrefix(var2, true, false);
-		if(!var1.equals(var3)) {
-			int var10001 = this.depth + 1;
-			int var10003 = this.nspCounts[this.depth + 1];
-			this.nspCounts[var10001] = this.nspCounts[this.depth + 1] + 1;
-			int var4 = var10003 << 1;
-			if(this.nspStack.length < var4 + 1) {
-				String[] var5 = new String[this.nspStack.length + 16];
-				System.arraycopy(this.nspStack, 0, var5, 0, var4);
-				this.nspStack = var5;
-			}
+    public void ignorableWhitespace(String s)
+        throws IOException {
+        text(s);
+    }
 
-			this.nspStack[var4++] = var1;
-			this.nspStack[var4] = var2;
-		}
-	}
+    public void setFeature(String name, boolean value) {
+        if ("http://xmlpull.org/v1/doc/features.html#indent-output"
+            .equals(name)) {
+            indent[depth] = value;
+        }
+        else
+            throw new RuntimeException("Unsupported Feature");
+    }
 
-	public void setOutput(Writer var1) {
-		this.writer = var1;
-		this.nspCounts[0] = 2;
-		this.nspCounts[1] = 2;
-		this.nspStack[0] = "";
-		this.nspStack[1] = "";
-		this.nspStack[2] = "xml";
-		this.nspStack[3] = "http://www.w3.org/XML/1998/namespace";
-		this.pending = false;
-		this.auto = 0;
-		this.depth = 0;
-		this.unicode = false;
-	}
+    public void setProperty(String name, Object value) {
+        throw new RuntimeException(
+            "Unsupported Property:" + value);
+    }
 
-	public void setOutput(OutputStream var1, String var2) throws IOException {
-		if(var1 == null) {
-			throw new IllegalArgumentException();
-		} else {
-			this.setOutput(var2 == null?new OutputStreamWriter(var1):new OutputStreamWriter(var1, var2));
-			this.encoding = var2;
-			if(var2 != null && var2.toLowerCase().startsWith("utf")) {
-				this.unicode = true;
-			}
+    public void setPrefix(String prefix, String namespace)
+        throws IOException {
 
-		}
-	}
+        check(false);
+        if (prefix == null)
+            prefix = "";
+        if (namespace == null)
+            namespace = "";
 
-	public void startDocument(String var1, Boolean var2) throws IOException {
-		this.writer.write("<?xml version='1.0' ");
-		if(var1 != null) {
-			this.encoding = var1;
-			if(var1.toLowerCase().startsWith("utf")) {
-				this.unicode = true;
-			}
-		}
+        String defined = getPrefix(namespace, true, false);
 
-		if(this.encoding != null) {
-			this.writer.write("encoding='");
-			this.writer.write(this.encoding);
-			this.writer.write("' ");
-		}
+        // boil out if already defined
 
-		if(var2 != null) {
-			this.writer.write("standalone='");
-			this.writer.write(var2.booleanValue()?"yes":"no");
-			this.writer.write("' ");
-		}
+        if (prefix.equals(defined))
+            return;
 
-		this.writer.write("?>");
-	}
+        int pos = (nspCounts[depth + 1]++) << 1;
 
-	public XmlSerializer startTag(String var1, String var2) throws IOException {
-		this.check(false);
-		int var3;
-		if(this.indent[this.depth]) {
-			this.writer.write("\r\n");
+        if (nspStack.length < pos + 1) {
+            String[] hlp = new String[nspStack.length + 16];
+            System.arraycopy(nspStack, 0, hlp, 0, pos);
+            nspStack = hlp;
+        }
 
-			for(var3 = 0; var3 < this.depth; ++var3) {
-				this.writer.write("  ");
-			}
-		}
+        nspStack[pos++] = prefix;
+        nspStack[pos] = namespace;
+    }
 
-		var3 = this.depth * 3;
-		if(this.elementStack.length < var3 + 3) {
-			String[] var4 = new String[this.elementStack.length + 12];
-			System.arraycopy(this.elementStack, 0, var4, 0, var3);
-			this.elementStack = var4;
-		}
+    public void setOutput(Writer writer) {
+        this.writer = writer;
 
-		String var6 = var1 == null?"":this.getPrefix(var1, true, true);
-		if("".equals(var1)) {
-			for(int var5 = this.nspCounts[this.depth]; var5 < this.nspCounts[this.depth + 1]; ++var5) {
-				if("".equals(this.nspStack[var5 * 2]) && !"".equals(this.nspStack[var5 * 2 + 1])) {
-					throw new IllegalStateException("Cannot set default namespace for elements in no namespace");
-				}
-			}
-		}
+        // elementStack = new String[12]; //nsp/prefix/name
+        //nspCounts = new int[4];
+        //nspStack = new String[8]; //prefix/nsp
+        //indent = new boolean[4];
 
-		this.elementStack[var3++] = var1;
-		this.elementStack[var3++] = var6;
-		this.elementStack[var3] = var2;
-		this.writer.write(60);
-		if(!"".equals(var6)) {
-			this.writer.write(var6);
-			this.writer.write(58);
-		}
+        nspCounts[0] = 2;
+        nspCounts[1] = 2;
+        nspStack[0] = "";
+        nspStack[1] = "";
+        nspStack[2] = "xml";
+        nspStack[3] = "http://www.w3.org/XML/1998/namespace";
+        pending = false;
+        auto = 0;
+        depth = 0;
 
-		this.writer.write(var2);
-		this.pending = true;
-		return this;
-	}
+        unicode = false;
+    }
 
-	public XmlSerializer attribute(String var1, String var2, String var3) throws IOException {
-		if(!this.pending) {
-			throw new IllegalStateException("illegal position for attribute");
-		} else {
-			if(var1 == null) {
-				var1 = "";
-			}
+    public void setOutput(OutputStream os, String encoding)
+        throws IOException {
+        if (os == null)
+            throw new IllegalArgumentException();
+        setOutput(
+            encoding == null
+                ? new OutputStreamWriter(os)
+                : new OutputStreamWriter(os, encoding));
+        this.encoding = encoding;
+        if (encoding != null
+            && encoding.toLowerCase().startsWith("utf"))
+            unicode = true;
+    }
 
-			String var4 = "".equals(var1)?"":this.getPrefix(var1, false, true);
-			this.writer.write(32);
-			if(!"".equals(var4)) {
-				this.writer.write(var4);
-				this.writer.write(58);
-			}
+    public void startDocument(
+        String encoding,
+        Boolean standalone)
+        throws IOException {
+        writer.write("<?xml version='1.0' ");
 
-			this.writer.write(var2);
-			this.writer.write(61);
-			int var5 = var3.indexOf(34) == -1?34:39;
-			this.writer.write(var5);
-			this.writeEscaped(var3, var5);
-			this.writer.write(var5);
-			return this;
-		}
-	}
+        if (encoding != null) {
+            this.encoding = encoding;
+            if (encoding.toLowerCase().startsWith("utf"))
+                unicode = true;
+        }
 
-	public void flush() throws IOException {
-		this.check(false);
-		this.writer.flush();
-	}
+        if (this.encoding != null) {
+            writer.write("encoding='");
+            writer.write(this.encoding);
+            writer.write("' ");
+        }
 
-	public XmlSerializer endTag(String var1, String var2) throws IOException {
-		if(!this.pending) {
-			--this.depth;
-		}
+        if (standalone != null) {
+            writer.write("standalone='");
+            writer.write(
+                standalone.booleanValue() ? "yes" : "no");
+            writer.write("' ");
+        }
+        writer.write("?>");
+    }
 
-		if((var1 != null || this.elementStack[this.depth * 3] == null) && (var1 == null || var1.equals(this.elementStack[this.depth * 3])) && this.elementStack[this.depth * 3 + 2].equals(var2)) {
-			if(this.pending) {
-				this.check(true);
-				--this.depth;
-			} else {
-				if(this.indent[this.depth + 1]) {
-					this.writer.write("\r\n");
+    public XmlSerializer startTag(String namespace, String name)
+        throws IOException {
+        check(false);
 
-					for(int var3 = 0; var3 < this.depth; ++var3) {
-						this.writer.write("  ");
-					}
-				}
+        //        if (namespace == null)
+        //            namespace = "";
 
-				this.writer.write("</");
-				String var4 = this.elementStack[this.depth * 3 + 1];
-				if(!"".equals(var4)) {
-					this.writer.write(var4);
-					this.writer.write(58);
-				}
+        if (indent[depth]) {
+            writer.write("\r\n");
+            for (int i = 0; i < depth; i++)
+                writer.write("  ");
+        }
 
-				this.writer.write(var2);
-				this.writer.write(62);
-			}
+        int esp = depth * 3;
 
-			this.nspCounts[this.depth + 1] = this.nspCounts[this.depth];
-			return this;
-		} else {
-			throw new IllegalArgumentException("</{" + var1 + "}" + var2 + "> does not match start");
-		}
-	}
+        if (elementStack.length < esp + 3) {
+            String[] hlp = new String[elementStack.length + 12];
+            System.arraycopy(elementStack, 0, hlp, 0, esp);
+            elementStack = hlp;
+        }
 
-	public String getNamespace() {
-		return this.getDepth() == 0?null:this.elementStack[this.getDepth() * 3 - 3];
-	}
+        String prefix =
+            namespace == null
+                ? ""
+                : getPrefix(namespace, true, true);
 
-	public String getName() {
-		return this.getDepth() == 0?null:this.elementStack[this.getDepth() * 3 - 1];
-	}
+        if ("".equals(namespace)) {
+            for (int i = nspCounts[depth];
+                i < nspCounts[depth + 1];
+                i++) {
+                if ("".equals(nspStack[i * 2]) && !"".equals(nspStack[i * 2 + 1])) {
+                    throw new IllegalStateException("Cannot set default namespace for elements in no namespace");
+                }
+            }
+        }
 
-	public int getDepth() {
-		return this.pending?this.depth + 1:this.depth;
-	}
+        elementStack[esp++] = namespace;
+        elementStack[esp++] = prefix;
+        elementStack[esp] = name;
 
-	public XmlSerializer text(String var1) throws IOException {
-		this.check(false);
-		this.indent[this.depth] = false;
-		this.writeEscaped(var1, -1);
-		return this;
-	}
+        writer.write('<');
+        if (!"".equals(prefix)) {
+            writer.write(prefix);
+            writer.write(':');
+        }
 
-	public XmlSerializer text(char[] var1, int var2, int var3) throws IOException {
-		this.text(new String(var1, var2, var3));
-		return this;
-	}
+        writer.write(name);
 
-	public void cdsect(String var1) throws IOException {
-		this.check(false);
-		this.writer.write("<![CDATA[");
-		this.writer.write(var1);
-		this.writer.write("]]>");
-	}
+        pending = true;
 
-	public void comment(String var1) throws IOException {
-		this.check(false);
-		this.writer.write("<!--");
-		this.writer.write(var1);
-		this.writer.write("-->");
-	}
+        return this;
+    }
 
-	public void processingInstruction(String var1) throws IOException {
-		this.check(false);
-		this.writer.write("<?");
-		this.writer.write(var1);
-		this.writer.write("?>");
-	}
+    public XmlSerializer attribute(
+        String namespace,
+        String name,
+        String value)
+        throws IOException {
+        if (!pending)
+            throw new IllegalStateException("illegal position for attribute");
+
+        //        int cnt = nspCounts[depth];
+
+        if (namespace == null)
+            namespace = "";
+
+        //		depth--;
+        //		pending = false;
+
+        String prefix =
+            "".equals(namespace)
+                ? ""
+                : getPrefix(namespace, false, true);
+
+        //		pending = true;
+        //		depth++;
+
+        /*        if (cnt != nspCounts[depth]) {
+                    writer.write(' ');
+                    writer.write("xmlns");
+                    if (nspStack[cnt * 2] != null) {
+                        writer.write(':');
+                        writer.write(nspStack[cnt * 2]);
+                    }
+                    writer.write("=\"");
+                    writeEscaped(nspStack[cnt * 2 + 1], '"');
+                    writer.write('"');
+                }
+                */
+
+        writer.write(' ');
+        if (!"".equals(prefix)) {
+            writer.write(prefix);
+            writer.write(':');
+        }
+        writer.write(name);
+        writer.write('=');
+        char q = value.indexOf('"') == -1 ? '"' : '\'';
+        writer.write(q);
+        writeEscaped(value, q);
+        writer.write(q);
+
+        return this;
+    }
+
+    public void flush() throws IOException {
+        check(false);
+        writer.flush();
+    }
+    /*
+    	public void close() throws IOException {
+    		check();
+    		writer.close();
+    	}
+    */
+    public XmlSerializer endTag(String namespace, String name)
+        throws IOException {
+
+        if (!pending)
+            depth--;
+        //        if (namespace == null)
+        //          namespace = "";
+
+        if ((namespace == null
+            && elementStack[depth * 3] != null)
+            || (namespace != null
+                && !namespace.equals(elementStack[depth * 3]))
+            || !elementStack[depth * 3 + 2].equals(name))
+            throw new IllegalArgumentException("</{"+namespace+"}"+name+"> does not match start");
+
+        if (pending) {
+            check(true);
+            depth--;
+        }
+        else {
+            if (indent[depth + 1]) {
+                writer.write("\r\n");
+                for (int i = 0; i < depth; i++)
+                    writer.write("  ");
+            }
+
+            writer.write("</");
+            String prefix = elementStack[depth * 3 + 1];
+            if (!"".equals(prefix)) {
+                writer.write(prefix);
+                writer.write(':');
+            }
+            writer.write(name);
+            writer.write('>');
+        }
+
+        nspCounts[depth + 1] = nspCounts[depth];
+        return this;
+    }
+
+    public String getNamespace() {
+        return getDepth() == 0 ? null : elementStack[getDepth() * 3 - 3];
+    }
+
+    public String getName() {
+        return getDepth() == 0 ? null : elementStack[getDepth() * 3 - 1];
+    }
+
+    public int getDepth() {
+        return pending ? depth + 1 : depth;
+    }
+
+    public XmlSerializer text(String text) throws IOException {
+        check(false);
+        indent[depth] = false;
+        writeEscaped(text, -1);
+        return this;
+    }
+
+    public XmlSerializer text(char[] text, int start, int len)
+        throws IOException {
+        text(new String(text, start, len));
+        return this;
+    }
+
+    public void cdsect(String data) throws IOException {
+        check(false);
+        writer.write("<![CDATA[");
+        writer.write(data);
+        writer.write("]]>");
+    }
+
+    public void comment(String comment) throws IOException {
+        check(false);
+        writer.write("<!--");
+        writer.write(comment);
+        writer.write("-->");
+    }
+
+    public void processingInstruction(String pi)
+        throws IOException {
+        check(false);
+        writer.write("<?");
+        writer.write(pi);
+        writer.write("?>");
+    }
 }

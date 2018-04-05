@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    briefness:imports="com.aliletter.demo_briefness.Entity,entity">
+    briefness:imports="com.blackchopper.demo_briefness.Entity,entity">
 
     <TextView
         android:id="@+id/tv_test"

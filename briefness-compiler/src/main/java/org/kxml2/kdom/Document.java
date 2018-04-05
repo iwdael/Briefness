@@ -1,99 +1,129 @@
-// Decompiled by Jad v1.5.8e2. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://kpdus.tripod.com/jad.html
-// Decompiler options: packimports(3) fieldsfirst ansi space 
+/* Copyright (c) 2002,2003, Stefan Haustein, Oberhausen, Rhld., Germany
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The  above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE. */
+ 
 
 package org.kxml2.kdom;
 
-import java.io.IOException;
+import java.io.*;
+
 import org.xmlpull.v1.*;
+/** The document consists of some legacy events and a single root
+    element. This class basically adds some consistency checks to
+    Node. */
 
-// Referenced classes of package org.kxml2.kdom:
-//			Node, Element
+public class Document extends Node {
 
-public class Document extends Node
-{
+    protected int rootIndex = -1;
+    String encoding;
+    Boolean standalone;
 
-	protected int rootIndex;
-	String encoding;
-	Boolean standalone;
+    /** returns "#document" */
 
-	public Document()
-	{
-		rootIndex = -1;
-	}
+    public String getEncoding () {
+        return encoding;
+    }
+    
+    public void setEncoding(String enc) {
+        this.encoding = enc;
+    }
+    
+    public void setStandalone (Boolean standalone) {
+        this.standalone = standalone;
+    }
+    
+    public Boolean getStandalone() {
+        return standalone;
+    }
 
-	public String getEncoding()
-	{
-		return encoding;
-	}
 
-	public void setEncoding(String s)
-	{
-		encoding = s;
-	}
+    public String getName() {
+        return "#document";
+    }
 
-	public void setStandalone(Boolean boolean1)
-	{
-		standalone = boolean1;
-	}
+    /** Adds a child at the given index position. Throws
+    an exception when a second root element is added */
 
-	public Boolean getStandalone()
-	{
-		return standalone;
-	}
+    public void addChild(int index, int type, Object child) {
+        if (type == ELEMENT) {
+         //   if (rootIndex != -1)
+           //     throw new RuntimeException("Only one document root element allowed");
 
-	public String getName()
-	{
-		return "#document";
-	}
+            rootIndex = index;
+        }
+        else if (rootIndex >= index)
+            rootIndex++;
 
-	public void addChild(int i, int j, Object obj)
-	{
-		if (j == 2)
-			rootIndex = i;
-		else
-		if (rootIndex >= i)
-			rootIndex++;
-		super.addChild(i, j, obj);
-	}
+        super.addChild(index, type, child);
+    }
 
-	public void parse(XmlPullParser xmlpullparser)
-		throws IOException, XmlPullParserException
-	{
-		xmlpullparser.require(0, null, null);
-		xmlpullparser.nextToken();
-		encoding = xmlpullparser.getInputEncoding();
-		standalone = (Boolean)xmlpullparser.getProperty("http://xmlpull.org/v1/doc/properties.html#xmldecl-standalone");
-		super.parse(xmlpullparser);
-		if (xmlpullparser.getEventType() != 1)
-			throw new RuntimeException("Document end expected!");
-		else
-			return;
-	}
+    /** reads the document and checks if the last event
+    is END_DOCUMENT. If not, an exception is thrown.
+    The end event is consumed. For parsing partial
+        XML structures, consider using Node.parse (). */
 
-	public void removeChild(int i)
-	{
-		if (i == rootIndex)
-			rootIndex = -1;
-		else
-		if (i < rootIndex)
-			rootIndex--;
-		super.removeChild(i);
-	}
+    public void parse(XmlPullParser parser)
+        throws IOException, XmlPullParserException {
 
-	public Element getRootElement()
-	{
-		if (rootIndex == -1)
-			throw new RuntimeException("Document has no root element!");
-		else
-			return (Element)getChild(rootIndex);
-	}
+		parser.require(XmlPullParser.START_DOCUMENT, null, null);
+		parser.nextToken ();        	
 
-	public void write(XmlSerializer xmlserializer)
-		throws IOException
-	{
-		xmlserializer.startDocument(encoding, standalone);
-		writeChildren(xmlserializer);
-		xmlserializer.endDocument();
-	}
+        encoding = parser.getInputEncoding();
+        standalone = (Boolean)parser.getProperty ("http://xmlpull.org/v1/doc/properties.html#xmldecl-standalone");
+        
+        super.parse(parser);
+
+        if (parser.getEventType() != XmlPullParser.END_DOCUMENT)
+            throw new RuntimeException("Document end expected!");
+
+    }
+
+    public void removeChild(int index) {
+        if (index == rootIndex)
+            rootIndex = -1;
+        else if (index < rootIndex)
+            rootIndex--;
+
+        super.removeChild(index);
+    }
+
+    /** returns the root element of this document. */
+
+    public Element getRootElement() {
+        if (rootIndex == -1)
+            throw new RuntimeException("Document has no root element!");
+
+        return (Element) getChild(rootIndex);
+    }
+    
+    
+    /** Writes this node to the given XmlWriter. For node and document,
+        this method is identical to writeChildren, except that the
+        stream is flushed automatically. */
+
+    public void write(XmlSerializer writer)
+        throws IOException {
+        
+        writer.startDocument(encoding, standalone);
+        writeChildren(writer);
+        writer.endDocument();
+    }
+    
+    
 }

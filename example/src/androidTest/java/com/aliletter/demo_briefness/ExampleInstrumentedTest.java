@@ -1,4 +1,4 @@
-package com.aliletter.demo_briefness;
+package com.blackchopper.demo_briefness;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

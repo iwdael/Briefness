@@ -1,4 +1,4 @@
-# Briefness  [![](https://jitpack.io/v/aliletter/briefness.svg)](https://jitpack.io/#aliletter/briefness)
+# Briefness  [![](https://jitpack.io/v/blackchopper/briefness.svg)](https://jitpack.io/#blackchopper/briefness)
 Briefness让移动开发更加简单，它支持数据绑定，控件绑定，布局绑定，点击事件绑定。
 ## 使用说明
 Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：findViewById,setContentView,setOnClickListener等等。
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
 <br>若同一类型，需要绑定不同的View集合，则可以采用别名的方式，同样，JavaBean中必须有alias的String字段，并有getAlias()方法。
 <br>若绑定的View为自定义控件，则需要设置绑定方法。
 ```Java
-package com.aliletter.demo_briefness
+package com.blackchopper.demo_briefness
 public class Entity {
     private String username;
     private String password;
@@ -73,15 +73,15 @@ public class Entity {
 ```
 ```Java
 //将Entity绑定到MainActivity中，同时命名为entity。MainActivity可以绑定多个JavaBean。clazz绑定的是Class的JavaBean的全类名数据，name则是命名数据，他们之间的关系是按照顺序一一对应的。
-@BindClass(clazz = {"com.aliletter.demo_briefness.Entity"}, name = {"entity"})
+@BindClass(clazz = {"com.blackchopper.demo_briefness.Entity"}, name = {"entity"})
 @BindLayout(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
 
-    //name = "entity",表示tv_test与命名为"entity"的com.aliletter.demo_briefness.Entity的对象绑定。
+    //name = "entity",表示tv_test与命名为"entity"的com.blackchopper.demo_briefness.Entity的对象绑定。
     //field = "username"，表示tv_test与JavaBean中的username字段绑定。同时tv_view不能为空，所以需要@BindView。
     //method = "setText",表示使用tv_test的setText方法绑定数据，这里省略不写，在Briefness中常见的绑定数据的方法已经实现。比如TextView、EditText、Button的setText方法，以及ImageView.setImageBitmap方法。
-    //如果有一些特殊的View，Briefness没有绑定成功，或者需要特殊方法绑定，则可以建立包名为com.aliletter.briefness，类名为BriefnessInjector的类，同时实现Injector接口，未绑定成功的View都会通过Inject(View view,Onject obj)回调。
-    //比如ImageView绑定String，其目的是ImageView展示网络上的图片，而Briefness没有方法可以匹配，如果com.aliletter.briefness.BriefnessInjector类存在，则会通过这个类暴露出来，自行实现绑定过程。
+    //如果有一些特殊的View，Briefness没有绑定成功，或者需要特殊方法绑定，则可以建立包名为com.blackchopper.briefness，类名为BriefnessInjector的类，同时实现Injector接口，未绑定成功的View都会通过Inject(View view,Onject obj)回调。
+    //比如ImageView绑定String，其目的是ImageView展示网络上的图片，而Briefness没有方法可以匹配，如果com.blackchopper.briefness.BriefnessInjector类存在，则会通过这个类暴露出来，自行实现绑定过程。
     //alias = "user" 表示当Briefness.bind的对象的alias字段必须为user才能成功绑定到tv_view,这里我们只绑定了两个View，同时这两个View绑定所需的数据均在同一个对象中，所以不需要别名alias。
     //所以对于SDK自带的TextView、EditText、Button，ImageView以及他们的子类不需要指定method。
     //@BindField可以简化为以下方式。
@@ -135,7 +135,7 @@ public abstract class BaseFragment extends Fragment {
 ## 如何配置
 将本仓库引入你的项目:
 ### Step 1. 添加JitPack仓库到Build文件
-合并以下代码到项目根目录下的build.gradle文件的repositories尾。[点击查看详情](https://github.com/aliletter/CarouselBanner/blob/master/root_build.gradle.png)
+合并以下代码到项目根目录下的build.gradle文件的repositories尾。[点击查看详情](https://github.com/blackchopper/CarouselBanner/blob/master/root_build.gradle.png)
 ```Java
 	allprojects {
 		repositories {
@@ -144,17 +144,17 @@ public abstract class BaseFragment extends Fragment {
 		}
 	}
 ```
-### Step 2. 添加依赖   
-合并以下代码到需要使用的application Module的dependencies尾。[点击查看详情](https://github.com/aliletter/CarouselBanner/blob/master/application_build.gradle.png)
+### Step 2. 添加依赖   
+合并以下代码到需要使用的application Module的dependencies尾。[点击查看详情](https://github.com/blackchopper/CarouselBanner/blob/master/application_build.gradle.png)
 ```Java
 	dependencies {
                 ...
-          compile 'com.github.aliletter.briefness:briefness:v1.2.1'
-    	  annotationProcessor 'com.github.aliletter.briefness:briefness-compiler:v1.2.1'
+          compile 'com.github.blackchopper.briefness:briefness:v1.2.3'
+    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.2.3'
 	}
 ```
 <br><br><br>
 ## 感谢浏览
 如果你有任何疑问，请加入QQ群，我将竭诚为你解答。欢迎Star和Fork本仓库，当然也欢迎你关注我。
 <br>
-![Image Text](https://github.com/aliletter/CarouselBanner/blob/master/qq_group.png)
+![Image Text](https://github.com/blackchopper/CarouselBanner/blob/master/qq_group.png)

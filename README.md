@@ -1,7 +1,7 @@
-# Briefness  [![](https://jitpack.io/v/aliletter/briefness.svg)](https://jitpack.io/#aliletter/briefness)
+# Briefness  [![](https://jitpack.io/v/blackchopper/briefness.svg)](https://jitpack.io/#blackchopper/briefness)
 Briefness makes mobile development easier, with support for data bindings, control bindings, layout bindings, and click event bindings.
 ## Instructions
-Briefness can simplify development and remove some repetitive and boring jobs.[中文文档](https://github.com/aliletter/Briefness/blob/master/README_CHINESE.md)
+Briefness can simplify development and remove some repetitive and boring jobs.[中文文档](https://github.com/blackchopper/Briefness/blob/master/README_CHINESE.md)
 ### Code Sample
 You should initialize briefness before you used it in activity. If many activity requires briefness , you'd better initialize briefness in baseactivity.
 ```Java
@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity {
 <br>If the bound View is a custom control, you need to set the binding method.
 
 ```Java
-package com.aliletter.demo_briefness
+package com.blackchopper.demo_briefness
 public class Entity {
 
 
@@ -81,11 +81,11 @@ public class Entity {
 ```
 ```Java
 //Entity bound to MainActivity at the same time named entity. MainActivity can bind multiple JavaBeans. Clazz binding is Class JavaBean class name data, name is named data, the relationship between them is in accordance with the order of the corresponding.
-@BindClass(clazz = {"com.aliletter.demo_briefness.Entity"}, name = {"entity"})
+@BindClass(clazz = {"com.blackchopper.demo_briefness.Entity"}, name = {"entity"})
 @BindLayout(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
 
-    //name = "entity" indicating that tv_test is bound to an object of com.aliletter.demo_briefness.Entity named "entity".
+    //name = "entity" indicating that tv_test is bound to an object of com.blackchopper.demo_briefness.Entity named "entity".
     //field = "username" indicates that tv_test is bound to the username field in the JavaBean. At the same time tv_view can not be empty, so you need @BindView.
     //method = "setText" means that the data is bound using the setText method of tv_test, and the method of binding data common in Briefness has been implemented. Such as TextView, EditText, Button's setText method, and ImageView.setImageBitmap method.
     //If there are some special View, Briefness did not bind successfully, or need a special method binding, you can create a package named briefness class called BriefnessInjector at the same time achieve Injector interface, unbound successful View Will be Inject (View view, Onject obj) callback.
@@ -144,7 +144,7 @@ public abstract class BaseFragment extends Fragment {
 ## How to
 To get a Git project into your build:
 ### Step 1. Add the JitPack repository to your build file
-Add it in your root build.gradle at the end of repositories.   [click here for details](https://github.com/aliletter/CarouselBanner/blob/master/root_build.gradle.png)
+Add it in your root build.gradle at the end of repositories.   [click here for details](https://github.com/blackchopper/CarouselBanner/blob/master/root_build.gradle.png)
  ```Java
  	allprojects {
  		repositories {
@@ -154,16 +154,16 @@ Add it in your root build.gradle at the end of repositories.   [click here for d
  	}
  ```
 ### Step 2. Add the dependency
-Add it in your application module build.gradle at the end of dependencies where you want to use.[click here for details](https://github.com/aliletter/CarouselBanner/blob/master/application_build.gradle.png)
+Add it in your application module build.gradle at the end of dependencies where you want to use.[click here for details](https://github.com/blackchopper/CarouselBanner/blob/master/application_build.gradle.png)
  ```Java
  	dependencies {
           ...
-          compile 'com.github.aliletter.briefness:briefness:v1.2.1'
-    	  annotationProcessor 'com.github.aliletter.briefness:briefness-compiler:v1.2.1'
+          compile 'com.github.blackchopper.briefness:briefness:v1.2.3'
+    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.2.3'
  	}
  ```
 <br><br><br>
 ## Thank you for your browsing
 If you have any questions, please join the QQ group. I will do my best to answer it for you. Welcome to star and fork this repository, alse follow me.
 <br>
-![Image Text](https://github.com/aliletter/CarouselBanner/blob/master/qq_group.png)
+![Image Text](https://github.com/blackchopper/CarouselBanner/blob/master/qq_group.png)

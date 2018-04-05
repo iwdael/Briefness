@@ -1,4 +1,4 @@
-package com.aliletter.demo_briefness;
+package com.blackchopper.demo_briefness;
 
 /**
  * author  : Black Chopper

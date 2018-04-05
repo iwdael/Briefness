@@ -1,4 +1,4 @@
-package com.aliletter.briefness;
+package com.blackchopper.briefness;
 
 import org.junit.Test;
 
