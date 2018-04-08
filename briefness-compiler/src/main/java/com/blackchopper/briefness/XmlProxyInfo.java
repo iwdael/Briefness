@@ -1,4 +1,6 @@
-package briefness;
+package com.blackchopper.briefness;
+
+import com.blackchopper.briefness.databinding.XmlViewInfo;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -10,8 +12,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import briefness.databinding.XmlBind;
-import briefness.databinding.XmlViewInfo;
+import com.blackchopper.briefness.databinding.XmlBind;
 
 
 /**

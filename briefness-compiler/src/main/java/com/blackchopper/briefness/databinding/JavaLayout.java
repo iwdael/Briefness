@@ -1,4 +1,4 @@
-package briefness.databinding;
+package com.blackchopper.briefness.databinding;
 
 /**
  * author  : Black Chopper

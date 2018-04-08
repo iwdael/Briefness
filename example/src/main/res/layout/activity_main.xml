@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:text="Hello World ONE"
         android:textSize="20sp"
-
         tools:ignore="MissingPrefix" />
 
     <TextView

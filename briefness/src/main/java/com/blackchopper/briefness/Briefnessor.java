@@ -1,4 +1,4 @@
-package briefness;
+package com.blackchopper.briefness;
 
 /**
  * author  : Black Chopper

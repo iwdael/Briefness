@@ -1,4 +1,4 @@
-package  briefness.databinding;
+package com.blackchopper.briefness.databinding;
 
 import java.util.ArrayList;
 import java.util.List;

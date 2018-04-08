@@ -3,6 +3,8 @@ package briefness;
 import android.view.View;
 import android.widget.TextView;
 
+import com.blackchopper.briefness.Injector;
+
 /**
  * author  : Black Chopper
  * e-mail  : 4884280@qq.com

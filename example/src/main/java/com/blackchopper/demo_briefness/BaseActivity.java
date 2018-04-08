@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import briefness.Briefness;
-import briefness.Briefnessor;
+import com.blackchopper.briefness.Briefness;
+import com.blackchopper.briefness.Briefnessor;
 
 
 /**

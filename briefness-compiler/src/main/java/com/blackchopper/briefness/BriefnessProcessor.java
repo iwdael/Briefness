@@ -1,5 +1,6 @@
-package  briefness;
+package com.blackchopper.briefness;
 
+import com.blackchopper.briefness.databinding.JavaLayout;
 import com.google.auto.service.AutoService;
 
 import java.io.Writer;
@@ -11,8 +12,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.tools.JavaFileObject;
-
-import briefness.databinding.JavaLayout;
 
 /**
  * author  : Black Chopper

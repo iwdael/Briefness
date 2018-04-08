@@ -1,5 +1,7 @@
-package briefness;
+package com.blackchopper.briefness;
 
+
+import com.blackchopper.briefness.databinding.JavaLayout;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -12,9 +14,8 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 
-import briefness.databinding.JavaLayout;
-import briefness.databinding.XmlBind;
-import briefness.databinding.XmlViewInfo;
+import com.blackchopper.briefness.databinding.XmlBind;
+import com.blackchopper.briefness.databinding.XmlViewInfo;
 
 /**
  * author  : Black Chopper
@@ -68,7 +69,7 @@ public class JavaProxyInfo {
             XmlProxyInfo proxyInfo1 = new XmlProxyInfo(bindLayout.get(0).layout);
             importBuilder.append("import " + proxyInfo1.packageName + ".R;");
         }
-        importBuilder.append("import briefness.*;\n");
+        importBuilder.append("import com.blackchopper.briefness.*;\n");
         importBuilder.append("import android.view.*;\n");
         importBuilder.append("import android.widget.*;\n");
         importBuilder.append("import android.app.Activity;\n");

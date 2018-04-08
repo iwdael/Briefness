@@ -1,4 +1,4 @@
-package briefness;
+package com.blackchopper.briefness;
 
 import android.graphics.Bitmap;
 import android.util.Log;
