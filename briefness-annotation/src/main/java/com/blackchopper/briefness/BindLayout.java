@@ -12,7 +12,6 @@ import java.lang.annotation.Target;
  * github  : http://github.com/BlackChopper
  * project : Briefness
  */
-
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
 public @interface BindLayout {
