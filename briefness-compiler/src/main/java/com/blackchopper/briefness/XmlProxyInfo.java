@@ -67,8 +67,11 @@ public class XmlProxyInfo {
                                     else binds.add(new XmlBind(na[0], na[1], na[2]));
                                 }
                             }
-                            if (parser.getAttributeName(i).contains(briefness) && (!parser.getAttributeName(i).equalsIgnoreCase(imports))) {
-                                have = true;
+//                            if (parser.getAttributeName(i).contains(briefness) && (!parser.getAttributeName(i).equalsIgnoreCase(imports))) {
+//                                have = true;
+//                            }
+                            if (parser.getAttributeName(i).contains(id)){
+                                have=true;
                             }
                         }
 
