@@ -280,7 +280,7 @@ public class JavaProxyInfo {
     private void generateLayoutCode(StringBuilder builder, boolean isActivity) {
         String clazzName = typeElement.getQualifiedName().toString();
         if (bindLayout.size() > 0)
-            builder.append("((" + clazzName.substring(clazzName.lastIndexOf(".") + 1) + ")host).setContentView(").append(bindLayout.get(0).id).append(");\n");
+            builder.append("((" + clazzName.substring(clazzName.lastIndexOf(".") + 1) + ")host).setContentView(").append("R.layout."+bindLayout.get(0).layout).append(");\n");
 
     }
 

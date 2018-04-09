@@ -92,8 +92,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindLayout bindViewAnnotation = element.getAnnotation(BindLayout.class);
-            int id = bindViewAnnotation.id();
-            proxyInfo.bindLayout.add(new JavaLayout(id,bindViewAnnotation.name()));
+            proxyInfo.bindLayout.add(new JavaLayout(bindViewAnnotation.value()));
         }
     }
 

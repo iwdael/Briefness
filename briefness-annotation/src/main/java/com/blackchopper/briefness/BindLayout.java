@@ -16,6 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
 public @interface BindLayout {
-    int id();
-    String name() default "";
+    String value();
 }
