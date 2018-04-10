@@ -10,7 +10,7 @@ import android.util.Log;
  */
 
 public class Briefness {
-    private static final String SUFFIX = "$$Briefnessor";
+    private static final String SUFFIX = "Briefnessor";
 
     public static Briefnessor bind(Object target) {
         return bind(target, target);

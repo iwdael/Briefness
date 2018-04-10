@@ -9,9 +9,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.Name;
+import javax.lang.model.element.NestingKind;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 
 import com.blackchopper.briefness.databinding.XmlBind;
@@ -42,7 +45,7 @@ public class JavaProxyInfo {
         String packageName = packageElement.getQualifiedName().toString();
         String className = ClassValidator.getClassName(classElement, packageName);
         this.packageName = packageName;
-        this.proxyClassName = className + "$$" + PROXY;
+        this.proxyClassName = className + PROXY;
     }
 
     public String getProxyClassFullName() {
@@ -58,7 +61,9 @@ public class JavaProxyInfo {
         StringBuilder builder = new StringBuilder();
 
         importBuilder.append("// Generated code. Do not modify! \n");
-
+        importBuilder.append("// ").append(typeElement.toString()).append(" \n");
+        importBuilder.append("// ").append(typeElement.getSuperclass().toString()).append(" \n");
+        importBuilder.append("// ").append(ClassUtil.getSuperClass(typeElement.getSuperclass().toString())).append(" \n");
 //        XmlProxyInfo proxyInfo1 = new XmlProxyInfo(bindLayout.get(0).layout);
 //        importBuilder.append("//").append(proxyInfo1.module).append("\n");
 //        importBuilder.append("// ").append(proxyInfo1.xml).append("\n");
@@ -280,7 +285,7 @@ public class JavaProxyInfo {
     private void generateLayoutCode(StringBuilder builder, boolean isActivity) {
         String clazzName = typeElement.getQualifiedName().toString();
         if (bindLayout.size() > 0)
-            builder.append("((" + clazzName.substring(clazzName.lastIndexOf(".") + 1) + ")host).setContentView(").append("R.layout."+bindLayout.get(0).layout).append(");\n");
+            builder.append("((" + clazzName.substring(clazzName.lastIndexOf(".") + 1) + ")host).setContentView(").append("R.layout." + bindLayout.get(0).layout).append(");\n");
 
     }
 

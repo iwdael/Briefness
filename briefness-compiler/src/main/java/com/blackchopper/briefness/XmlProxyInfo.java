@@ -218,7 +218,7 @@ public class XmlProxyInfo {
         } catch (Exception e) {
 
         }
-        return sb.toString();
+        return sb.toString().replace(" ","");
     }
 
 
