@@ -1,8 +1,10 @@
 package com.blackchopper.demo_briefness;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
 import com.blackchopper.briefness.Briefness;
 import com.blackchopper.briefness.Briefnessor;
@@ -15,7 +17,7 @@ import com.blackchopper.briefness.Briefnessor;
  * project : Briefness
  */
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
     protected Briefnessor briefnessor;
 
     @Override

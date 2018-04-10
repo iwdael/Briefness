@@ -62,8 +62,8 @@ public class JavaProxyInfo {
 
         importBuilder.append("// Generated code. Do not modify! \n");
         importBuilder.append("// ").append(typeElement.toString()).append(" \n");
-        importBuilder.append("// ").append(typeElement.getSuperclass().toString()).append(" \n");
-        importBuilder.append("// ").append(ClassUtil.getSuperClass(typeElement.getSuperclass().toString())).append(" \n");
+        importBuilder.append("// ").append(ClassUtil.instanceOfActivity(typeElement.getQualifiedName().toString())).append(" \n");
+        importBuilder.append("// ").append(ClassUtil.instanceOfActivity("com.blackchopper.demo_briefness.Entity")).append(" \n");
 //        XmlProxyInfo proxyInfo1 = new XmlProxyInfo(bindLayout.get(0).layout);
 //        importBuilder.append("//").append(proxyInfo1.module).append("\n");
 //        importBuilder.append("// ").append(proxyInfo1.xml).append("\n");
