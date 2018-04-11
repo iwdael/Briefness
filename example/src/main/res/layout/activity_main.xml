@@ -22,6 +22,6 @@
         android:text="Hello World TWO"
         android:textSize="20sp"
         briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
-        briefness:click="onClick();"
+        briefness:click="onClick(v);"
         tools:ignore="MissingPrefix" />
 </LinearLayout>

@@ -21,21 +21,25 @@ public class ClassUtil {
         String clazzName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1);
         String file = module + "src/main/java/" + path + SPLIT + clazzName + ".java";
         file = file.replace("/", "\\");
-        System.out.print(file + "\n");
         String content = readTextFile(file);
-        if (!content.contains("class" + clazzName + "extends")) {
+        if (!content.contains("class" + clazzName)) {
             return qualifiedName;
         }
-        int start = content.indexOf("class" + clazzName + "extends");
+        int start = content.indexOf("class" + clazzName);
         int end = content.indexOf("{");
         String title = content.substring(start, end);
+
+        if (title.contains("<") & title.contains(">")) {
+            int startIndex = title.indexOf("<");
+            int endIndex = title.lastIndexOf(">");
+            title = title.substring(0, startIndex) + title.substring(endIndex+1);
+        }
         title = title.substring(title.indexOf("extends") + 7);
         if (title.contains("implements")) {
             title = title.substring(0, title.indexOf("implements"));
         }
-        System.out.print(title + "\n");
         String[] splits = content.split(";");
-        System.out.print("----len--->>" + splits.length + "\n");
+
         String superClass = null;
         for (String split : splits) {
             if (split.endsWith(title)) {
@@ -55,8 +59,7 @@ public class ClassUtil {
             if (prevrious.equalsIgnoreCase(current)) {
                 break;
             } else {
-                System.out.print("------>>" + prevrious + " ----\n");
-                System.out.print("------>>" + current + " ----\n");
+
                 prevrious = current;
                 current = getSuperClass(current);
             }

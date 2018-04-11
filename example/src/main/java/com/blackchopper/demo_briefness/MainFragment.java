@@ -1,5 +1,7 @@
 package com.blackchopper.demo_briefness;
 
+import android.app.Fragment;
+
 import android.widget.TextView;
 
 import com.blackchopper.briefness.BindLayout;
@@ -13,7 +15,9 @@ import com.blackchopper.briefness.BindView;
  */
 
 @BindLayout("activity_main")
-public class MainFragment extends BaseFragment {
+public class MainFragment extends Fragment {
     @BindView(R.id.tv_test)
     TextView tv_test;
+
+
 }

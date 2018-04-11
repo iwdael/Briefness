@@ -11,10 +11,8 @@ import java.util.Map;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 
-import com.blackchopper.briefness.databinding.XmlBind;
 import com.blackchopper.briefness.databinding.XmlViewInfo;
 
 /**
