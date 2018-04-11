@@ -13,6 +13,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
+
 import com.blackchopper.briefness.databinding.XmlBind;
 import com.blackchopper.briefness.databinding.XmlViewInfo;
 
@@ -67,6 +68,10 @@ public abstract class AbstractJavaProxyInfo {
         importBuilder.append("// Generated code. Do not modify! \n");
         importBuilder.append("// ").append(typeElement.toString()).append(" \n");
         importBuilder.append("package ").append(packageName).append(";\n");
+        if (bindLayout.size() > 0) {
+            XmlProxyInfo xmlProxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
+            importBuilder.append("import ").append(xmlProxyInfo.packageName).append(".R;\n");
+        }
         importBuilder.append("import com.blackchopper.briefness.*;\n");
         importBuilder.append("import android.view.*;\n");
         importBuilder.append("import android.widget.*;\n");
@@ -85,7 +90,6 @@ public abstract class AbstractJavaProxyInfo {
     }
 
 
-
     private void generateComplierCode(StringBuilder builder) {
 
         generateFieldCode(builder);
@@ -99,7 +103,6 @@ public abstract class AbstractJavaProxyInfo {
         generateBindDataCode(builder);
 
     }
-
 
 
     private void generateBindOtherCode(StringBuilder builder) {
@@ -182,7 +185,6 @@ public abstract class AbstractJavaProxyInfo {
             }
         }
     }
-
 
 
 }
