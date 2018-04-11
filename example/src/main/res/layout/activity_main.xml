@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    briefness:imports="com.blackchopper.demo_briefness.Entity,entity">
+    briefness:imports="com.blackchopper.demo_briefness.Entity,entity;com.blackchopper.demo_briefness.Entity,alisa;">
 
     <TextView
         android:id="@+id/tv_test"
@@ -21,5 +21,7 @@
         android:layout_height="wrap_content"
         android:text="Hello World TWO"
         android:textSize="20sp"
+        briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
+        briefness:click="onClick();"
         tools:ignore="MissingPrefix" />
 </LinearLayout>

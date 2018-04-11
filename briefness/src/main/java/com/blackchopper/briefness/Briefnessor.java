@@ -7,6 +7,6 @@ package com.blackchopper.briefness;
  * project : Briefness
  */
 
-public interface Briefnessor {
-    void bind(Object target, Object source);
+public interface Briefnessor<T> {
+    void bind(T target, Object source);
 }

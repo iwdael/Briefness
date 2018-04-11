@@ -28,7 +28,7 @@ import javax.tools.Diagnostic;
 public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
     protected Messager messager;
     protected Elements elementUtils;
-    protected Map<String, JavaProxyInfo> mProxyMap = new LinkedHashMap<>();
+    protected Map<String, AbstractJavaProxyInfo> mProxyMap = new LinkedHashMap<>();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

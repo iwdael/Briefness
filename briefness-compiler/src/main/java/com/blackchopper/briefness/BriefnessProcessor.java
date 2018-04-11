@@ -28,7 +28,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             if (!checkAnnotationValid(element, BindClick.class)) continue;
             TypeElement typeElement = (TypeElement) element.getEnclosingElement();
             String fullClassName = typeElement.getQualifiedName().toString();
-            JavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
                 proxyInfo = new JavaProxyInfo(elementUtils, typeElement);
                 mProxyMap.put(fullClassName, proxyInfo);
@@ -48,7 +48,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             VariableElement variableElement = (VariableElement) element;
             TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
             String fullClassName = classElement.getQualifiedName().toString();
-            JavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
                 proxyInfo = new JavaProxyInfo(elementUtils, classElement);
                 mProxyMap.put(fullClassName, proxyInfo);
@@ -67,7 +67,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             VariableElement variableElement = (VariableElement) element;
             TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
             String fullClassName = classElement.getQualifiedName().toString();
-            JavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
                 proxyInfo = new JavaProxyInfo(elementUtils, classElement);
                 mProxyMap.put(fullClassName, proxyInfo);
@@ -86,7 +86,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
         for (Element element : elementsWithBind) {
             if (!checkAnnotationValid(element, JavaLayout.class)) continue;
             String fullClassName = element.asType().toString();
-            JavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
                 proxyInfo = new JavaProxyInfo(elementUtils, (TypeElement) element);
                 mProxyMap.put(fullClassName, proxyInfo);
@@ -100,7 +100,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     @Override
     protected void process() {
         for (String key : mProxyMap.keySet()) {
-            JavaProxyInfo proxyInfo = mProxyMap.get(key);
+            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(key);
             try {
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
                         proxyInfo.getProxyClassFullName(),

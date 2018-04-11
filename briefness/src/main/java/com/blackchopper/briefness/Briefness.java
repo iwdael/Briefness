@@ -1,5 +1,6 @@
 package com.blackchopper.briefness;
 
+import android.app.Activity;
 import android.util.Log;
 
 /**
@@ -12,7 +13,7 @@ import android.util.Log;
 public class Briefness {
     private static final String SUFFIX = "Briefnessor";
 
-    public static Briefnessor bind(Object target) {
+    public static Briefnessor bind(Activity target) {
         return bind(target, target);
     }
 

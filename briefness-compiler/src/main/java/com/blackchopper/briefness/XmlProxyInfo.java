@@ -44,6 +44,7 @@ public class XmlProxyInfo {
         try {
             module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
             xml = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
+
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             // 获得xml解析类的引用
             XmlPullParser parser = factory.newPullParser();
@@ -67,11 +68,8 @@ public class XmlProxyInfo {
                                     else binds.add(new XmlBind(na[0], na[1], na[2]));
                                 }
                             }
-//                            if (parser.getAttributeName(i).contains(briefness) && (!parser.getAttributeName(i).equalsIgnoreCase(imports))) {
-//                                have = true;
-//                            }
-                            if (parser.getAttributeName(i).contains(id)){
-                                have=true;
+                            if (parser.getAttributeName(i).contains(id)) {
+                                have = true;
                             }
                         }
 
@@ -138,29 +136,26 @@ public class XmlProxyInfo {
         if (source.endsWith(";")) {
             String[] binds = source.split(";");
             for (String bind : binds) {
-                int start = bind.indexOf("@{") + 2;
-                int end = bind.indexOf("}");
-                String var = bind.substring(start, end);
-
-                String startStr = var.substring(0, var.lastIndexOf("."));
-                String endStr = var.substring(var.lastIndexOf(".") + 1);
-
-                String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
-
-                builder.append(bind.substring(0, start - 2)).append(method).append(bind.substring(end + 1, bind.length())).append(";");
+                if (bind.contains("@{")) {
+                    int start = bind.indexOf("@{") + 2;
+                    int end = bind.indexOf("}");
+                    String var = bind.substring(start, end);
+                    String startStr = var.substring(0, var.lastIndexOf("."));
+                    String endStr = var.substring(var.lastIndexOf(".") + 1);
+                    String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
+                    builder.append(bind.substring(0, start - 2)).append(method).append(bind.substring(end + 1, bind.length())).append(";");
+                } else {
+                    builder.append(bind).append(";");
+                }
             }
         } else {
             String bind = source;
             int start = bind.indexOf("@{") + 2;
             int end = bind.indexOf("}");
             String var = bind.substring(start, end);
-
             String startStr = var.substring(0, var.lastIndexOf("."));
             String endStr = var.substring(var.lastIndexOf(".") + 1);
-
-
             String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
-
             builder.append(bind.substring(0, start - 2)).append(method).append(bind.substring(end + 1, bind.length()));
             if (!source.endsWith("}")) builder.append(";");
         }
@@ -218,7 +213,7 @@ public class XmlProxyInfo {
         } catch (Exception e) {
 
         }
-        return sb.toString().replace(" ","");
+        return sb.toString().replace(" ", "");
     }
 
 
