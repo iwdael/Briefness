@@ -88,7 +88,7 @@ public class ClassUtil {
         String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
         if (packageName.length() == 0) return "";
         String R = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                + "src/main/java/" + packageName.replace(".", "/") + "/" + clazz + ".java";
+                + "src/main/java/"  + clazz + ".java";
         R = R.replace("\\", "/");
 
 

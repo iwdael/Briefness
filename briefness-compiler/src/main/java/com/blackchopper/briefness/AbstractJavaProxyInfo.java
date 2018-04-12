@@ -132,7 +132,7 @@ public abstract class AbstractJavaProxyInfo {
 
     private void generateXmlClickCode(StringBuilder builder) {
         if (bindLayout.size() > 0) {
-            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(className));
+            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (XmlViewInfo info : infos) {
                 if (info.click != null) {
