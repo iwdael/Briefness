@@ -7,9 +7,9 @@ package com.blackchopper.briefness.databinding;
  * project : Briefness
  */
 public class JavaLayout {
-    public String layout;
+    public int layout;
 
-    public JavaLayout(String layout) {
+    public JavaLayout(int layout) {
         this.layout = layout;
     }
 }

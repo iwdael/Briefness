@@ -14,7 +14,7 @@ import com.blackchopper.briefness.BindView;
  * project : Briefness
  */
 
-@BindLayout("activity_main")
+@BindLayout(R.layout.activity_main)
 public class MainFragment extends Fragment {
     @BindView(R.id.tv_test)
     TextView tv_test;

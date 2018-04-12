@@ -66,10 +66,8 @@ public abstract class AbstractJavaProxyInfo {
         importBuilder.append("// Generated code. Do not modify! \n");
         importBuilder.append("// ").append(typeElement.toString()).append(" \n");
         importBuilder.append("package ").append(packageName).append(";\n");
-        if (bindLayout.size() > 0) {
-            XmlProxyInfo xmlProxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
-            importBuilder.append("import ").append(xmlProxyInfo.packageName).append(".R;\n");
-        }
+
+        importBuilder.append("import ").append(ClassUtil.findPackageName()).append(".R;\n");
         importBuilder.append("import com.blackchopper.briefness.*;\n");
         importBuilder.append("import android.view.*;\n");
         importBuilder.append("import android.widget.*;\n");
@@ -133,8 +131,8 @@ public abstract class AbstractJavaProxyInfo {
 
 
     private void generateXmlClickCode(StringBuilder builder) {
-        if (bindLayout.size() > 0 & bindLayout.get(0).layout != null) {
-            XmlProxyInfo proxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
+        if (bindLayout.size() > 0) {
+            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(className));
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (XmlViewInfo info : infos) {
                 if (info.click != null) {

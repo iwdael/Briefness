@@ -24,14 +24,17 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
 
     @Override
     protected void generateLayoutCode(StringBuilder builder) {
-        if (bindLayout.size() > 0)
-            builder.append("host.setContentView(").append("R.layout." + bindLayout.get(0).layout).append(");\n");
+        if (bindLayout.size() > 0) {
+            builder.append("host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(className)).append(");\n");
+            ClassUtil.findLayoutById(className);
+        }
+
     }
 
     @Override
     protected void generateBindFieldCode(StringBuilder builder, boolean isActivity) {
-        if (bindLayout.size() > 0 & bindLayout.get(0).layout != null) {
-            XmlProxyInfo proxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
+        if (bindLayout.size() > 0 ) {
+            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(className));
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 builder.append(infos.get(i).ID).append("=");
@@ -56,7 +59,7 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
     @Override
     protected void generateBindDataCode(StringBuilder builder) {
         if (bindLayout.size() == 0) return;
-        XmlProxyInfo proxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
+        XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(className));
         List<XmlBind> binds = proxyInfo.getBinds();
         for (XmlBind bind : binds) {
             String bindclazz = bind.clazz.substring(bind.clazz.lastIndexOf(".") + 1);
@@ -80,8 +83,8 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
 
     protected void generateFieldCode(StringBuilder builder) {
 
-        if (bindLayout.size() > 0 & bindLayout.get(0).layout != null) {
-            XmlProxyInfo proxyInfo = new XmlProxyInfo(bindLayout.get(0).layout);
+        if (bindLayout.size() > 0  ) {
+            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(className));
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 builder.append(infos.get(i).view).append(" ").append(infos.get(i).ID).append(";\n");
