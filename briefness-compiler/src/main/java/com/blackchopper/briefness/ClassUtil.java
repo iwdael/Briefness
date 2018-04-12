@@ -97,7 +97,7 @@ public class ClassUtil {
         int start = content.indexOf("@BindLayout(R.layout.");
         if (start == -1) return "";
         int end = start;
-        for (int i = 0; i < content.length(); i++) {
+        for (int i = end; i < content.length(); i++) {
             if (content.charAt(i) == ')') {
                 end = i;
             }
