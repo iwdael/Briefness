@@ -88,22 +88,23 @@ public class ClassUtil {
         String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
         if (packageName.length() == 0) return "";
         String R = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                + "src/main/java/"  + clazz.replace(".","/") + ".java";
+                + "src/main/java/" + clazz.replace(".", "/") + ".java";
         R = R.replace("\\", "/");
 
-
+        System.out.print("----------------------------------------------\n\n\n");
         String content = readTextFile(R).replace(" ", "");
-
+        System.out.print(content + "\n\n\n");
         int start = content.indexOf("@BindLayout(R.layout.");
         if (start == -1) return "";
         int end = start;
         for (int i = end; i < content.length(); i++) {
             if (content.charAt(i) == ')') {
                 end = i;
+                break;
             }
         }
         String layout = content.substring(start + 21, end);
-
+        System.out.print(layout+"\n\n\n");
         return layout;
     }
 
