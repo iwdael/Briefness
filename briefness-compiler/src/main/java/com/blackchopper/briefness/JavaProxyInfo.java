@@ -25,41 +25,18 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
         super(elementUtils, classElement);
     }
 
-    @Override
-    protected void generateClearData(StringBuilder builder) {
-        if (bindLayout.size() > 0) {
-            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
-            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
-            List<XmlBind> binds = proxyInfo.getBinds();
-
-            builder.append("    @Override\n" +
-                    "    public void clear() {\n");
-
-            for (XmlViewInfo info : infos) {
-                builder.append("this.").append(info.ID).append("=null;");
-            }
-
-            builder.append("    }");
-
-            builder.append("    @Override\n" +
-                    "    public void clearAll() {\n");
-            for (XmlViewInfo info : infos) {
-                builder.append("this.").append(info.ID).append("=null;");
-            }
-            for (XmlBind bind : binds) {
-                builder.append("this.").append(bind.name).append("=null;");
-            }
-            builder.append("    }");
-        }
-    }
-
     protected void generateFieldCode(StringBuilder builder) {
 
         if (bindLayout.size() > 0) {
             XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
-                builder.append(infos.get(i).view).append(" ").append(infos.get(i).ID).append(";\n");
+                String viewName = infos.get(i).view;
+                if (infos.get(i).view.contains(".")) {
+                    importBuilder.append("import ").append(viewName).append(";\n");
+                    viewName = viewName.substring(viewName.lastIndexOf(".") + 1);
+                }
+                builder.append(viewName).append(" ").append(infos.get(i).ID).append(";\n");
             }
         }
     }
@@ -92,6 +69,34 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
     }
 
     @Override
+    protected void generateClearData(StringBuilder builder) {
+        if (bindLayout.size() > 0) {
+            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
+            List<XmlBind> binds = proxyInfo.getBinds();
+
+            builder.append("    @Override\n" +
+                    "    public void clear() {\n");
+
+            for (XmlViewInfo info : infos) {
+                builder.append("this.").append(info.ID).append("=null;");
+            }
+
+            builder.append("    }");
+
+            builder.append("    @Override\n" +
+                    "    public void clearAll() {\n");
+            for (XmlViewInfo info : infos) {
+                builder.append("this.").append(info.ID).append("=null;");
+            }
+            for (XmlBind bind : binds) {
+                builder.append("this.").append(bind.name).append("=null;");
+            }
+            builder.append("    }");
+        }
+    }
+
+    @Override
     protected void generateLayoutCode(StringBuilder builder) {
         if (bindLayout.size() > 0) {
             builder.append("host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(typeElement.getQualifiedName().toString())).append(");\n");
@@ -107,10 +112,14 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 builder.append(infos.get(i).ID).append("=");
+                String viewName = infos.get(i).view;
+                if (infos.get(i).view.contains(".")) {
+                    viewName = viewName.substring(viewName.lastIndexOf(".") + 1);
+                }
                 if (isActivity)
-                    builder.append("(" + infos.get(i).view + ")host.findViewById( R.id." + infos.get(i).ID + ");\n");
+                    builder.append("(" + viewName + ")host.findViewById( R.id." + infos.get(i).ID + ");\n");
                 else
-                    builder.append("(" + infos.get(i).view + ")view.findViewById( R.id." + infos.get(i).ID + ");\n");
+                    builder.append("(" + viewName + ")view.findViewById( R.id." + infos.get(i).ID + ");\n");
             }
         }
         for (int[] ids : bindView.keySet()) {

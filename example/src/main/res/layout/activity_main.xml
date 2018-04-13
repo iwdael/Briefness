@@ -24,4 +24,8 @@
         briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
         briefness:click="onClick(v);onTestClick(v);"
         tools:ignore="MissingPrefix" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/rc_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

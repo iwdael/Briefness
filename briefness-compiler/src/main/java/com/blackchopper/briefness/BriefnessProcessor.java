@@ -99,26 +99,25 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
 
     @Override
     protected void process() {
-        try {
-            JavaInjector injector = new JavaInjector();
-            injector.witeCode();
-            if (!injector.isViewInjectorExits()) {
-                JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(JavaInjector.PACKAGE_NAME + ".briefness.ViewInjector");
-                Writer writer = fileObject.openWriter();
-                writer.write(injector.getViewInjectorCode());
-                writer.flush();
-                writer.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         for (String key : mProxyMap.keySet()) {
             AbstractJavaProxyInfo proxyInfo = mProxyMap.get(key);
             try {
+                JavaInjector injector = new JavaInjector();
+                injector.witeCode();
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
                         proxyInfo.getProxyClassFullName(),
                         proxyInfo.getTypeElement()
                 );
+                if (!injector.isViewInjectorExits()) {
+                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(
+                            JavaInjector.PACKAGE_NAME + ".briefness.ViewInjector",
+                            proxyInfo.getTypeElement());
+                    Writer writer = fileObject.openWriter();
+                    writer.write(injector.getViewInjectorCode());
+                    writer.flush();
+                    writer.close();
+                }
+
                 Writer writer = jfo.openWriter();
                 writer.write(proxyInfo.generateJavaCode());
                 writer.flush();
