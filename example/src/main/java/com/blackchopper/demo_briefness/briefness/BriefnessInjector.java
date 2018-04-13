@@ -14,3 +14,4 @@ class BriefnessInjector {
         return false;
     }
 }
+

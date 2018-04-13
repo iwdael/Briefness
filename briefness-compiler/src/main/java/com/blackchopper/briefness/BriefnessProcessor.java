@@ -11,6 +11,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
 /**
@@ -101,6 +102,12 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
         try {
             JavaInjector injector = new JavaInjector();
             injector.witeCode();
+            JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(JavaInjector.PACKAGE_NAME+".briefness.ViewInjector");
+            Writer writer = fileObject.openWriter();
+            writer.write(injector.getViewInjectorCode());
+            writer.flush();
+            writer.close();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

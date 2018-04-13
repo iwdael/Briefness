@@ -149,8 +149,8 @@ public abstract class BaseFragment extends Fragment {
 ```Java
 	dependencies {
                 ...
-          compile 'com.github.blackchopper.briefness:briefness:v1.3.8'
-    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.3.8'
+          compile 'com.github.blackchopper.briefness:briefness:v1.3.9'
+    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.3.9'
 	}
 ```
 <br><br><br>

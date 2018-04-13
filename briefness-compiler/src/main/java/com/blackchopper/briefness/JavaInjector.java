@@ -73,70 +73,46 @@ public class JavaInjector {
             "\n" +
             "  \n" +
             "}\n";
+    public static final String BRIEFNESS_INJECTOR = "package " + PACKAGE_NAME + ".briefness;\n" +
+            "\n" +
+            "import android.view.View;\n" +
+            "\n" +
+            "/**\n" +
+            " * author  : Black Chopper\n" +
+            " * e-mail  : 4884280@qq.com\n" +
+            " * github  : http://github.com/BlackChopper\n" +
+            " * project : Briefness\n" +
+            " */\n" +
+            "\n" +
+            "class BriefnessInjector {\n" +
+            "    public static boolean onInject(View view, Object value) {\n" +
+            "        return false;\n" +
+            "    }\n" +
+            "}\n";
     boolean debug = false;
 
     public void witeCode() {
-        if (fileExits()) return;
+
+
+        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
+
+        String java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+                + "src/main/java/"
+                + PACKAGE_NAME.replace(".", "/")
+                + "/briefness/BriefnessInjector.java";
+
+        if (!new File(java).exists())
+            FileUtil.createFile(java, BRIEFNESS_INJECTOR);
+    }
+
+
+    public String getViewInjectorCode() {
         StringBuilder builder = new StringBuilder();
-        builder.append(PACKAGE)
+        return builder.append(PACKAGE)
                 .append(IMPORT)
                 .append(JavaLayout.author)
                 .append(CLASS_UP)
                 .append("BriefnessInjector.onInject(view,value)")
-                .append(CLASS_DOWN);
-        String java;
-        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
-        if (debug) {
-            java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                    + "build/generated/source/apt/debug/"
-                    + PACKAGE_NAME.replace(".", "/")
-                    + "/briefness/ViewInjector.java";
-        } else {
-            java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                    + "build/generated/source/apt/release/"
-                    + PACKAGE_NAME.replace(".", "/")
-                    + "/briefness/ViewInjector.java";
-        }
-        FileUtil.createFile(java, builder.toString());
-    }
-
-    public boolean fileExits() {
-
-        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
-        String java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                + "build/generated/source/apt/debug/";
-        if (new File(java).exists()) {
-
-            debug = true;
-        } else {
-            debug = false;
-        }
-        java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                + "build/generated/source/apt/debug/"
-                + PACKAGE_NAME.replace(".", "/")
-                + "/briefness/ViewInjector.java";
-        boolean flag = false;
-        if (new File(java).exists()) {
-
-            flag = true;
-        } else {
-
-            flag = false;
-        }
-
-        java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                + "build/generated/source/apt/release/"
-                + PACKAGE_NAME.replace(".", "/")
-                + "/briefness/ViewInjector.java";
-
-        if (new File(java).exists()) {
-
-            flag = true | flag;
-        } else {
-
-            flag = false | flag;
-        }
-
-        return flag;
+                .append(CLASS_DOWN).toString();
     }
 }
