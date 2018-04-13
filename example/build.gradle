@@ -29,5 +29,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':briefness')
     annotationProcessor project(':briefness-compiler')
-
+    compile 'com.android.support:recyclerview-v7:26.+'
 }

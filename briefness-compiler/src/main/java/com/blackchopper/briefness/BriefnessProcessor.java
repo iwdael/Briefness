@@ -104,10 +104,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             try {
                 JavaInjector injector = new JavaInjector();
                 injector.witeCode();
-                JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
-                        proxyInfo.getProxyClassFullName(),
-                        proxyInfo.getTypeElement()
-                );
+
                 if (!injector.isViewInjectorExits()) {
                     JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(
                             JavaInjector.PACKAGE_NAME + ".briefness.ViewInjector",
@@ -118,6 +115,11 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                     writer.close();
                 }
 
+
+                JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
+                        proxyInfo.getProxyClassFullName(),
+                        proxyInfo.getTypeElement()
+                );
                 Writer writer = jfo.openWriter();
                 writer.write(proxyInfo.generateJavaCode());
                 writer.flush();

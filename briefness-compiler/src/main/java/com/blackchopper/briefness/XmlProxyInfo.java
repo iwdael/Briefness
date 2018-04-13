@@ -29,6 +29,8 @@ public class XmlProxyInfo {
     public static final String briefness = "briefness:";
     public static final String bind = "briefness:bind";
     public static final String id = "android:id";
+    public static final String include = "include";
+    public static final String layout = "layout";
     public static final String SPLIT = "/";
     public String packageName;
     public String module;
@@ -40,15 +42,41 @@ public class XmlProxyInfo {
 
 
     public XmlProxyInfo(String path) {
+        module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
+        xml = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
+        parserXml(path);
 
+    }
+
+    public static String readTextFile(String path) {
+        StringBuffer sb = new StringBuffer();
         try {
-            module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
-            xml = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
+            File file = new File(path);
+            if (!file.exists() || file.isDirectory())
+                throw new FileNotFoundException();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String temp = null;
+
+            temp = br.readLine();
+            while (temp != null) {
+                sb.append(temp + " ");
+                temp = br.readLine();
+            }
+
+        } catch (Exception e) {
+
+        }
+        return sb.toString().replace(" ", "");
+    }
+
+    private void parserXml(String path) {
+        try {
+            String xmlName = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             // 获得xml解析类的引用
             XmlPullParser parser = factory.newPullParser();
-            parser.setInput(new FileReader(xml));
+            parser.setInput(new FileReader(xmlName));
             int eventType = parser.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 switch (eventType) {
@@ -68,7 +96,7 @@ public class XmlProxyInfo {
                                     else binds.add(new XmlBind(na[0], na[1], na[2]));
                                 }
                             }
-                            if (parser.getAttributeName(i).contains(id)) {
+                            if (parser.getAttributeName(i).contains(id) | parser.getName().contains(include)) {
                                 have = true;
                             }
                         }
@@ -95,8 +123,12 @@ public class XmlProxyInfo {
                                 if (name.equalsIgnoreCase(bind)) {
                                     info.bind = bind2String(value);
                                 }
+                                if (name.equalsIgnoreCase(layout)) {
+                                    parserXml(value.replace("@layout/", ""));
+                                }
                             }
-                            viewInfos.add(info);
+                            if (!info.view.equalsIgnoreCase(include))
+                                viewInfos.add(info);
                         }
                         break;
                     case XmlPullParser.END_TAG:
@@ -106,10 +138,20 @@ public class XmlProxyInfo {
 
             }
 
-
         } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
+    private String id2String(String source) {
+        String target = null;
+        if (source.contains("@+id/")) {
+            target = source.substring(source.indexOf("@+id/") + 5, source.length());
+        }
+        if (source.contains("@id/")) {
+            target = source.substring(source.indexOf("@id/") + 4, source.length());
+        }
+        return target;
     }
 
     private String bind2String(String source) {
@@ -161,42 +203,8 @@ public class XmlProxyInfo {
         return list;
     }
 
-
     public List<XmlViewInfo> getViewInfos() {
         return viewInfos;
-    }
-
-    private String id2String(String source) {
-        String target = null;
-        if (source.contains("@+id/")) {
-            target = source.substring(source.indexOf("@+id/") + 5, source.length());
-        }
-        if (source.contains("@id/")) {
-            target = source.substring(source.indexOf("@id/") + 4, source.length());
-        }
-        return target;
-    }
-
-
-    public static String readTextFile(String path) {
-        StringBuffer sb = new StringBuffer();
-        try {
-            File file = new File(path);
-            if (!file.exists() || file.isDirectory())
-                throw new FileNotFoundException();
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String temp = null;
-
-            temp = br.readLine();
-            while (temp != null) {
-                sb.append(temp + " ");
-                temp = br.readLine();
-            }
-
-        } catch (Exception e) {
-
-        }
-        return sb.toString().replace(" ", "");
     }
 
 
