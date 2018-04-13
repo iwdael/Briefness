@@ -9,4 +9,8 @@ package com.blackchopper.briefness;
 
 public interface Briefnessor<T> {
     void bind(T target, Object source);
+
+    void clear();
+
+    void clearAll();
 }

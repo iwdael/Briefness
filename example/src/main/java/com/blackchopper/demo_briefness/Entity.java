@@ -4,7 +4,7 @@ package com.blackchopper.demo_briefness;
  * author  : Black Chopper
  * e-mail  : 4884280@qq.com
  * github  : http://github.com/BlackChopper
- * project : Briefness
+ * project : BriefnessInjector
  */
 
 public class Entity {

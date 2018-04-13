@@ -14,6 +14,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
 import com.blackchopper.briefness.databinding.XmlViewInfo;
+import com.blackchopper.briefness.util.ClassUtil;
 
 /**
  * author  : Black Chopper
@@ -23,23 +24,24 @@ import com.blackchopper.briefness.databinding.XmlViewInfo;
  */
 public abstract class AbstractJavaProxyInfo {
     public static final String PROXY = "Briefnessor";
+    public Map<int[], Element> bindView = new LinkedHashMap<>();
+    public List<JavaLayout> bindLayout = new ArrayList<>();
+    public Map<int[], Element> bindClick = new LinkedHashMap<>();
     /**
      * MainActivity
      */
     protected String className;
     protected StringBuilder importBuilder = new StringBuilder();
-
+    protected StringBuilder fieldBuilder = new StringBuilder();
+    protected StringBuilder methodBuilder = new StringBuilder();
+    protected StringBuilder classBuilderUp = new StringBuilder();
+    protected StringBuilder classBuilderDown = new StringBuilder();
     protected String packageName;
     /**
      * MainActivityBriefnessor
      */
     protected String proxyClassName;
     protected TypeElement typeElement;
-
-    public Map<int[], Element> bindView = new LinkedHashMap<>();
-    public List<JavaLayout> bindLayout = new ArrayList<>();
-
-    public Map<int[], Element> bindClick = new LinkedHashMap<>();
 
 
     public AbstractJavaProxyInfo(Elements elementUtils, TypeElement classElement) {
@@ -61,13 +63,14 @@ public abstract class AbstractJavaProxyInfo {
 
 
     public String generateJavaCode() {
-        StringBuilder builder = new StringBuilder();
+
 
         importBuilder.append("// Generated code. Do not modify! \n");
         importBuilder.append("// ").append(typeElement.toString()).append(" \n");
         importBuilder.append("package ").append(packageName).append(";\n");
 
         importBuilder.append("import ").append(ClassUtil.findPackageName()).append(".R;\n");
+        importBuilder.append("import ").append(ClassUtil.findPackageName()).append(".briefness.ViewInjector;\n");
         importBuilder.append("import com.blackchopper.briefness.*;\n");
         importBuilder.append("import android.view.*;\n");
         importBuilder.append("import android.widget.*;\n");
@@ -76,40 +79,38 @@ public abstract class AbstractJavaProxyInfo {
 
         importBuilder.append("import " + typeElement.getQualifiedName()).append(";\n\n");
 
-        builder.append("public class ").append(proxyClassName).append(" implements " + PROXY).append("<").append(className).append(">");
-        builder.append("{\n");
+        classBuilderUp.append("public class ").append(proxyClassName).append(" implements " + PROXY).append("<").append(className).append(">");
+        classBuilderUp.append("{\n");
 
-        generateComplierCode(builder);
-        builder.append("\n").append("}\n");
+        generateComplierCode();
+        classBuilderDown.append("\n").append("}\n");
 
-        return importBuilder.append(builder.toString()).toString();
+        return importBuilder
+                .append(JavaLayout.author)
+                .append(classBuilderUp.toString())
+                .append(fieldBuilder.toString())
+                .append(methodBuilder.toString())
+                .append(classBuilderDown.toString())
+                .toString();
     }
 
 
-    private void generateComplierCode(StringBuilder builder) {
+    private void generateComplierCode() {
 
-        generateFieldCode(builder);
+        generateFieldCode(fieldBuilder);
         if (ClassUtil.instanceOfActivity(typeElement.getQualifiedName().toString())) {
             //activity
-            generateBindActivityCode(builder);
+            generateBindActivityCode(methodBuilder);
         } else {
             //fragment or other
-            generateBindOtherCode(builder);
+            generateBindOtherCode(methodBuilder);
         }
-        generateBindDataCode(builder);
+        generateBindDataCode(methodBuilder);
+        generateClearData(methodBuilder);
 
     }
 
-
-    private void generateBindOtherCode(StringBuilder builder) {
-        builder.append("    @Override\n" +
-                "    public void bind(final " + className + " host, Object source) {\n" +
-                " View view=(View)source;\n");
-        generateBindFieldCode(builder, false);
-        generateMethodCode(builder, false);
-        generateXmlClickCode(builder);
-        builder.append("    }");
-    }
+    protected abstract void generateFieldCode(StringBuilder builder);
 
     private void generateBindActivityCode(StringBuilder builder) {
         builder.append("    @Override\n" +
@@ -121,50 +122,23 @@ public abstract class AbstractJavaProxyInfo {
         builder.append("    }");
     }
 
-    protected abstract void generateLayoutCode(StringBuilder builder);
-
-    protected abstract void generateBindFieldCode(StringBuilder builder, boolean b);
+    private void generateBindOtherCode(StringBuilder builder) {
+        builder.append("    @Override\n" +
+                "    public void bind(final " + className + " host, Object source) {\n" +
+                " View view=(View)source;\n");
+        generateBindFieldCode(builder, false);
+        generateMethodCode(builder, false);
+        generateXmlClickCode(builder);
+        builder.append("    }");
+    }
 
     protected abstract void generateBindDataCode(StringBuilder builder);
 
-    protected abstract void generateFieldCode(StringBuilder builder);
+    protected abstract void generateClearData(StringBuilder methodBuilder);
 
+    protected abstract void generateLayoutCode(StringBuilder builder);
 
-    private void generateXmlClickCode(StringBuilder builder) {
-        if (bindLayout.size() > 0) {
-            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
-            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
-            for (XmlViewInfo info : infos) {
-                if (info.click != null) {
-                    builder.append(info.ID).append(".setOnClickListener(new View.OnClickListener() {\n" +
-                            "                @Override\n" +
-                            "                public void onClick(View v) {\n" +
-                            "                    host." + info.click + "\n" +
-                            "                }\n" +
-                            "            });");
-                }
-                if (info.longClick != null) {
-                    builder.append(info.ID).append(".setOnLongClickListener(new View.OnLongClickListener() {\n" +
-                            "            @Override\n" +
-                            "            public boolean onLongClick(View v) {\n" +
-                            "            host." + info.longClick + "\n" +
-                            "                return false;\n" +
-                            "            }\n" +
-                            "        });");
-                }
-                if (info.touch != null) {
-                    builder.append(info.ID).append(".setOnTouchListener(new View.OnTouchListener() {\n" +
-                            "            @Override\n" +
-                            "            public boolean onTouch(View v, MotionEvent event) {\n" +
-                            "            host." + info.touch + "\n" +
-                            "                return false;\n" +
-                            "            }\n" +
-                            "        });");
-                }
-            }
-        }
-    }
-
+    protected abstract void generateBindFieldCode(StringBuilder builder, boolean b);
 
     private void generateMethodCode(StringBuilder builder, boolean isActivity) {
         for (Map.Entry<int[], Element> entry : bindClick.entrySet()) {
@@ -178,6 +152,50 @@ public abstract class AbstractJavaProxyInfo {
                 builder.append("host.").append(entry.getValue().getSimpleName()).append("(view);\n");
                 builder.append("}\n");
                 builder.append(" });\n");
+            }
+        }
+    }
+
+    private void generateXmlClickCode(StringBuilder builder) {
+        if (bindLayout.size() > 0) {
+            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
+            for (XmlViewInfo info : infos) {
+                if (info.click != null) {
+                    builder.append(info.ID).append(".setOnClickListener(new View.OnClickListener() {\n" +
+                            "                @Override\n" +
+                            "                public void onClick(View v) {\n");
+                    String[] methods = info.click.split(";");
+                    for (String method : methods) {
+                        builder.append("host.").append(method).append(";");
+                    }
+                    builder.append("         }\n" +
+                            "            });");
+                }
+                if (info.longClick != null) {
+                    builder.append(info.ID).append(".setOnLongClickListener(new View.OnLongClickListener() {\n" +
+                            "            @Override\n" +
+                            "            public boolean onLongClick(View v) {\n");
+                    String[] methods = info.longClick.split(";");
+                    for (String method : methods) {
+                        builder.append("host.").append(method).append(";");
+                    }
+                    builder.append("     return false;\n" +
+                            "            }\n" +
+                            "        });");
+                }
+                if (info.touch != null) {
+                    builder.append(info.ID).append(".setOnTouchListener(new View.OnTouchListener() {\n" +
+                            "            @Override\n" +
+                            "            public boolean onTouch(View v, MotionEvent event) {\n");
+                    String[] methods = info.touch.split(";");
+                    for (String method : methods) {
+                        builder.append("host.").append(method).append(";");
+                    }
+                    builder.append("     return false;\n" +
+                            "            }\n" +
+                            "        });");
+                }
             }
         }
     }

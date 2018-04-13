@@ -14,4 +14,8 @@ public class MainActivity extends Activity {
     public void onClick(View v) {
 
     }
+
+    public void onTestClick(View v) {
+
+    }
 }

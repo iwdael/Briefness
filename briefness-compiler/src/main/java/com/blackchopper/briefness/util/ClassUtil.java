@@ -1,4 +1,4 @@
-package com.blackchopper.briefness;
+package com.blackchopper.briefness.util;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -18,6 +18,30 @@ import static com.blackchopper.briefness.XmlProxyInfo.readTextFile;
 
 public class ClassUtil {
 
+
+    public static boolean instanceOfActivity(String qualifiedName) {
+        String prevrious = qualifiedName;
+        String current = getSuperClass(qualifiedName);
+        while (true) {
+            if (prevrious.equalsIgnoreCase(current)) {
+                break;
+            } else {
+
+                prevrious = current;
+                current = getSuperClass(current);
+            }
+        }
+        if (current.startsWith("android.")) {
+            if (current.contains("Activity")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
 
     public static String getSuperClass(String qualifiedName) {
         if (qualifiedName.startsWith("android.")) {
@@ -59,30 +83,6 @@ public class ClassUtil {
         return superClass;
     }
 
-    public static boolean instanceOfActivity(String qualifiedName) {
-        String prevrious = qualifiedName;
-        String current = getSuperClass(qualifiedName);
-        while (true) {
-            if (prevrious.equalsIgnoreCase(current)) {
-                break;
-            } else {
-
-                prevrious = current;
-                current = getSuperClass(current);
-            }
-        }
-        if (current.startsWith("android.")) {
-            if (current.contains("Activity")) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-    }
-
     public static String findLayoutById(String clazz) {
         String packageName = findPackageName();
         String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
@@ -90,10 +90,7 @@ public class ClassUtil {
         String R = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
                 + "src/main/java/" + clazz.replace(".", "/") + ".java";
         R = R.replace("\\", "/");
-
-        System.out.print("----------------------------------------------\n\n\n");
         String content = readTextFile(R).replace(" ", "");
-        System.out.print(content + "\n\n\n");
         int start = content.indexOf("@BindLayout(R.layout.");
         if (start == -1) return "";
         int end = start;
@@ -104,7 +101,6 @@ public class ClassUtil {
             }
         }
         String layout = content.substring(start + 21, end);
-        System.out.print(layout+"\n\n\n");
         return layout;
     }
 
@@ -115,7 +111,7 @@ public class ClassUtil {
         String xml = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "AndroidManifest.xml";
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            // 获得xml解析类的引用
+
             XmlPullParser parser = factory.newPullParser();
             parser.setInput(new FileReader(xml));
             int eventType = parser.getEventType();
