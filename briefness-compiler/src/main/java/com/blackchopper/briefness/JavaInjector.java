@@ -105,6 +105,30 @@ public class JavaInjector {
             FileUtil.createFile(java, BRIEFNESS_INJECTOR);
     }
 
+    public boolean isViewInjectorExits() {
+        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
+
+        String java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+                + "build/generated/source/apt/debug/"
+                + PACKAGE_NAME.replace(".", "/")
+                + "/briefness/ViewInjector.java";
+        boolean flag;
+        if (new File(java).exists()) {
+            flag = true;
+        } else {
+            flag = false;
+        }
+        java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+                + "build/generated/source/apt/release"
+                + PACKAGE_NAME.replace(".", "/")
+                + "/briefness/ViewInjector.java";
+        if (new File(java).exists()) {
+            flag = true | flag;
+        } else {
+            flag = false | flag;
+        }
+        return flag;
+    }
 
     public String getViewInjectorCode() {
         StringBuilder builder = new StringBuilder();
