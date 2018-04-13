@@ -25,7 +25,7 @@ import com.blackchopper.briefness.util.ClassValidator;
  */
 public abstract class AbstractJavaProxyInfo {
     public static final String PROXY = "Briefnessor";
-    public Map<int[], Element> bindView = new LinkedHashMap<>();
+    public Map<String[], Element> bindView = new LinkedHashMap<>();
     public List<JavaLayout> bindLayout = new ArrayList<>();
     public Map<int[], Element> bindClick = new LinkedHashMap<>();
     /**

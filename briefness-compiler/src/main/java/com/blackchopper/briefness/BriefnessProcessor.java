@@ -1,6 +1,7 @@
 package com.blackchopper.briefness;
 
 import com.blackchopper.briefness.databinding.JavaLayout;
+import com.blackchopper.briefness.util.ClassUtil;
 import com.blackchopper.briefness.util.Logger;
 import com.google.auto.service.AutoService;
 
@@ -37,7 +38,15 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindViews bindViewAnnotation = variableElement.getAnnotation(BindViews.class);
-            int[] id = bindViewAnnotation.value();
+
+            Logger.v(element.toString());
+            Logger.v(bindViewAnnotation.toString());
+            Logger.v(fullClassName);
+
+            String[] id=ClassUtil.findViewsById(fullClassName, element.toString());
+            for (String s : id) {
+                Logger.v(s);
+            }
             proxyInfo.bindView.put(id, variableElement);
         }
     }
@@ -76,8 +85,10 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             BindView bindViewAnnotation = variableElement.getAnnotation(BindView.class);
             Logger.v(element.toString());
             Logger.v(bindViewAnnotation.toString());
-            int id = bindViewAnnotation.value();
-            proxyInfo.bindView.put(new int[]{id}, variableElement);
+            Logger.v(fullClassName);
+            Logger.v(ClassUtil.findViewById(fullClassName, element.toString()));
+            String id = ClassUtil.findViewById(fullClassName, element.toString());
+            proxyInfo.bindView.put(new String[]{id}, variableElement);
         }
     }
 

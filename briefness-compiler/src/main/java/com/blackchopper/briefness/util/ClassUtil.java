@@ -104,7 +104,6 @@ public class ClassUtil {
         return layout;
     }
 
-
     public static String findPackageName() {
         String packageName = "";
         String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
@@ -132,5 +131,29 @@ public class ClassUtil {
         }
 
         return packageName;
+    }
+
+    public static String findViewById(String clazz, String fieldName) {
+        String packageName = findPackageName();
+        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
+        if (packageName.length() == 0) return "";
+        String R = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+                + "src/main/java/" + clazz.replace(".", "/") + ".java";
+        R = R.replace("\\", "/");
+        String content = readTextFile(R).replace(" ", "");
+        String cont = content.substring(0, content.indexOf(fieldName + ";"));
+        return cont.substring(cont.lastIndexOf("@BindView(") + 10, cont.lastIndexOf(")"));
+    }
+
+    public static String[] findViewsById(String clazz, String fieldName) {
+        String packageName = findPackageName();
+        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
+        if (packageName.length() == 0) return new String[]{};
+        String R = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+                + "src/main/java/" + clazz.replace(".", "/") + ".java";
+        R = R.replace("\\", "/");
+        String content = readTextFile(R).replace(" ", "");
+        String cont = content.substring(0, content.indexOf(fieldName + ";"));
+        return cont.substring(cont.lastIndexOf("@BindViews({") + 12, cont.lastIndexOf("}")).split(",");
     }
 }

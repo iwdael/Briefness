@@ -158,8 +158,8 @@ Add it in your application module build.gradle at the end of dependencies where 
  ```Java
  	dependencies {
           ...
-          compile 'com.github.blackchopper.briefness:briefness:v1.4.3'
-    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.4.3'
+          compile 'com.github.blackchopper.briefness:briefness:v1.4.4'
+    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.4.4'
  	}
  ```
 <br><br><br>
