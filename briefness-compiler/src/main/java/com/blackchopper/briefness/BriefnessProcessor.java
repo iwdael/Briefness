@@ -98,6 +98,12 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
 
     @Override
     protected void process() {
+        try {
+            JavaInjector injector = new JavaInjector();
+            injector.witeCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         for (String key : mProxyMap.keySet()) {
             AbstractJavaProxyInfo proxyInfo = mProxyMap.get(key);
             try {
@@ -114,12 +120,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 e.printStackTrace();
             }
         }
-        try {
-            JavaInjector injector = new JavaInjector();
-            injector.witeCode();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
 }

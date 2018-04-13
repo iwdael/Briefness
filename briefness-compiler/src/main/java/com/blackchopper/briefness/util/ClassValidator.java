@@ -1,4 +1,4 @@
-package com.blackchopper.briefness;
+package com.blackchopper.briefness.util;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;

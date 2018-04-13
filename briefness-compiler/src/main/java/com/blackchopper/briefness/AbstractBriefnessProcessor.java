@@ -1,6 +1,8 @@
 package com.blackchopper.briefness;
 
 
+import com.blackchopper.briefness.util.ClassValidator;
+
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
