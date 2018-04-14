@@ -33,6 +33,7 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
             for (int i = 0; i < infos.size(); i++) {
                 String viewName = infos.get(i).view;
                 if (infos.get(i).view.contains(".")) {
+                    if (!importBuilder.toString().contains(viewName))
                     importBuilder.append("import ").append(viewName).append(";\n");
                     viewName = viewName.substring(viewName.lastIndexOf(".") + 1);
                 }
@@ -48,7 +49,8 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
         List<XmlBind> binds = proxyInfo.getBinds();
         for (XmlBind bind : binds) {
             String bindclazz = bind.clazz.substring(bind.clazz.lastIndexOf(".") + 1);
-            importBuilder.append("import " + bind.clazz).append(";\n");
+            if (!importBuilder.toString().contains(bind.clazz))
+                importBuilder.append("import " + bind.clazz).append(";\n");
             fieldBuilder.append(bindclazz).append(" ").append(bind.name).append(";");
             builder.append("   public void set" + bind.name.substring(0, 1).toUpperCase() + bind.name.substring(1) + "(" + bindclazz + " " + bind.name + "){\n");
             builder.append("this.").append(bind.name).append("=").append(bind.name).append(";");
@@ -100,7 +102,6 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
     protected void generateLayoutCode(StringBuilder builder) {
         if (bindLayout.size() > 0) {
             builder.append("host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(typeElement.getQualifiedName().toString())).append(");\n");
-
         }
 
     }
