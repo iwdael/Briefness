@@ -18,7 +18,7 @@ import static com.blackchopper.briefness.XmlProxyInfo.readTextFile;
 
 public class JavaInjector {
     public static final String PACKAGE_NAME = ClassUtil.findPackageName();
-    public static final String PACKAGE = "package " + PACKAGE_NAME + ".briefness;\n";
+    public static final String PACKAGE = "package com.blackchopper.briefness;\n";
     public static final String IMPORT = "import android.graphics.Bitmap;\n" +
             "import android.util.Log;\n" +
             "import android.view.View;\n" +
@@ -26,13 +26,12 @@ public class JavaInjector {
             "import android.widget.EditText;\n" +
             "import android.widget.ImageView;\n" +
             "import android.widget.TextView;\n" +
-            "import " + PACKAGE_NAME + ".briefness.BriefnessInjector;\n";
+            "import " + PACKAGE_NAME + ".briefness.ViewInjector;\n";
 
-    public static final String CLASS_UP = "public class ViewInjector {\n" +
-            "    public static void inject(View view, Object value) {\n" +
+    public static final String CLASS = "public class BriefnessInjector {\n" +
+            "    public static void injector(boolean fileter,View view, Object value) {\n" +
             "        if (value == null | view == null) {\n" +
-            "        } else if (";
-    public static final String CLASS_DOWN = ") {\n" +
+            "        } else if (fileter) {\n" +
             "        } else if (view instanceof ImageView) {\n" +
             "            injectImageView((ImageView) view, value);\n" +
             "        } else if (view instanceof Button) {\n" +
@@ -73,6 +72,7 @@ public class JavaInjector {
             "\n" +
             "  \n" +
             "}\n";
+
     public static final String BRIEFNESS_INJECTOR = "package " + PACKAGE_NAME + ".briefness;\n" +
             "\n" +
             "import android.view.View;\n" +
@@ -83,12 +83,11 @@ public class JavaInjector {
             " * github  : http://github.com/BlackChopper\n" +
             " * project : Briefness\n" +
             " */\n" +
-            "\n" +
-            "class BriefnessInjector {\n" +
-            "    public static boolean onInject(View view, Object value) {\n" +
+            "public class ViewInjector {\n" +
+            "    public static boolean injector(View view, Object value) {\n" +
             "        return false;\n" +
             "    }\n" +
-            "}\n";
+            "}";
     boolean debug = false;
 
     public void witeCode() {
@@ -99,19 +98,19 @@ public class JavaInjector {
         String java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
                 + "src/main/java/"
                 + PACKAGE_NAME.replace(".", "/")
-                + "/briefness/BriefnessInjector.java";
+                + "/briefness/ViewInjector.java";
 
         if (!new File(java).exists())
             FileUtil.createFile(java, BRIEFNESS_INJECTOR);
     }
 
-    public boolean isViewInjectorExits() {
+    public boolean isBriefnessInjectorExits() {
         String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
 
         String java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
                 + "build/generated/source/apt/debug/"
-                + PACKAGE_NAME.replace(".", "/")
-                + "/briefness/ViewInjector.java";
+                + "com.blackchopper.briefness".replace(".", "/")
+                + "/BriefnessInjector.java";
         boolean flag;
         if (new File(java).exists()) {
             flag = true;
@@ -119,9 +118,9 @@ public class JavaInjector {
             flag = false;
         }
         java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                + "build/generated/source/apt/release"
-                + PACKAGE_NAME.replace(".", "/")
-                + "/briefness/ViewInjector.java";
+                + "build/generated/source/apt/release/"
+                + "com.blackchopper.briefness".replace(".", "/")
+                + "/BriefnessInjector.java";
         if (new File(java).exists()) {
             flag = true | flag;
         } else {
@@ -130,13 +129,11 @@ public class JavaInjector {
         return flag;
     }
 
-    public String getViewInjectorCode() {
+    public String getBriefnessInjectorCode() {
         StringBuilder builder = new StringBuilder();
         return builder.append(PACKAGE)
                 .append(IMPORT)
                 .append(JavaLayout.author)
-                .append(CLASS_UP)
-                .append("BriefnessInjector.onInject(view,value)")
-                .append(CLASS_DOWN).toString();
+                .append(CLASS).toString();
     }
 }

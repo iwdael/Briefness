@@ -38,16 +38,16 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindViews bindViewAnnotation = variableElement.getAnnotation(BindViews.class);
-
-            Logger.v(element.toString());
-            Logger.v(bindViewAnnotation.toString());
-            Logger.v(fullClassName);
-
-            String[] id=ClassUtil.findViewsById(fullClassName, element.toString());
-            for (String s : id) {
-                Logger.v(s);
-            }
-            proxyInfo.bindView.put(id, variableElement);
+//
+//            Logger.v(element.toString());
+//            Logger.v(bindViewAnnotation.toString());
+//            Logger.v(fullClassName);
+//
+//            String[] id=ClassUtil.findViewsById(fullClassName, element.toString());
+//            for (String s : id) {
+//                Logger.v(s);
+//            }
+            proxyInfo.bindView.put(bindViewAnnotation.value(), variableElement);
         }
     }
 
@@ -83,12 +83,12 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindView bindViewAnnotation = variableElement.getAnnotation(BindView.class);
-            Logger.v(element.toString());
-            Logger.v(bindViewAnnotation.toString());
-            Logger.v(fullClassName);
-            Logger.v(ClassUtil.findViewById(fullClassName, element.toString()));
-            String id = ClassUtil.findViewById(fullClassName, element.toString());
-            proxyInfo.bindView.put(new String[]{id}, variableElement);
+//            Logger.v(element.toString());
+//            Logger.v(bindViewAnnotation.toString());
+//            Logger.v(fullClassName);
+//            Logger.v(ClassUtil.findViewById(fullClassName, element.toString()));
+            int id = bindViewAnnotation.value();
+            proxyInfo.bindView.put(new int[]{id}, variableElement);
         }
     }
 
@@ -117,18 +117,18 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             AbstractJavaProxyInfo proxyInfo = mProxyMap.get(key);
             try {
                 JavaInjector injector = new JavaInjector();
+
+//                if (!injector.isBriefnessInjectorExits()) {
+//                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(
+//                             "com.blackchopper.briefness.BriefnessInjector",
+//                            proxyInfo.getTypeElement());
+//                    Writer writer = fileObject.openWriter();
+//                    writer.write(injector.getBriefnessInjectorCode());
+//                    writer.flush();
+//                    writer.close();
+//                }
+
                 injector.witeCode();
-
-                if (!injector.isViewInjectorExits()) {
-                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(
-                            JavaInjector.PACKAGE_NAME + ".briefness.ViewInjector",
-                            proxyInfo.getTypeElement());
-                    Writer writer = fileObject.openWriter();
-                    writer.write(injector.getViewInjectorCode());
-                    writer.flush();
-                    writer.close();
-                }
-
 
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
                         proxyInfo.getProxyClassFullName(),

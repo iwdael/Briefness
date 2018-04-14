@@ -2,28 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://F:\Briefness\Brief.iml" filepath="F:\Briefness\Brief.iml" />
       <module fileurl="file://$PROJECT_DIR$/Briefness.iml" filepath="$PROJECT_DIR$/Briefness.iml" />
-      <module fileurl="file://C:\Users\absurd\Desktop\Brief\Briefness.iml" filepath="C:\Users\absurd\Desktop\Brief\Briefness.iml" />
-      <module fileurl="file://C:\Users\alile\Desktop\Briefness\Briefness.iml" filepath="C:\Users\alile\Desktop\Briefness\Briefness.iml" />
-      <module fileurl="file://D:\Android Project\Briefness\Briefness.iml" filepath="D:\Android Project\Briefness\Briefness.iml" />
-      <module fileurl="file://C:\Users\alile\Desktop\Briefness\app\app.iml" filepath="C:\Users\alile\Desktop\Briefness\app\app.iml" />
-      <module fileurl="file://C:\Users\absurd\Desktop\Briefness\example\app.iml" filepath="C:\Users\absurd\Desktop\Briefness\example\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/briefness/briefness.iml" filepath="$PROJECT_DIR$/briefness/briefness.iml" />
-      <module fileurl="file://D:\Android Project\Briefness\briefness\briefness.iml" filepath="D:\Android Project\Briefness\briefness\briefness.iml" />
-      <module fileurl="file://C:\Users\alile\Desktop\Briefness\briefness\briefness.iml" filepath="C:\Users\alile\Desktop\Briefness\briefness\briefness.iml" />
       <module fileurl="file://$PROJECT_DIR$/briefness-annotation/briefness-annotation.iml" filepath="$PROJECT_DIR$/briefness-annotation/briefness-annotation.iml" />
-      <module fileurl="file://C:\Users\alile\Desktop\Briefness\briefness-annotation\briefness-annotation.iml" filepath="C:\Users\alile\Desktop\Briefness\briefness-annotation\briefness-annotation.iml" />
-      <module fileurl="file://D:\Android Project\Briefness\briefness-annotation\briefness-annotation.iml" filepath="D:\Android Project\Briefness\briefness-annotation\briefness-annotation.iml" />
-      <module fileurl="file://C:\Users\alile\Desktop\Briefness\briefness\briefness-briefness.iml" filepath="C:\Users\alile\Desktop\Briefness\briefness\briefness-briefness.iml" />
       <module fileurl="file://$PROJECT_DIR$/briefness-compiler/briefness-compiler.iml" filepath="$PROJECT_DIR$/briefness-compiler/briefness-compiler.iml" />
-      <module fileurl="file://D:\Android Project\Briefness\briefness-compiler\briefness-compiler.iml" filepath="D:\Android Project\Briefness\briefness-compiler\briefness-compiler.iml" />
-      <module fileurl="file://C:\Users\alile\Desktop\Briefness\briefness-compiler\briefness-compiler.iml" filepath="C:\Users\alile\Desktop\Briefness\briefness-compiler\briefness-compiler.iml" />
-      <module fileurl="file://C:\Users\alile\Desktop\Briefness\demo_Briefness.iml" filepath="C:\Users\alile\Desktop\Briefness\demo_Briefness.iml" />
       <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
-      <module fileurl="file://D:\Android Project\Briefness\example\example.iml" filepath="D:\Android Project\Briefness\example\example.iml" />
-      <module fileurl="file://C:\Users\alile\Desktop\Briefness\example\example.iml" filepath="C:\Users\alile\Desktop\Briefness\example\example.iml" />
-      <module fileurl="file://C:\Users\alile\Desktop\Briefness\libsbriefness\libsbriefness.iml" filepath="C:\Users\alile\Desktop\Briefness\libsbriefness\libsbriefness.iml" />
     </modules>
   </component>
 </project>

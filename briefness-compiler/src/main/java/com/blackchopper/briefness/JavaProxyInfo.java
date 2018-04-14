@@ -61,7 +61,7 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
                             builder.append(info.ID).append(".").append(s).append(";\n");
                     }
                 } else {
-                    builder.append("ViewInjector.inject(").append(info.ID).append(",").append(info.bind).append(");\n");
+                    builder.append("ViewInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
                 }
             }
             builder.append("    }");
@@ -122,7 +122,7 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
                     builder.append("(" + viewName + ")view.findViewById( R.id." + infos.get(i).ID + ");\n");
             }
         }
-        for (String[] ids : bindView.keySet()) {
+        for (int[] ids : bindView.keySet()) {
             switch (ids.length) {
                 case 1:
                     generateVariableCode(ids, builder, isActivity);
@@ -134,7 +134,7 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
         }
     }
 
-    private void generateVariableCode(String[] ids, StringBuilder builder, boolean isActivity) {
+    private void generateVariableCode(int[] ids, StringBuilder builder, boolean isActivity) {
         try {
             VariableElement element = (VariableElement) bindView.get(ids);
             String name = element.getSimpleName().toString();
@@ -150,14 +150,17 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
         }
     }
 
-    private void generateVariableCodes(String[] ids, StringBuilder builder, boolean isActivity) {
+    private void generateVariableCodes(int[] ids, StringBuilder builder, boolean isActivity) {
         try {
             VariableElement element = (VariableElement) bindView.get(ids);
             String name = element.getSimpleName().toString();
             String type = element.asType().toString();
+            if (type.contains(".")) {
+                type = type.substring(type.lastIndexOf(".") + 1);
+            }
             builder.append("host." + name).append(" = ");
             builder.append("new " + type + "{\n");
-            for (String id : ids) {
+            for (int id : ids) {
                 if (isActivity)
                     builder.append("(" + type.replace("[", "").replace("]", "") + ")(host.findViewById( " + id + ")),\n");
                 else
@@ -168,7 +171,6 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 }
