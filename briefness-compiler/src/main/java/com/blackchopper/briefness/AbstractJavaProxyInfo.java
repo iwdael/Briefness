@@ -71,7 +71,6 @@ public abstract class AbstractJavaProxyInfo {
         importBuilder.append("package ").append(packageName).append(";\n");
 
         importBuilder.append("import ").append(ClassUtil.findPackageName()).append(".R;\n");
-        importBuilder.append("import ").append(ClassUtil.findPackageName()).append(".briefness.*;\n");
         importBuilder.append("import com.blackchopper.briefness.*;\n");
         importBuilder.append("import android.view.*;\n");
         importBuilder.append("import android.widget.*;\n");

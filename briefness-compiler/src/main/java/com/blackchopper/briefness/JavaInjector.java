@@ -73,7 +73,8 @@ public class JavaInjector {
             "  \n" +
             "}\n";
 
-    public static final String BRIEFNESS_INJECTOR = "package " + PACKAGE_NAME + ".briefness;\n" +
+    public static final String BRIEFNESS_INJECTOR = "// This class and method can not be confused and modified ！\n" +
+            "package " + PACKAGE_NAME + ".briefness;\n" +
             "\n" +
             "import android.view.View;\n" +
             "\n" +

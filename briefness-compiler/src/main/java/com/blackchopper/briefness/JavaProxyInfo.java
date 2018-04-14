@@ -34,7 +34,7 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
                 String viewName = infos.get(i).view;
                 if (infos.get(i).view.contains(".")) {
                     if (!importBuilder.toString().contains(viewName))
-                    importBuilder.append("import ").append(viewName).append(";\n");
+                        importBuilder.append("import ").append(viewName).append(";\n");
                     viewName = viewName.substring(viewName.lastIndexOf(".") + 1);
                 }
                 builder.append(viewName).append(" ").append(infos.get(i).ID).append(";\n");
@@ -63,7 +63,7 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
                             builder.append(info.ID).append(".").append(s).append(";\n");
                     }
                 } else {
-                    builder.append("ViewInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
+                    builder.append("BriefnessInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
                 }
             }
             builder.append("    }");
