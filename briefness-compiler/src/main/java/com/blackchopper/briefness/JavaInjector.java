@@ -30,9 +30,9 @@ public class JavaInjector {
             "import " + PACKAGE_NAME + ".briefness.ViewInjector;\n";
 
     public static final String CLASS = "public class BriefnessInjector {\n" +
-            "    public static void injector(boolean fileter,View view, Object value) {\n" +
+            "    public static void injector(View view, Object value) {\n" +
             "        if (value == null | view == null) {\n" +
-            "        } else if (fileter) {\n" +
+            "        } else if (ViewInjector.injector(view,value)) {\n" +
             "        } else if (view instanceof ImageView) {\n" +
             "            injectImageView((ImageView) view, value);\n" +
             "        } else if (view instanceof Button) {\n" +
