@@ -19,6 +19,12 @@ import com.blackchopper.briefness.BindView;
 public class MainFragment extends Fragment {
     @BindView(R.id.tv_test)
     TextView tv_test;
+    @BindView(R.id.tv_test)
+    TextView tv_test1;
+    @BindView(R.id.tv_test)
+    TextView tv_test2;
+    @BindView(R.id.tv_test)
+    TextView tv_test3;
 
 
     public void onClick(View v) {

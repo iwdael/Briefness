@@ -4,6 +4,7 @@ package com.blackchopper.briefness;
 import com.blackchopper.briefness.databinding.XmlBind;
 import com.blackchopper.briefness.databinding.XmlViewInfo;
 import com.blackchopper.briefness.util.ClassUtil;
+import com.blackchopper.briefness.util.ViewCollection;
 
 import java.util.List;
 
@@ -36,6 +37,9 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
                     if (!importBuilder.toString().contains(viewName))
                         importBuilder.append("import ").append(viewName).append(";\n");
                     viewName = viewName.substring(viewName.lastIndexOf(".") + 1);
+                } else {
+                    if (!importBuilder.toString().contains(ViewCollection.getFullNameByName(viewName)))
+                        importBuilder.append("import ").append(ViewCollection.getFullNameByName(viewName)).append(";\n");
                 }
                 builder.append(viewName).append(" ").append(infos.get(i).ID).append(";\n");
             }
@@ -63,6 +67,8 @@ public class JavaProxyInfo extends AbstractJavaProxyInfo {
                             builder.append(info.ID).append(".").append(s).append(";\n");
                     }
                 } else {
+                    if (!importBuilder.toString().contains("com.blackchopper.briefness.BriefnessInjector"))
+                        importBuilder.append("import com.blackchopper.briefness.BriefnessInjector;\n");
                     builder.append("BriefnessInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
                 }
             }
