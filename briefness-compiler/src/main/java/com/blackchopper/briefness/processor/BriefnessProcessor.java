@@ -1,8 +1,13 @@
-package com.blackchopper.briefness;
+package com.blackchopper.briefness.processor;
 
+import com.blackchopper.briefness.AbstractJavaProxyInfo;
+import com.blackchopper.briefness.BindClick;
+import com.blackchopper.briefness.BindLayout;
+import com.blackchopper.briefness.BindView;
+import com.blackchopper.briefness.BindViews;
+import com.blackchopper.briefness.JavaInjector;
+import com.blackchopper.briefness.JavaProxyInfo;
 import com.blackchopper.briefness.databinding.JavaLayout;
-import com.blackchopper.briefness.util.ClassUtil;
-import com.blackchopper.briefness.util.Logger;
 import com.google.auto.service.AutoService;
 
 import java.io.Writer;
@@ -13,7 +18,6 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
-import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 
 /**

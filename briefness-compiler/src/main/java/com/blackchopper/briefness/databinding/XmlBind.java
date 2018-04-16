@@ -21,14 +21,4 @@ public class XmlBind {
         this.alisa = alisa;
         list = new ArrayList<>();
     }
-
-    @Override
-    public String toString() {
-        return "XmlBind{" +
-                "clazz='" + clazz + '\'' +
-                ", name='" + name + '\'' +
-                ", alisa='" + alisa + '\'' +
-                ", list=" + list +
-                '}';
-    }
 }

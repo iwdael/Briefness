@@ -1,6 +1,11 @@
-package com.blackchopper.briefness;
+package com.blackchopper.briefness.processor;
 
 
+import com.blackchopper.briefness.AbstractJavaProxyInfo;
+import com.blackchopper.briefness.BindClick;
+import com.blackchopper.briefness.BindLayout;
+import com.blackchopper.briefness.BindView;
+import com.blackchopper.briefness.BindViews;
 import com.blackchopper.briefness.util.ClassValidator;
 
 import java.util.HashSet;
