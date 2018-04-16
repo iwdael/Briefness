@@ -1,13 +1,14 @@
 package com.blackchopper.briefness.processor;
 
-import com.blackchopper.briefness.AbstractJavaProxyInfo;
+import com.blackchopper.briefness.AbsJavaInfo;
 import com.blackchopper.briefness.BindClick;
 import com.blackchopper.briefness.BindLayout;
 import com.blackchopper.briefness.BindView;
 import com.blackchopper.briefness.BindViews;
 import com.blackchopper.briefness.JavaInjector;
-import com.blackchopper.briefness.JavaProxyInfo;
+import com.blackchopper.briefness.JavaInfo;
 import com.blackchopper.briefness.databinding.JavaLayout;
+import com.blackchopper.briefness.util.Logger;
 import com.google.auto.service.AutoService;
 
 import java.io.Writer;
@@ -36,9 +37,9 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             VariableElement variableElement = (VariableElement) element;
             TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
             String fullClassName = classElement.getQualifiedName().toString();
-            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            AbsJavaInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
-                proxyInfo = new JavaProxyInfo(elementUtils, classElement);
+                proxyInfo = new JavaInfo(elementUtils, classElement);
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindViews bindViewAnnotation = variableElement.getAnnotation(BindViews.class);
@@ -62,9 +63,9 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             if (!checkAnnotationValid(element, BindClick.class)) continue;
             TypeElement typeElement = (TypeElement) element.getEnclosingElement();
             String fullClassName = typeElement.getQualifiedName().toString();
-            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            AbsJavaInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
-                proxyInfo = new JavaProxyInfo(elementUtils, typeElement);
+                proxyInfo = new JavaInfo(elementUtils, typeElement);
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindClick bindViewAnnotation = element.getAnnotation(BindClick.class);
@@ -81,9 +82,9 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             VariableElement variableElement = (VariableElement) element;
             TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
             String fullClassName = classElement.getQualifiedName().toString();
-            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            AbsJavaInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
-                proxyInfo = new JavaProxyInfo(elementUtils, classElement);
+                proxyInfo = new JavaInfo(elementUtils, classElement);
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindView bindViewAnnotation = variableElement.getAnnotation(BindView.class);
@@ -104,9 +105,9 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
         for (Element element : elementsWithBind) {
             if (!checkAnnotationValid(element, JavaLayout.class)) continue;
             String fullClassName = element.asType().toString();
-            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(fullClassName);
+            AbsJavaInfo proxyInfo = mProxyMap.get(fullClassName);
             if (proxyInfo == null) {
-                proxyInfo = new JavaProxyInfo(elementUtils, (TypeElement) element);
+                proxyInfo = new JavaInfo(elementUtils, (TypeElement) element);
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindLayout bindViewAnnotation = element.getAnnotation(BindLayout.class);
@@ -118,20 +119,21 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     @Override
     protected void process() {
         for (String key : mProxyMap.keySet()) {
-            AbstractJavaProxyInfo proxyInfo = mProxyMap.get(key);
+            AbsJavaInfo proxyInfo = mProxyMap.get(key);
             try {
                 JavaInjector injector = new JavaInjector();
 
-//                if (!injector.isBriefnessInjectorExits()) {
-//                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(
-//                             "com.blackchopper.briefness.BriefnessInjector",
-//                            proxyInfo.getTypeElement());
-//                    Writer writer = fileObject.openWriter();
-//                    writer.write(injector.getBriefnessInjectorCode());
-//                    writer.flush();
-//                    writer.close();
-//                }
-
+                try {
+                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(
+                            "com.blackchopper.briefness.BriefnessInjector",
+                            proxyInfo.getTypeElement());
+                    Writer openWriter = fileObject.openWriter();
+                    openWriter.write(injector.getBriefnessInjectorCode());
+                    openWriter.flush();
+                    openWriter.close();
+                } catch (Exception e) {
+                    Logger.v(e.getMessage());
+                }
                 injector.witeCode();
 
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(

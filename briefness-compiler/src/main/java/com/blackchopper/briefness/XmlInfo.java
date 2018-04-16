@@ -21,7 +21,7 @@ import com.blackchopper.briefness.databinding.XmlBind;
  * github  : http://github.com/BlackChopper
  * project : Briefness
  */
-public class XmlProxyInfo {
+public class XmlInfo {
     public static final String imports = "briefness:imports";
     public static final String click = "briefness:click";
     public static final String longclick = "briefness:longclick";
@@ -41,7 +41,7 @@ public class XmlProxyInfo {
     private List<XmlViewInfo> viewInfos = new ArrayList<>();
 
 
-    public XmlProxyInfo(String path) {
+    public XmlInfo(String path) {
         module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
         xml = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
         parserXml(path);

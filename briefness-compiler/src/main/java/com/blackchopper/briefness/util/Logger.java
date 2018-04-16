@@ -9,6 +9,6 @@ package com.blackchopper.briefness.util;
 
 public class Logger {
     public static void v(String msg) {
-        System.out.print(":briefness:CompileJavaInfomation: " + msg+"\n");
+        System.out.print(":briefness:compileJava: " + msg+"\n");
     }
 }

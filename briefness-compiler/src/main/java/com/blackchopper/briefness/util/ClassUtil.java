@@ -3,11 +3,10 @@ package com.blackchopper.briefness.util;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.File;
 import java.io.FileReader;
 
-import static com.blackchopper.briefness.XmlProxyInfo.SPLIT;
-import static com.blackchopper.briefness.XmlProxyInfo.readTextFile;
+import static com.blackchopper.briefness.XmlInfo.SPLIT;
+import static com.blackchopper.briefness.XmlInfo.readTextFile;
 
 /**
  * author  : Black Chopper

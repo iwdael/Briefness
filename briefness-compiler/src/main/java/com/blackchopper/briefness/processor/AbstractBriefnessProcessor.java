@@ -1,7 +1,7 @@
 package com.blackchopper.briefness.processor;
 
 
-import com.blackchopper.briefness.AbstractJavaProxyInfo;
+import com.blackchopper.briefness.AbsJavaInfo;
 import com.blackchopper.briefness.BindClick;
 import com.blackchopper.briefness.BindLayout;
 import com.blackchopper.briefness.BindView;
@@ -35,7 +35,7 @@ import javax.tools.Diagnostic;
 public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
     protected Messager messager;
     protected Elements elementUtils;
-    protected Map<String, AbstractJavaProxyInfo> mProxyMap = new LinkedHashMap<>();
+    protected Map<String, AbsJavaInfo> mProxyMap = new LinkedHashMap<>();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

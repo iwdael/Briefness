@@ -23,7 +23,7 @@ import com.blackchopper.briefness.util.ClassValidator;
  * github  : http://github.com/BlackChopper
  * project : Briefness
  */
-public abstract class AbstractJavaProxyInfo {
+public abstract class AbsJavaInfo {
     public static final String PROXY = "Briefnessor";
     public Map<int[], Element> bindView = new LinkedHashMap<>();
     public List<JavaLayout> bindLayout = new ArrayList<>();
@@ -45,7 +45,7 @@ public abstract class AbstractJavaProxyInfo {
     protected TypeElement typeElement;
 
 
-    public AbstractJavaProxyInfo(Elements elementUtils, TypeElement classElement) {
+    public AbsJavaInfo(Elements elementUtils, TypeElement classElement) {
         this.typeElement = classElement;
         PackageElement packageElement = elementUtils.getPackageOf(classElement);
         String packageName = packageElement.getQualifiedName().toString();
@@ -155,7 +155,7 @@ public abstract class AbstractJavaProxyInfo {
 
     private void generateXmlClickCode(StringBuilder builder) {
         if (bindLayout.size() > 0) {
-            XmlProxyInfo proxyInfo = new XmlProxyInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (XmlViewInfo info : infos) {
                 if (info.click != null) {
