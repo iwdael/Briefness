@@ -158,17 +158,17 @@ public abstract class AbsJavaInfo {
             for (XmlViewInfo info : infos) {
                 if (info.click != null) {
                     builder.append("        ").append(info.ID).append(".setOnClickListener(new View.OnClickListener() {\n" +
-                            "                @Override\n" +
-                            "                public void onClick(View v) {\n");
+                            "            @Override\n" +
+                            "            public void onClick(View v) {\n");
                     String[] methods = info.click.split(";");
                     for (String method : methods) {
                         builder.append("                host.").append(method).append(";\n");
                     }
                     builder.append("            }\n" +
-                            "        });");
+                            "        });\n");
                 }
                 if (info.longClick != null) {
-                    builder.append(info.ID).append(".setOnLongClickListener(new View.OnLongClickListener() {\n" +
+                    builder.append("        ").append(info.ID).append(".setOnLongClickListener(new View.OnLongClickListener() {\n" +
                             "            @Override\n" +
                             "            public boolean onLongClick(View v) {\n");
                     String[] methods = info.longClick.split(";");
@@ -177,10 +177,10 @@ public abstract class AbsJavaInfo {
                     }
                     builder.append("     return false;\n" +
                             "            }\n" +
-                            "        });");
+                            "        });\n");
                 }
                 if (info.touch != null) {
-                    builder.append(info.ID).append(".setOnTouchListener(new View.OnTouchListener() {\n" +
+                    builder.append("        ").append(info.ID).append(".setOnTouchListener(new View.OnTouchListener() {\n" +
                             "            @Override\n" +
                             "            public boolean onTouch(View v, MotionEvent event) {\n");
                     String[] methods = info.touch.split(";");
@@ -189,7 +189,7 @@ public abstract class AbsJavaInfo {
                     }
                     builder.append("     return false;\n" +
                             "            }\n" +
-                            "        });");
+                            "        });\n");
                 }
             }
         }
