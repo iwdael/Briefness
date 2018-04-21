@@ -41,7 +41,7 @@ public class JavaInfo extends AbsJavaInfo {
                     if (!importBuilder.toString().contains(ViewCollection.getFullNameByName(viewName)))
                         importBuilder.append("import ").append(ViewCollection.getFullNameByName(viewName)).append(";\n");
                 }
-                builder.append(viewName).append(" ").append(infos.get(i).ID).append(";\n");
+                builder.append("    ").append(viewName).append(" ").append(infos.get(i).ID).append(";\n");
             }
         }
     }
@@ -55,16 +55,16 @@ public class JavaInfo extends AbsJavaInfo {
             String bindclazz = bind.clazz.substring(bind.clazz.lastIndexOf(".") + 1);
             if (!importBuilder.toString().contains(bind.clazz))
                 importBuilder.append("import " + bind.clazz).append(";\n");
-            fieldBuilder.append(bindclazz).append(" ").append(bind.name).append(";");
-            builder.append("   public void set" + bind.name.substring(0, 1).toUpperCase() + bind.name.substring(1) + "(" + bindclazz + " " + bind.name + "){\n");
-            builder.append("this.").append(bind.name).append("=").append(bind.name).append(";");
+            fieldBuilder.append("    ").append(bindclazz).append(" ").append(bind.name).append(";\n");
+            builder.append("\n    public void set" + bind.name.substring(0, 1).toUpperCase() + bind.name.substring(1) + "(" + bindclazz + " " + bind.name + ") {\n");
+            builder.append("        this.").append(bind.name).append(" = ").append(bind.name).append(";\n");
             for (XmlViewInfo info : bind.list) {
                 if (info.bind == null) continue;
                 if (info.bind.endsWith(";")) {
                     String[] method = info.bind.split(";");
                     for (String s : method) {
                         if (s.contains(bind.name))
-                            builder.append(info.ID).append(".").append(s).append(";\n");
+                            builder.append("        ").append(info.ID).append(".").append(s).append(";\n");
                     }
                 } else {
                     if (!importBuilder.toString().contains("com.blackchopper.briefness.BriefnessInjector"))
@@ -72,7 +72,7 @@ public class JavaInfo extends AbsJavaInfo {
                     builder.append("BriefnessInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
                 }
             }
-            builder.append("    }");
+            builder.append("    }\n");
         }
     }
 
@@ -87,27 +87,27 @@ public class JavaInfo extends AbsJavaInfo {
                     "    public void clear() {\n");
 
             for (XmlViewInfo info : infos) {
-                builder.append("this.").append(info.ID).append("=null;");
+                builder.append("        this.").append(info.ID).append(" = null;\n");
             }
 
-            builder.append("    }");
+            builder.append("    }\n");
 
-            builder.append("    @Override\n" +
+            builder.append("\n    @Override\n" +
                     "    public void clearAll() {\n");
             for (XmlViewInfo info : infos) {
-                builder.append("this.").append(info.ID).append("=null;");
+                builder.append("        this.").append(info.ID).append(" = null;\n");
             }
             for (XmlBind bind : binds) {
-                builder.append("this.").append(bind.name).append("=null;");
+                builder.append("        this.").append(bind.name).append(" = null;\n");
             }
-            builder.append("    }");
+            builder.append("    }\n");
         }
     }
 
     @Override
     protected void generateLayoutCode(StringBuilder builder) {
         if (bindLayout.size() > 0) {
-            builder.append("host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(typeElement.getQualifiedName().toString())).append(");\n");
+            builder.append("        host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(typeElement.getQualifiedName().toString())).append(");\n");
         }
 
     }
@@ -118,15 +118,15 @@ public class JavaInfo extends AbsJavaInfo {
             XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
-                builder.append(infos.get(i).ID).append("=");
+                builder.append("        ").append(infos.get(i).ID).append(" = ");
                 String viewName = infos.get(i).view;
                 if (infos.get(i).view.contains(".")) {
                     viewName = viewName.substring(viewName.lastIndexOf(".") + 1);
                 }
                 if (isActivity)
-                    builder.append("(" + viewName + ")host.findViewById( R.id." + infos.get(i).ID + ");\n");
+                    builder.append("(" + viewName + ") host.findViewById(R.id." + infos.get(i).ID + ");\n");
                 else
-                    builder.append("(" + viewName + ")view.findViewById( R.id." + infos.get(i).ID + ");\n");
+                    builder.append("(" + viewName + ") view.findViewById(R.id." + infos.get(i).ID + ");\n");
             }
         }
         for (int[] ids : bindView.keySet()) {
@@ -147,11 +147,11 @@ public class JavaInfo extends AbsJavaInfo {
             String name = element.getSimpleName().toString();
             String type = element.asType().toString();
             type = type.substring(type.lastIndexOf(".") + 1);
-            builder.append("host." + name).append(" = ").append("(").append(type).append(")");
+            builder.append("        host." + name).append(" = ").append("(").append(type).append(")");
             if (isActivity)
-                builder.append("host.findViewById( " + ids[0] + " );\n");
+                builder.append(" host.findViewById(" + ids[0] + ");\n");
             else
-                builder.append("view.findViewById( " + ids[0] + " );\n");
+                builder.append(" view.findViewById(" + ids[0] + ");\n");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -165,16 +165,16 @@ public class JavaInfo extends AbsJavaInfo {
             if (type.contains(".")) {
                 type = type.substring(type.lastIndexOf(".") + 1);
             }
-            builder.append("host." + name).append(" = ");
+            builder.append("        host." + name).append(" = ");
             builder.append("new " + type + "{\n");
             for (int id : ids) {
                 if (isActivity)
-                    builder.append("(" + type.replace("[", "").replace("]", "") + ")(host.findViewById( " + id + ")),\n");
+                    builder.append("                (" + type.replace("[", "").replace("]", "") + ") (host.findViewById(" + id + ")),\n");
                 else
-                    builder.append("(" + type.replace("[", "").replace("]", "") + ")(view.findViewById( " + id + ")),\n");
+                    builder.append("                (" + type.replace("[", "").replace("]", "") + ") (view.findViewById(" + id + ")),\n");
             }
             builder.delete(builder.length() - 2, builder.length()).append("\n");
-            builder.append("};\n");
+            builder.append("        };\n");
         } catch (Exception e) {
             e.printStackTrace();
         }
