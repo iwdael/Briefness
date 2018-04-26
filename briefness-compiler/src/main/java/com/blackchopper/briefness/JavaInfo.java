@@ -69,7 +69,7 @@ public class JavaInfo extends AbsJavaInfo {
                 } else {
                     if (!importBuilder.toString().contains("com.blackchopper.briefness.BriefnessInjector"))
                         importBuilder.append("import com.blackchopper.briefness.BriefnessInjector;\n");
-                    builder.append("BriefnessInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
+                    builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
                 }
             }
             builder.append("    }\n");

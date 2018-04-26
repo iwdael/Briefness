@@ -7,7 +7,7 @@ package com.blackchopper.briefness.databinding;
  * project : Briefness
  */
 public class JavaLayout {
-    public static final String author = "";
+    public static final String author = "\n";
     public int layout;
 
     public JavaLayout(int layout) {

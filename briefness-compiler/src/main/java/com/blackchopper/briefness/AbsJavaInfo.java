@@ -163,7 +163,7 @@ public abstract class AbsJavaInfo {
                             "            public void onClick(View v) {\n");
                     String[] methods = info.click.split(";");
                     for (String method : methods) {
-                        if (method.startsWith("@"))
+                        if (method.startsWith("$"))
                             builder.append(method.substring(1)).append(";");
                         else
                             builder.append("                host.").append(method).append(";\n");
@@ -177,7 +177,7 @@ public abstract class AbsJavaInfo {
                             "            public boolean onLongClick(View v) {\n");
                     String[] methods = info.longClick.split(";");
                     for (String method : methods) {
-                        if (method.startsWith("@"))
+                        if (method.startsWith("$"))
                             builder.append(method.substring(1)).append(";");
                         else
                             builder.append("                host.").append(method).append(";");
