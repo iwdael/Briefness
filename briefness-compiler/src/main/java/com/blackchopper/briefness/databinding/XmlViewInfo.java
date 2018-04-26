@@ -13,6 +13,7 @@ public class XmlViewInfo {
     public String touch;
     public String view;
     public String bind;
+    public String action;
     public String clazz;
 
     @Override
@@ -21,9 +22,10 @@ public class XmlViewInfo {
                 "ID='" + ID + '\'' +
                 ", click='" + click + '\'' +
                 ", longClick='" + longClick + '\'' +
-                ", action='" + touch + '\'' +
+                ", touch='" + touch + '\'' +
                 ", view='" + view + '\'' +
                 ", bind='" + bind + '\'' +
+                ", action='" + action + '\'' +
                 ", clazz='" + clazz + '\'' +
                 '}';
     }

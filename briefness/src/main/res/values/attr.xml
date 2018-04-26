@@ -6,5 +6,6 @@
         <attr name="longclick" format="string" />
         <attr name="touch" format="string" />
         <attr name="bind" format="string" />
+        <attr name="action" format="string" />
     </declare-styleable>
 </resources>

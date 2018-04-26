@@ -163,7 +163,10 @@ public abstract class AbsJavaInfo {
                             "            public void onClick(View v) {\n");
                     String[] methods = info.click.split(";");
                     for (String method : methods) {
-                        builder.append("                host.").append(method).append(";\n");
+                        if (method.startsWith("@"))
+                            builder.append(method.substring(1)).append(";");
+                        else
+                            builder.append("                host.").append(method).append(";\n");
                     }
                     builder.append("            }\n" +
                             "        });\n");
@@ -174,7 +177,10 @@ public abstract class AbsJavaInfo {
                             "            public boolean onLongClick(View v) {\n");
                     String[] methods = info.longClick.split(";");
                     for (String method : methods) {
-                        builder.append("host.").append(method).append(";");
+                        if (method.startsWith("@"))
+                            builder.append(method.substring(1)).append(";");
+                        else
+                            builder.append("                host.").append(method).append(";");
                     }
                     builder.append("     return false;\n" +
                             "            }\n" +
@@ -191,6 +197,9 @@ public abstract class AbsJavaInfo {
                     builder.append("     return false;\n" +
                             "            }\n" +
                             "        });\n");
+                }
+                if (info.action != null) {
+                    builder.append("        ").append(info.ID).append(info.action).append("\n");
                 }
             }
         }
