@@ -41,10 +41,6 @@ public class MainActivity extends BaseActivity {
     ...
 }
 ```
-@BindField and @BindClass combination of the use of binding data, currently only supports JavaBean object binding, the latter will support more data types. @BindClass Binds the data types that need to be bound to the current class @ BindField binds the View to the fields in the JavaBean. Bind data with the Briefness.bind (this, JavaBean) method. Note: JavaBean need to bind the field must have a standard get method, while the View object can not be empty, it is recommended and @ BindView used in combination.
-<br>If the same type, you need to bind a different View collection, you can use the alias way, the same JavaBean alias String field must have getAlias () method.
-<br>If the bound View is a custom control, you need to set the binding method.
-
 ```Java
 package com.blackchopper.demo_briefness
 public class Entity {
@@ -54,7 +50,6 @@ public class Entity {
     public Entity(String username, String password) {
         this.username = username;
         this.password = password;
-
     }
 
     public String getUsername() {
