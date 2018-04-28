@@ -48,22 +48,13 @@ public class MainActivity extends BaseActivity {
 ```Java
 package com.blackchopper.demo_briefness
 public class Entity {
-
-
-
-
-
-
-}
     private String username;
     private String password;
-    //This field is an alias field, when the Activity class, Entity objects need to bind different View collection, you need an alias field, if only a View collection is not required.
-    private String alias;
 
-    public Entity(String username, String password, String alias) {
+    public Entity(String username, String password) {
         this.username = username;
         this.password = password;
-        this.alias = alias;
+
     }
 
     public String getUsername() {
@@ -73,42 +64,9 @@ public class Entity {
     public String getPassword() {
         return password;
     }
-
-    public String getAlias() {
-        return alias;
-    }
 }
+
 ```
-```Java
-//Entity bound to MainActivity at the same time named entity. MainActivity can bind multiple JavaBeans. Clazz binding is Class JavaBean class name data, name is named data, the relationship between them is in accordance with the order of the corresponding.
-@BindClass(clazz = {"com.blackchopper.demo_briefness.Entity"}, name = {"entity"})
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
-
-    //name = "entity" indicating that tv_test is bound to an object of com.blackchopper.demo_briefness.Entity named "entity".
-    //field = "username" indicates that tv_test is bound to the username field in the JavaBean. At the same time tv_view can not be empty, so you need @BindView.
-    //method = "setText" means that the data is bound using the setText method of tv_test, and the method of binding data common in Briefness has been implemented. Such as TextView, EditText, Button's setText method, and ImageView.setImageBitmap method.
-    //If there are some special View, Briefness did not bind successfully, or need a special method binding, you can create a package named briefness class called BriefnessInjector at the same time achieve Injector interface, unbound successful View Will be Inject (View view, Onject obj) callback.
-    //Such as ImageView binding String, the purpose is ImageView display pictures on the network, and Briefness no method to match, if the briefness.BriefnessInjector class exists, it will be exposed through this class, the binding process to achieve their own.
-    //alias = "user" means that when the alias field of the Briefness.bind object must be user to be successfully bound to tv_view, here we only bind two View, at the same time the two View binding data are in the same Object, so you do not need alias alias.
-    //So for the SDK comes with TextView, EditText, Button, ImageView and their subclasses do not need to specify the method.
-    //@BindField can be reduced to the following ways.
-
-    // @BindField(name = "entity", field = "username")
-    @BindField(name = "entity", field = "username", method = "setText", alias = "user")
-    @BindView(R.id.tv_test)
-    TextView tv_test;
-
-    @BindField(name = "entity", field = "password", method = "setText", alias = "user")
-    @BindView(R.id.tv_test1)
-    TextView tv_test1;
-    ...
-```
-```Java
-    //Binding data, some fields are empty nor null pointer exception occurs.
-    Briefness.bind(this, new Entity("Tom", "admin123", "user"));
-```
-
 Annotate Method that the parameter is View , and you don'd need to realize the method -- setOnClickListener(View.OnClickListener)
 ```Java
 @BindLayout(R.layout.activity_main)

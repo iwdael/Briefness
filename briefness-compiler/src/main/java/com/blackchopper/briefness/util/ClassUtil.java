@@ -1,11 +1,14 @@
 package com.blackchopper.briefness.util;
 
+import com.blackchopper.briefness.XmlInfo;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.FileReader;
 
 import static com.blackchopper.briefness.XmlInfo.SPLIT;
+import static com.blackchopper.briefness.XmlInfo.findMainModule;
 import static com.blackchopper.briefness.XmlInfo.readTextFile;
 
 /**
@@ -46,7 +49,7 @@ public class ClassUtil {
         if (qualifiedName.startsWith("android.")) {
             return qualifiedName;
         }
-        String module = System.getProperty("user.dir") + readTextFile(System.getProperty("user.dir") + "/BriefnessConfig") + SPLIT;
+        String module = findMainModule() + SPLIT;
         String path = qualifiedName.substring(0, qualifiedName.lastIndexOf(".")).replace(".", SPLIT);
         String clazzName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1);
         String file = module + "src/main/java/" + path + SPLIT + clazzName + ".java";
@@ -84,9 +87,9 @@ public class ClassUtil {
 
     public static String findLayoutById(String clazz) {
         String packageName = findPackageName();
-        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
+
         if (packageName.length() == 0) return "";
-        String R = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+        String R =findMainModule() + SPLIT
                 + "src/main/java/" + clazz.replace(".", "/") + ".java";
         R = R.replace("\\", "/");
         String content = readTextFile(R).replace(" ", "");
@@ -105,8 +108,8 @@ public class ClassUtil {
 
     public static String findPackageName() {
         String packageName = "";
-        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
-        String xml = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "AndroidManifest.xml";
+
+        String xml = findMainModule() + SPLIT + "src" + SPLIT + "main" + SPLIT + "AndroidManifest.xml";
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 
@@ -134,9 +137,9 @@ public class ClassUtil {
 
     public static String findViewById(String clazz, String fieldName) {
         String packageName = findPackageName();
-        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
+
         if (packageName.length() == 0) return "";
-        String R = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+        String R =findMainModule() + SPLIT
                 + "src/main/java/" + clazz.replace(".", "/") + ".java";
         R = R.replace("\\", "/");
         String content = readTextFile(R).replace(" ", "");
@@ -146,9 +149,9 @@ public class ClassUtil {
 
     public static String[] findViewsById(String clazz, String fieldName) {
         String packageName = findPackageName();
-        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
+
         if (packageName.length() == 0) return new String[]{};
-        String R = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+        String R = findMainModule()+ SPLIT
                 + "src/main/java/" + clazz.replace(".", "/") + ".java";
         R = R.replace("\\", "/");
         String content = readTextFile(R).replace(" ", "");

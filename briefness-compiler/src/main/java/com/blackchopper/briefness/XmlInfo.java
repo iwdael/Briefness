@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.blackchopper.briefness.databinding.XmlBind;
+import com.blackchopper.briefness.util.Logger;
 
 
 /**
@@ -33,8 +34,6 @@ public class XmlInfo {
     public static final String include = "include";
     public static final String layout = "layout";
     public static final String SPLIT = "/";
-    public String packageName;
-    public String module;
 
     public String xml;
 
@@ -43,8 +42,7 @@ public class XmlInfo {
 
 
     public XmlInfo(String path) {
-        module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
-        xml = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
+        xml = findMainModule() + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
         parserXml(path);
 
     }
@@ -72,7 +70,7 @@ public class XmlInfo {
 
     private void parserXml(String path) {
         try {
-            String xmlName = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
+            String xmlName = findMainModule() + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             // 获得xml解析类的引用
@@ -212,4 +210,18 @@ public class XmlInfo {
     }
 
 
+    public  static String findMainModule() {
+        File dir = new File(System.getProperty("user.dir") + SPLIT);
+        Logger.v("dir:" + dir.getAbsolutePath());
+        File[] modules = dir.listFiles();
+        for (File module : modules) {
+            if (!module.isDirectory()) continue;
+            if (!new File(module.getAbsoluteFile() + "/build.gradle").exists()) continue;
+            if (readTextFile(module.getAbsolutePath() + "/build.gradle").replace(" ", "").contains("applyplugin:'com.android.application'")) {
+                Logger.v("main module: " + module.getAbsolutePath());
+                return module.getAbsolutePath();
+            }
+        }
+        return "";
+    }
 }
