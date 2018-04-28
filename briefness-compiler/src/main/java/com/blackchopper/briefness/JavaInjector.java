@@ -7,6 +7,7 @@ import com.blackchopper.briefness.util.FileUtil;
 import java.io.File;
 
 import static com.blackchopper.briefness.XmlInfo.SPLIT;
+import static com.blackchopper.briefness.XmlInfo.findMainModule;
 import static com.blackchopper.briefness.XmlInfo.readTextFile;
 
 /**
@@ -112,10 +113,7 @@ public class JavaInjector {
 
     public void witeCode() {
 
-
-        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
-
-        String java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+        String java =findMainModule()+ SPLIT
                 + "src/main/java/"
                 + PACKAGE_NAME.replace(".", "/")
                 + "/briefness/ViewInjector.java";
@@ -124,30 +122,30 @@ public class JavaInjector {
             FileUtil.createFile(java, BRIEFNESS_INJECTOR);
     }
 
-    public boolean isBriefnessInjectorExits() {
-        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
-
-        String java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                + "build/generated/source/apt/debug/"
-                + "com.blackchopper.briefness".replace(".", "/")
-                + "/BriefnessInjector.java";
-        boolean flag;
-        if (new File(java).exists()) {
-            flag = true;
-        } else {
-            flag = false;
-        }
-        java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
-                + "build/generated/source/apt/release/"
-                + "com.blackchopper.briefness".replace(".", "/")
-                + "/BriefnessInjector.java";
-        if (new File(java).exists()) {
-            flag = true | flag;
-        } else {
-            flag = false | flag;
-        }
-        return flag;
-    }
+//    public boolean isBriefnessInjectorExits() {
+//        String module = readTextFile(System.getProperty("user.dir") + "/BriefnessConfig");
+//
+//        String java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+//                + "build/generated/source/apt/debug/"
+//                + "com.blackchopper.briefness".replace(".", "/")
+//                + "/BriefnessInjector.java";
+//        boolean flag;
+//        if (new File(java).exists()) {
+//            flag = true;
+//        } else {
+//            flag = false;
+//        }
+//        java = System.getProperty("user.dir") + SPLIT + module.replace(" ", "").replace("/", "") + SPLIT
+//                + "build/generated/source/apt/release/"
+//                + "com.blackchopper.briefness".replace(".", "/")
+//                + "/BriefnessInjector.java";
+//        if (new File(java).exists()) {
+//            flag = true | flag;
+//        } else {
+//            flag = false | flag;
+//        }
+//        return flag;
+//    }
 
     public String getBriefnessInjectorCode() {
         StringBuilder builder = new StringBuilder();

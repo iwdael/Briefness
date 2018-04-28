@@ -17,7 +17,6 @@ public class Briefness {
         return bind(target, target);
     }
 
-
     public static Briefnessor bind(Object target, Object source) {
         Briefnessor proxyActivity = findProxyActivity(target);
         if (proxyActivity != null)
