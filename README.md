@@ -48,21 +48,21 @@ public class MainActivity extends Activity {
     android:layout_height="match_parent"
     android:orientation="vertical"
     briefness:imports="com.blackchopper.demo_briefness.Entity,entity;com.blackchopper.demo_briefness.Entity,alisa;">
-    //briefness:imports 导入需要和布局绑定的数据类型。绑定多个类型用分隔开。用逗号隔开数据类型和类型别名。
+    //briefness:imports Import the data types that need to be bound to the layout. Bind multiple types with separate. Separate data types and type aliases with commas.
 
-    //briefness:bind 绑定数据，如果是特殊控件(例如自定义View)，也可以把方法绑定上。如果需要绑定多个类型数据，需要用分号隔开。注意：如果没有补全方法，请不要添加分号，同时也只能设置一种数据。下面是几种常见的写法
+    //briefness:bind Bind data, if it is a special control (such as custom View), you can also bind methods. If you need to bind more than one type of data, separate them with semicolons. Note: If you do not have a completion method, do not add a semicolon. You can also set only one type of data. Here are some common ways of writing.
     //briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
     //briefness:bind="setText(@{entity.username});setText(@{alisa.username});"
     //briefness:bind="setText(@{entity.username});"
     //briefness:bind="@{entity.username}"
 
-    //briefness:click 绑定点击事件,以分号结尾,同时也可以使用绑定的类中的变量。
+    //briefness:click Bind click events, ending with a semicolon, and you can also use variables in the bound class.
     //briefness:click="onClick(v);onTestClick(v);"
     //briefness:click="onClick(v);"
     //briefness:click="message.test();"
 
 
-    //briefness:longclick 绑定点击事件,以分号结尾,同时也可以使用绑定的类中的变量。
+    //briefness:longclick Bind click events, ending with a semicolon, and you can also use variables in the bound class.
     //briefness:longclick="onClick(v);onTestClick(v);"
     //briefness:longclick="onClick(v);"
     //briefness:longclick="message.test();"
