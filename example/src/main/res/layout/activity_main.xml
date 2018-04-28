@@ -6,16 +6,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     briefness:imports="com.blackchopper.demo_briefness.Entity,entity;com.blackchopper.demo_briefness.Entity,alisa;">
+    //briefness:imports 导入需要和布局绑定的数据类型。绑定多个类型用分隔开。用逗号隔开数据类型和类型别名。
 
+    //briefness:bind 绑定数据，如果是特殊控件(例如自定义View)，也可以把方法绑定上。如果需要绑定多个类型数据，需要用分号隔开。注意：如果没有补全方法，请不要添加分号，同时也只能设置一种数据。下面是几种常见的写法
+    //briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
+    //briefness:bind="setText(@{entity.username});setText(@{alisa.username});"
+    //briefness:bind="setText(@{entity.username});"
+    //briefness:bind="@{entity.username}"
+
+    //briefness:click 绑定点击事件,以分号结尾,同时也可以使用绑定的类中的变量。
+    //briefness:click="onClick(v);onTestClick(v);"
+    //briefness:click="onClick(v);"
+    //briefness:click="message.test();"
+
+
+    //briefness:longclick 绑定点击事件,以分号结尾,同时也可以使用绑定的类中的变量。
+    //briefness:longclick="onClick(v);onTestClick(v);"
+    //briefness:longclick="onClick(v);"
+    //briefness:longclick="message.test();"
     <TextView
         android:id="@+id/tv_test"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World ONE"
         android:textSize="20sp"
+        briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
+        briefness:click="message.test();"
         tools:ignore="MissingPrefix" />
-
-    <include layout="@layout/include_recyclerview" />
 
     <TextView
         android:id="@+id/tv_test1"
@@ -23,9 +40,9 @@
         android:layout_height="wrap_content"
         android:text="Hello World TWO"
         android:textSize="20sp"
+        briefness:longclick="onClick(v);onTestClick(v);"
         briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
         briefness:click="onClick(v);onTestClick(v);"
         tools:ignore="MissingPrefix" />
-
 
 </LinearLayout>

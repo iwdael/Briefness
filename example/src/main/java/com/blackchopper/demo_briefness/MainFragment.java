@@ -25,6 +25,7 @@ public class MainFragment extends Fragment {
     TextView tv_test2;
     @BindView(R.id.tv_test)
     TextView tv_test3;
+    public Message message;
 
 
     public void onClick(View v) {

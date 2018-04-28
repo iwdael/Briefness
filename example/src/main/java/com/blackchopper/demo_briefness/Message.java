@@ -36,4 +36,8 @@ public class Message {
     public String getAlias() {
         return alias;
     }
+
+    public void test(){
+
+    }
 }

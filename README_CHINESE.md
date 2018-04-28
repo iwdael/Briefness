@@ -5,132 +5,92 @@ Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：fin
 ### 代码示例
 在你需要使用Briefness之前，先把它绑定到Activity，如果是多个Activity都需要使用，可以在基类中绑定。
 ```Java
-public class BaseActivity extends Activity {
+@BindLayout(R.layout.activity_main)
+public class MainActivity extends Activity {
+    //此类会根据绑定的类自动生成，以绑定的类名加上Briefnessor 命名。
+    private MainActivityBriefnessor briefnessor;
+
+    @BindView(R.id.tv_test)
+    TextView tv_test;
+    @BindViews({R.id.tv_test, R.id.tv_test1})
+    TextView[] textViews;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Briefness.bind(this);
-        ...
+        //此方法必不可少
+        briefnessor = (MainActivityBriefnessor) Briefness.bind(this);
     }
-    ...
-}
-```
-@BindLayout可以代替setContentView(int)方法，在一些特定的场景更加方便。
-```Java
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
-...
-
-}
-
-```
-@BindLayout可以代替findViewById(int)，是代码更加简洁。
-```Java
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
-    @BindView(R.id.tv_test)
-    TextView textView;
-    ...
-}
-```
-```Java
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
-    @BindViews({R.id.tv_test,R.id.tv_test1,R.id.tv_test2})
-    TextView[] textViews;
-    ...
-}
-```
-@BindField和@BindClass组合使用实现绑定数据，目前只支持JavaBean对象绑定，后面会支持更多的数据类型。@BindClass将需要绑定的数据类型绑定到当前类，@BindField将View绑定到JavaBean中的字段。通过Briefness.bind(this,JavaBean)方法绑定数据。注意：JavaBean中需要绑定的字段都必须有标准的get方法，同时View对象不能为空，建议和@BindView组合使用。
-<br>若同一类型，需要绑定不同的View集合，则可以采用别名的方式，同样，JavaBean中必须有alias的String字段，并有getAlias()方法。
-<br>若绑定的View为自定义控件，则需要设置绑定方法。
-```Java
-package com.blackchopper.demo_briefness
-public class Entity {
-    private String username;
-    private String password;
-    //此字段为别名字段，当Activity等类中，Entity的对象需要绑定不同的View集合时，需要别名字段，若只有一个View集合则不需要。
-    private String alias;
-
-    public Entity(String username, String password, String alias) {
-        this.username = username;
-        this.password = password;
-        this.alias = alias;
+    //布局绑定的点击事件
+    public void onClick(View v) {
     }
 
-    public String getUsername() {
-        return username;
+    //布局绑定的点击事件
+    public void onTestClick(View v) {
     }
 
-    public String getPassword() {
-        return password;
+    //绑定单个View
+    @BindClick(R.id.tv_test)
+    public void click(View view) {
+        briefnessor.setAlisa(new Entity());
+        briefnessor.setEntity(new Entity());
     }
+    //绑定多个View
+    @BindClick({R.id.tv_test, R.id.tv_test1})
+    public void clicks(View view) {
 
-    public String getAlias() {
-        return alias;
     }
 }
 ```
 ```Java
-//将Entity绑定到MainActivity中，同时命名为entity。MainActivity可以绑定多个JavaBean。clazz绑定的是Class的JavaBean的全类名数据，name则是命名数据，他们之间的关系是按照顺序一一对应的。
-@BindClass(clazz = {"com.blackchopper.demo_briefness.Entity"}, name = {"entity"})
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:briefness="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    briefness:imports="com.blackchopper.demo_briefness.Entity,entity;com.blackchopper.demo_briefness.Entity,alisa;">
+    //briefness:imports 导入需要和布局绑定的数据类型。绑定多个类型用分隔开。用逗号隔开数据类型和类型别名。
 
-    //name = "entity",表示tv_test与命名为"entity"的com.blackchopper.demo_briefness.Entity的对象绑定。
-    //field = "username"，表示tv_test与JavaBean中的username字段绑定。同时tv_view不能为空，所以需要@BindView。
-    //method = "setText",表示使用tv_test的setText方法绑定数据，这里省略不写，在Briefness中常见的绑定数据的方法已经实现。比如TextView、EditText、Button的setText方法，以及ImageView.setImageBitmap方法。
-    //如果有一些特殊的View，Briefness没有绑定成功，或者需要特殊方法绑定，则可以建立包名为com.blackchopper.briefness，类名为BriefnessInjector的类，同时实现Injector接口，未绑定成功的View都会通过Inject(View view,Onject obj)回调。
-    //比如ImageView绑定String，其目的是ImageView展示网络上的图片，而Briefness没有方法可以匹配，如果com.blackchopper.briefness.BriefnessInjector类存在，则会通过这个类暴露出来，自行实现绑定过程。
-    //alias = "user" 表示当Briefness.bind的对象的alias字段必须为user才能成功绑定到tv_view,这里我们只绑定了两个View，同时这两个View绑定所需的数据均在同一个对象中，所以不需要别名alias。
-    //所以对于SDK自带的TextView、EditText、Button，ImageView以及他们的子类不需要指定method。
-    //@BindField可以简化为以下方式。
+    //briefness:bind 绑定数据，如果是特殊控件(例如自定义View)，也可以把方法绑定上。如果需要绑定多个类型数据，需要用分号隔开。注意：如果没有补全方法，请不要添加分号，同时也只能设置一种数据。下面是几种常见的写法
+    //briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
+    //briefness:bind="setText(@{entity.username});setText(@{alisa.username});"
+    //briefness:bind="setText(@{entity.username});"
+    //briefness:bind="@{entity.username}"
 
-    // @BindField(name = "entity", field = "username")
-    @BindField(name = "entity", field = "username", method = "setText", alias = "user")
-    @BindView(R.id.tv_test)
-    TextView tv_test;
+    //briefness:click 绑定点击事件,以分号结尾,同时也可以使用绑定的类中的变量。
+    //briefness:click="onClick(v);onTestClick(v);"
+    //briefness:click="onClick(v);"
+    //briefness:click="message.test();"
 
-    @BindField(name = "entity", field = "password", method = "setText", alias = "user")
-    @BindView(R.id.tv_test1)
-    TextView tv_test1;
-    ...
-```
-```Java
-    //绑定数据，某些字段为空也不会出现空指针异常。
-    Briefness.bind(this, new Entity("Tom", "admin123", "user"));
-```
 
-@BindClick可以代替setOnClickListener(View.OnClickListener)，并且它支持绑定单个或多个Id。
-```Java
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
-    @BindView(R.id.tv_test)
-    TextView textView;
-    ...
-    @BindClick({R.id.tv_test, R.id.tv_test1})//parameter is a array
-    public void onClick(View view) {
-    .....
-    }
-}
+    //briefness:longclick 绑定点击事件,以分号结尾,同时也可以使用绑定的类中的变量。
+    //briefness:longclick="onClick(v);onTestClick(v);"
+    //briefness:longclick="onClick(v);"
+    //briefness:longclick="message.test();"
+    <TextView
+        android:id="@+id/tv_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World ONE"
+        android:textSize="20sp"
+        briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
+        briefness:click="message.test();"
+        tools:ignore="MissingPrefix" />
 
-```
-在Fragment使用也是类似的，只有绑定的时候有区别。Briefness.bind(this, view)。this可以为fragment,也可以是Activity，甚至是一些类都可以，但是参数view对象必须View类的子类。
-```Java
-public abstract class BaseFragment extends Fragment {
+    <TextView
+        android:id="@+id/tv_test1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World TWO"
+        android:textSize="20sp"
+        briefness:longclick="onClick(v);onTestClick(v);"
+        briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
+        briefness:click="onClick(v);onTestClick(v);"
+        tools:ignore="MissingPrefix" />
 
-    @BindViews({R.id.tv_test, R.id.tv_test1})
-    TextView[] list;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(onAttachLaoutRes(), null);
-	...
-        Briefness.bind(this, view);
-   	...
-        return view;
-    }
-}
+</LinearLayout>
 ```
 ## 如何配置
 将本仓库引入你的项目:

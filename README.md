@@ -5,95 +5,90 @@ Briefness can simplify development and remove some repetitive and boring jobs.[�
 ### Code Sample
 You should initialize briefness before you used it in activity. If many activity requires briefness , you'd better initialize briefness in baseactivity.
 ```Java
-public class BaseActivity extends Activity {
+@BindLayout(R.layout.activity_main)
+public class MainActivity extends Activity {
+    //This class is automatically generated based on the bound class, named after the bound class name plus Briefnessor.
+    private MainActivityBriefnessor briefnessor;
+
+    @BindView(R.id.tv_test)
+    TextView tv_test;
+    @BindViews({R.id.tv_test, R.id.tv_test1})
+    TextView[] textViews;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Briefness.bind(this);
-        ...
-    }
-    ...
-}
-```
-Annotate class that extend Activity , and you don'd need to realize the method -- setContentView(int)
-```Java
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
-...
-
-}
-
-```
-Annotate Field that extend View , and you don'd need to realize the method -- findViewById(int)
-```Java
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
-    @BindView(R.id.tv_test)
-    TextView textView;
-    ...
-}
-```
-```Java
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
-    @BindViews({R.id.tv_test,R.id.tv_test1,R.id.tv_test2})
-    TextView[] textViews;
-    ...
-}
-```
-```Java
-package com.blackchopper.demo_briefness
-public class Entity {
-    private String username;
-    private String password;
-
-    public Entity(String username, String password) {
-        this.username = username;
-        this.password = password;
+        briefnessor = (MainActivityBriefnessor) Briefness.bind(this);
     }
 
-    public String getUsername() {
-        return username;
+    public void onClick(View v) {
     }
 
-    public String getPassword() {
-        return password;
+    public void onTestClick(View v) {
     }
-}
 
-```
-Annotate Method that the parameter is View , and you don'd need to realize the method -- setOnClickListener(View.OnClickListener)
-```Java
-@BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
-    @BindView(R.id.tv_test)
-    TextView textView;
-    ...
-    @BindClick({R.id.tv_test, R.id.tv_test1})//parameter is a array
-    public void onClick(View view) {
-    .....
+    @BindClick(R.id.tv_test)
+    public void click(View view) {
+        briefnessor.setAlisa(new Entity());
+        briefnessor.setEntity(new Entity());
     }
-}
 
-```
-Fragment is also used in a similar way, in addition to binding layout. There are a little different.
-```Java
-public abstract class BaseFragment extends Fragment {
+    @BindClick({R.id.tv_test, R.id.tv_test1})
+    public void clicks(View view) {
 
-    @BindViews({R.id.tv_test, R.id.tv_test1})
-    TextView[] list;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(onAttachLaoutRes(), null);
-	...
-        Briefness.bind(this, view);
-   	...
-        return view;
     }
 }
 ```
- 
+```Java
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:briefness="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    briefness:imports="com.blackchopper.demo_briefness.Entity,entity;com.blackchopper.demo_briefness.Entity,alisa;">
+    //briefness:imports 导入需要和布局绑定的数据类型。绑定多个类型用分隔开。用逗号隔开数据类型和类型别名。
+
+    //briefness:bind 绑定数据，如果是特殊控件(例如自定义View)，也可以把方法绑定上。如果需要绑定多个类型数据，需要用分号隔开。注意：如果没有补全方法，请不要添加分号，同时也只能设置一种数据。下面是几种常见的写法
+    //briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
+    //briefness:bind="setText(@{entity.username});setText(@{alisa.username});"
+    //briefness:bind="setText(@{entity.username});"
+    //briefness:bind="@{entity.username}"
+
+    //briefness:click 绑定点击事件,以分号结尾,同时也可以使用绑定的类中的变量。
+    //briefness:click="onClick(v);onTestClick(v);"
+    //briefness:click="onClick(v);"
+    //briefness:click="message.test();"
+
+
+    //briefness:longclick 绑定点击事件,以分号结尾,同时也可以使用绑定的类中的变量。
+    //briefness:longclick="onClick(v);onTestClick(v);"
+    //briefness:longclick="onClick(v);"
+    //briefness:longclick="message.test();"
+    <TextView
+        android:id="@+id/tv_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World ONE"
+        android:textSize="20sp"
+        briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
+        briefness:click="message.test();"
+        tools:ignore="MissingPrefix" />
+
+    <TextView
+        android:id="@+id/tv_test1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World TWO"
+        android:textSize="20sp"
+        briefness:longclick="onClick(v);onTestClick(v);"
+        briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
+        briefness:click="onClick(v);onTestClick(v);"
+        tools:ignore="MissingPrefix" />
+
+</LinearLayout>
+```
 ## How to
 To get a Git project into your build:
 ### Step 1. Add the JitPack repository to your build file
