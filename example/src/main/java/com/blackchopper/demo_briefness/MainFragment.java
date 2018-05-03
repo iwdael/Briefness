@@ -34,4 +34,8 @@ public class MainFragment extends Fragment {
     public void onTestClick(View v) {
 
     }
+
+    public void OnClick(String username) {
+
+    }
 }

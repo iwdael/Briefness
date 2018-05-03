@@ -109,8 +109,8 @@ public class MainActivity extends Activity {
 ```Java
 	dependencies {
                 ...
-          compile 'com.github.blackchopper.briefness:briefness:v1.6.0'
-    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.6.0'
+          compile 'com.github.blackchopper.briefness:briefness:v1.6.1'
+    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.6.1'
 	}
 ```
 <br><br><br>
