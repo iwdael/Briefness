@@ -184,10 +184,9 @@ public class XmlInfo {
                     }
                 }
                 builder.append(click).append(";");
-
             }
         } else {
-
+            builder.append(source).append(";");
         }
         return builder.toString();
     }
