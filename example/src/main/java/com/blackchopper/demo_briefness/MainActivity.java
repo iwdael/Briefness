@@ -47,4 +47,8 @@ public class MainActivity extends Activity {
     public void clicks(View view) {
 
     }
+
+    public void OnClick(String username) {
+
+    }
 }

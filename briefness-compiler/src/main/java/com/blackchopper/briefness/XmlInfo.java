@@ -111,16 +111,17 @@ public class XmlInfo {
                                     info.ID = id2String(value);
                                 }
                                 if (name.equalsIgnoreCase(click)) {
-                                    info.click = value;
+                                    info.click = click2String(value);
                                 }
                                 if (name.equalsIgnoreCase(longclick)) {
-                                    info.longClick = value;
+                                    info.longClick = click2String(value);
                                 }
                                 if (name.equalsIgnoreCase(touch)) {
                                     info.touch = value;
                                 }
                                 if (name.equalsIgnoreCase(bind)) {
                                     info.bind = bind2String(value);
+                                    info.bindSource = value;
                                 }
                                 if (name.equalsIgnoreCase(action)) {
                                     info.action = value;
@@ -156,35 +157,68 @@ public class XmlInfo {
         return target;
     }
 
+    private String click2String(String source) {
+        StringBuilder builder = new StringBuilder();
+        if (source.endsWith(";")) {
+            String[] clicks = source.split(";");
+            for (String click : clicks) {
+                if (click.contains("$")) {
+                    int index = 0;
+                    while (true) {
+                        int start = click.indexOf("$", index) + 1;
+                        if (start == -1) break;
+                        int end = click.indexOf("$", start);
+                        if (end == -1) break;
+                        index = end + 1;
+                        String var = click.substring(start, end);
+                        if (var.lastIndexOf(".") == -1) {
+                            click = click.substring(0, start - 1) + var + ".getText().toString()" + click.substring(end + 1, click.length());
+//                            builder.append().append().append().append(";");
+                        } else {
+                            String startStr = var.substring(0, var.lastIndexOf("."));
+                            String endStr = var.substring(var.lastIndexOf(".") + 1);
+                            String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
+//                            builder.append(click.substring(0, start - 1)).append(method).append(click.substring(end + 1, click.length())).append(";");
+                            click = click.substring(0, start - 1) + method + click.substring(end + 1, click.length());
+                        }
+                    }
+                }
+                builder.append(click).append(";");
+
+            }
+        } else {
+
+        }
+        return builder.toString();
+    }
+
     private String bind2String(String source) {
-
-
         StringBuilder builder = new StringBuilder();
         if (source.endsWith(";")) {
             String[] binds = source.split(";");
             for (String bind : binds) {
-                if (bind.contains("@{")) {
-                    int start = bind.indexOf("@{") + 2;
-                    int end = bind.indexOf("}");
+                if (bind.contains("$")) {
+                    int start = bind.indexOf("$") + 1;
+                    int end = bind.indexOf("$", start);
                     String var = bind.substring(start, end);
                     String startStr = var.substring(0, var.lastIndexOf("."));
                     String endStr = var.substring(var.lastIndexOf(".") + 1);
                     String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
-                    builder.append(bind.substring(0, start - 2)).append(method).append(bind.substring(end + 1, bind.length())).append(";");
+                    builder.append(bind.substring(0, start - 1)).append(method).append(bind.substring(end + 1, bind.length())).append(";");
                 } else {
                     builder.append(bind).append(";");
                 }
             }
         } else {
             String bind = source;
-            int start = bind.indexOf("@{") + 2;
-            int end = bind.indexOf("}");
+            int start = bind.indexOf("$") + 1;
+            int end = bind.indexOf("$", start);
             String var = bind.substring(start, end);
             String startStr = var.substring(0, var.lastIndexOf("."));
             String endStr = var.substring(var.lastIndexOf(".") + 1);
             String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
-            builder.append(bind.substring(0, start - 2)).append(method).append(bind.substring(end + 1, bind.length()));
-            if (!source.endsWith("}")) builder.append(";");
+            builder.append(bind.substring(0, start - 1)).append(method).append(bind.substring(end + 1, bind.length()));
+            if (!source.endsWith("$")) builder.append(";");
         }
 
         return builder.toString();
@@ -210,7 +244,7 @@ public class XmlInfo {
     }
 
 
-    public  static String findMainModule() {
+    public static String findMainModule() {
         File dir = new File(System.getProperty("user.dir") + SPLIT);
         Logger.v("dir:" + dir.getAbsolutePath());
         File[] modules = dir.listFiles();

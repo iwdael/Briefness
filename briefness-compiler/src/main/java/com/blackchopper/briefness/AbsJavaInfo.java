@@ -140,14 +140,14 @@ public abstract class AbsJavaInfo {
         for (Map.Entry<int[], Element> entry : bindClick.entrySet()) {
             for (int id : entry.getKey()) {
                 if (isActivity)
-                    builder.append("host.findViewById(").append(id + ").setOnClickListener(new View.OnClickListener() {\n");
+                    builder.append("        host.findViewById(").append(id + ").setOnClickListener(new View.OnClickListener() {\n");
                 else
-                    builder.append("view.findViewById(").append(id + ").setOnClickListener(new View.OnClickListener() {\n");
-                builder.append("@Override\n");
-                builder.append("public void onClick(View view) {\n");
-                builder.append("host.").append(entry.getValue().getSimpleName()).append("(view);\n");
-                builder.append("}\n");
-                builder.append(" });\n");
+                    builder.append("        view.findViewById(").append(id + ").setOnClickListener(new View.OnClickListener() {\n");
+                builder.append("            @Override\n");
+                builder.append("            public void onClick(View view) {\n");
+                builder.append("                host.").append(entry.getValue().getSimpleName()).append("(view);\n");
+                builder.append("            }\n");
+                builder.append("        });\n");
             }
         }
     }

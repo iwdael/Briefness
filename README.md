@@ -52,9 +52,9 @@ public class MainActivity extends Activity {
 
     //briefness:bind Bind data, if it is a special control (such as custom View), you can also bind methods. If you need to bind more than one type of data, separate them with semicolons. Note: If you do not have a completion method, do not add a semicolon. You can also set only one type of data. Here are some common ways of writing.
     //briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
-    //briefness:bind="setText(@{entity.username});setText(@{alisa.username});"
-    //briefness:bind="setText(@{entity.username});"
-    //briefness:bind="@{entity.username}"
+    //briefness:bind="setText($entity.username$);setText($alisa.username$);"
+    //briefness:bind="setText($entity.username$);"
+    //briefness:bind="$entity.username$"
 
     //briefness:click Bind click events, ending with a semicolon, and you can also use variables in the bound class.
     //briefness:click="onClick(v);onTestClick(v);"
@@ -106,8 +106,8 @@ Add it in your application module build.gradle at the end of dependencies where 
  ```Java
  	dependencies {
           ...
-          compile 'com.github.blackchopper.briefness:briefness:v1.5.9'
-    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.5.9'
+          compile 'com.github.blackchopper.briefness:briefness:v1.6.0'
+    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.6.0'
  	}
  ```
 <br><br><br>

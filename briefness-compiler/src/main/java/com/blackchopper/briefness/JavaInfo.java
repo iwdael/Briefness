@@ -62,9 +62,18 @@ public class JavaInfo extends AbsJavaInfo {
                 if (info.bind == null) continue;
                 if (info.bind.endsWith(";")) {
                     String[] method = info.bind.split(";");
-                    for (String s : method) {
-                        if (s.contains(bind.name))
-                            builder.append("        ").append(info.ID).append(".").append(s).append(";\n");
+                    String[] methodSource = info.bindSource.split(";");
+                    for (int i = 0; i < method.length; i++) {
+                        if (method[i].contains(bind.name)) {
+                            if (methodSource[i].endsWith(")")){
+                                builder.append("        ").append(info.ID).append(".").append(method[i]).append(";\n");
+                            }else {
+                                if (!importBuilder.toString().contains("com.blackchopper.briefness.BriefnessInjector"))
+                                    importBuilder.append("import com.blackchopper.briefness.BriefnessInjector;\n");
+                                builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(method[i]).append(");\n");
+                            }
+                        }
+
                     }
                 } else {
                     if (!importBuilder.toString().contains("com.blackchopper.briefness.BriefnessInjector"))

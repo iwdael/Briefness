@@ -55,9 +55,9 @@ public class MainActivity extends Activity {
 
     //briefness:bind 绑定数据，如果是特殊控件(例如自定义View)，也可以把方法绑定上。如果需要绑定多个类型数据，需要用分号隔开。注意：如果没有补全方法，请不要添加分号，同时也只能设置一种数据。下面是几种常见的写法
     //briefness:bind="setText(entity.getUsername());setText(alisa.getUsername());"
-    //briefness:bind="setText(@{entity.username});setText(@{alisa.username});"
-    //briefness:bind="setText(@{entity.username});"
-    //briefness:bind="@{entity.username}"
+    //briefness:bind="setText($entity.username$);setText($alisa.username$);"
+    //briefness:bind="setText($entity.username$);"
+    //briefness:bind="$entity.username$"
 
     //briefness:click 绑定点击事件,以分号结尾,同时也可以使用绑定的类中的变量。
     //briefness:click="onClick(v);onTestClick(v);"
@@ -109,8 +109,8 @@ public class MainActivity extends Activity {
 ```Java
 	dependencies {
                 ...
-          compile 'com.github.blackchopper.briefness:briefness:v1.5.9'
-    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.5.9'
+          compile 'com.github.blackchopper.briefness:briefness:v1.6.0'
+    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.6.0'
 	}
 ```
 <br><br><br>

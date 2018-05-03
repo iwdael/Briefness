@@ -13,6 +13,7 @@ public class XmlViewInfo {
     public String touch;
     public String view;
     public String bind;
+    public String bindSource;
     public String action;
     public String clazz;
 
