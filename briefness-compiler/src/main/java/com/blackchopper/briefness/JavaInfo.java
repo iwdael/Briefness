@@ -57,6 +57,7 @@ public class JavaInfo extends AbsJavaInfo {
                 importBuilder.append("import " + bind.clazz).append(";\n");
             fieldBuilder.append("    ").append(bindclazz).append(" ").append(bind.name).append(";\n");
             builder.append("\n    public void set" + bind.name.substring(0, 1).toUpperCase() + bind.name.substring(1) + "(" + bindclazz + " " + bind.name + ") {\n");
+            builder.append("        if ("+bind.name+" == null) return;\n");
             builder.append("        this.").append(bind.name).append(" = ").append(bind.name).append(";\n");
             for (XmlViewInfo info : bind.list) {
                 if (info.bind == null) continue;
@@ -65,9 +66,9 @@ public class JavaInfo extends AbsJavaInfo {
                     String[] methodSource = info.bindSource.split(";");
                     for (int i = 0; i < method.length; i++) {
                         if (method[i].contains(bind.name)) {
-                            if (methodSource[i].endsWith(")")){
+                            if (methodSource[i].endsWith(")")) {
                                 builder.append("        ").append(info.ID).append(".").append(method[i]).append(";\n");
-                            }else {
+                            } else {
                                 if (!importBuilder.toString().contains("com.blackchopper.briefness.BriefnessInjector"))
                                     importBuilder.append("import com.blackchopper.briefness.BriefnessInjector;\n");
                                 builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(method[i]).append(");\n");

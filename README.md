@@ -106,8 +106,8 @@ Add it in your application module build.gradle at the end of dependencies where 
  ```Java
  	dependencies {
           ...
-          compile 'com.github.blackchopper.briefness:briefness:v1.6.1'
-    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.6.1'
+          compile 'com.github.blackchopper.briefness:briefness:v1.6.2'
+    	  annotationProcessor 'com.github.blackchopper.briefness:briefness-compiler:v1.6.2'
  	}
  ```
 <br><br><br>
