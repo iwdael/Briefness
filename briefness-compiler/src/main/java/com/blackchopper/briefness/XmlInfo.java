@@ -257,4 +257,26 @@ public class XmlInfo {
         }
         return "";
     }
+
+
+    public static String specialBind2String(String source) {
+        int start = source.indexOf('$') + 1;
+        int end = source.lastIndexOf("$");
+
+        String methodSource = source.substring(start, end);
+
+        int dot = methodSource.indexOf(".");
+
+        String method = methodSource.substring(0, dot) + ".get(\"" + methodSource.substring(dot + 1, methodSource.length()) + "\")";
+
+        String result = source.substring(0, start-1) + method + source.substring(end+1, source.length());
+
+        return result;
+    }
+
+
+    public static void main(String[] a) {
+        specialBind2String("$user.info$");
+    }
+
 }

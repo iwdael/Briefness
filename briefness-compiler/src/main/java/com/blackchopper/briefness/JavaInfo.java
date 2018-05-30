@@ -53,11 +53,15 @@ public class JavaInfo extends AbsJavaInfo {
         List<XmlBind> binds = proxyInfo.getBinds();
         for (XmlBind bind : binds) {
             String bindclazz = bind.clazz.substring(bind.clazz.lastIndexOf(".") + 1);
+            boolean special = false;
+            if (bind.clazz.equalsIgnoreCase("android.os.Bundle") | bind.clazz.equalsIgnoreCase("java.util.Map")) {
+                special = true;
+            }
             if (!importBuilder.toString().contains(bind.clazz))
                 importBuilder.append("import " + bind.clazz).append(";\n");
             fieldBuilder.append("    ").append(bindclazz).append(" ").append(bind.name).append(";\n");
             builder.append("\n    public void set" + bind.name.substring(0, 1).toUpperCase() + bind.name.substring(1) + "(" + bindclazz + " " + bind.name + ") {\n");
-            builder.append("        if ("+bind.name+" == null) return;\n");
+            builder.append("        if (" + bind.name + " == null) return;\n");
             builder.append("        this.").append(bind.name).append(" = ").append(bind.name).append(";\n");
             for (XmlViewInfo info : bind.list) {
                 if (info.bind == null) continue;
@@ -67,11 +71,19 @@ public class JavaInfo extends AbsJavaInfo {
                     for (int i = 0; i < method.length; i++) {
                         if (method[i].contains(bind.name)) {
                             if (methodSource[i].endsWith(")")) {
-                                builder.append("        ").append(info.ID).append(".").append(method[i]).append(";\n");
+                                if (special) {
+                                    builder.append("        ").append(info.ID).append(".").append(XmlInfo.specialBind2String(methodSource[i])).append(";\n");
+                                } else {
+                                    builder.append("        ").append(info.ID).append(".").append(method[i]).append(";\n");
+                                }
                             } else {
                                 if (!importBuilder.toString().contains("com.blackchopper.briefness.BriefnessInjector"))
                                     importBuilder.append("import com.blackchopper.briefness.BriefnessInjector;\n");
-                                builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(method[i]).append(");\n");
+                                if (special) {
+                                    builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(XmlInfo.specialBind2String(methodSource[i])).append(");\n");
+                                } else {
+                                    builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(method[i]).append(");\n");
+                                }
                             }
                         }
 
@@ -79,7 +91,11 @@ public class JavaInfo extends AbsJavaInfo {
                 } else {
                     if (!importBuilder.toString().contains("com.blackchopper.briefness.BriefnessInjector"))
                         importBuilder.append("import com.blackchopper.briefness.BriefnessInjector;\n");
-                    builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
+                    if (special) {
+                        builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(XmlInfo.specialBind2String(info.bindSource)).append(");\n");
+                    } else {
+                        builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
+                    }
                 }
             }
             builder.append("    }\n");
