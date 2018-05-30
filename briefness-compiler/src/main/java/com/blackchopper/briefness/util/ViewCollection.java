@@ -22,7 +22,7 @@ public class ViewCollection {
             }
 
         }
-        String webkit="";
+        String webkit = "android.webkit." + name;
         for (String s : WEBKITS) {
             if (s.equalsIgnoreCase(webkit)) {
                 return s;
