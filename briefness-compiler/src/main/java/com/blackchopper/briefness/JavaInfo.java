@@ -47,6 +47,34 @@ public class JavaInfo extends AbsJavaInfo {
     }
 
     @Override
+    protected void generateClearData(StringBuilder builder) {
+        if (bindLayout.size() > 0) {
+            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
+            List<XmlBind> binds = proxyInfo.getBinds();
+
+            builder.append("    @Override\n" +
+                    "    public void clear() {\n");
+
+            for (XmlViewInfo info : infos) {
+                builder.append("        this.").append(info.ID).append(" = null;\n");
+            }
+
+            builder.append("    }\n");
+
+            builder.append("\n    @Override\n" +
+                    "    public void clearAll() {\n");
+            for (XmlViewInfo info : infos) {
+                builder.append("        this.").append(info.ID).append(" = null;\n");
+            }
+            for (XmlBind bind : binds) {
+                builder.append("        this.").append(bind.name).append(" = null;\n");
+            }
+            builder.append("    }\n");
+        }
+    }
+
+    @Override
     protected void generateBindDataCode(StringBuilder builder) {
         if (bindLayout.size() == 0) return;
         XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
@@ -103,40 +131,16 @@ public class JavaInfo extends AbsJavaInfo {
     }
 
     @Override
-    protected void generateClearData(StringBuilder builder) {
-        if (bindLayout.size() > 0) {
-            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
-            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
-            List<XmlBind> binds = proxyInfo.getBinds();
-
-            builder.append("    @Override\n" +
-                    "    public void clear() {\n");
-
-            for (XmlViewInfo info : infos) {
-                builder.append("        this.").append(info.ID).append(" = null;\n");
-            }
-
-            builder.append("    }\n");
-
-            builder.append("\n    @Override\n" +
-                    "    public void clearAll() {\n");
-            for (XmlViewInfo info : infos) {
-                builder.append("        this.").append(info.ID).append(" = null;\n");
-            }
-            for (XmlBind bind : binds) {
-                builder.append("        this.").append(bind.name).append(" = null;\n");
-            }
-            builder.append("    }\n");
-        }
-    }
-
-    @Override
     protected void generateLayoutCode(StringBuilder builder) {
         if (bindLayout.size() > 0) {
-            builder.append("        host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(typeElement.getQualifiedName().toString())).append(");\n");
+            importBuilder.append("import com.blackchopper.briefness.Utils;\n");
+            builder.append("        if (!Utils.contentViewExist(host)) {\n");
+            builder.append("            host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(typeElement.getQualifiedName().toString())).append(");\n");
+            builder.append("        }");
         }
 
     }
+
 
     @Override
     protected void generateBindFieldCode(StringBuilder builder, boolean isActivity) {
