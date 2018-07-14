@@ -136,7 +136,7 @@ public class JavaInfo extends AbsJavaInfo {
             importBuilder.append("import com.blackchopper.briefness.Utils;\n");
             builder.append("        if (!Utils.contentViewExist(host)) {\n");
             builder.append("            host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(typeElement.getQualifiedName().toString())).append(");\n");
-            builder.append("        }");
+            builder.append("        }\n");
         }
 
     }
