@@ -41,7 +41,7 @@ public class JavaInfo extends AbsJavaInfo {
                     if (!importBuilder.toString().contains(ViewCollection.getFullNameByName(viewName)))
                         importBuilder.append("import ").append(ViewCollection.getFullNameByName(viewName)).append(";\n");
                 }
-                builder.append("    ").append(viewName).append(" ").append(infos.get(i).ID).append(";\n");
+                builder.append("    public ").append(viewName).append(" ").append(infos.get(i).ID).append(";\n");
             }
         }
     }
