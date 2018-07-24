@@ -2,6 +2,9 @@ package com.blackchopper.briefness;
 
 
 import com.blackchopper.briefness.databinding.JavaLayout;
+import com.blackchopper.briefness.databinding.XmlViewInfo;
+import com.blackchopper.briefness.util.ClassUtil;
+import com.blackchopper.briefness.util.ClassValidator;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -12,10 +15,6 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
-
-import com.blackchopper.briefness.databinding.XmlViewInfo;
-import com.blackchopper.briefness.util.ClassUtil;
-import com.blackchopper.briefness.util.ClassValidator;
 
 /**
  * author  : Black Chopper
@@ -102,9 +101,10 @@ public abstract class AbsJavaInfo {
         }
         generateClearData(methodBuilder);
         generateBindDataCode(methodBuilder);
-
-
+        generateSetDataCode(methodBuilder);
     }
+
+    protected abstract void generateSetDataCode(StringBuilder methodBuilder);
 
     protected abstract void generateFieldCode(StringBuilder builder);
 
