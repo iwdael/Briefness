@@ -4,6 +4,7 @@ package com.blackchopper.briefness;
 import com.blackchopper.briefness.databinding.XmlBind;
 import com.blackchopper.briefness.databinding.XmlViewInfo;
 import com.blackchopper.briefness.util.ClassUtil;
+import com.blackchopper.briefness.util.StringUtil;
 import com.blackchopper.briefness.util.ViewCollection;
 
 import java.util.List;
@@ -26,6 +27,23 @@ public class JavaInfo extends AbsJavaInfo {
         super(elementUtils, classElement);
     }
 
+    @Override
+    protected void generateSetDataCode(StringBuilder builder) {
+        if (bindLayout.size() > 0) {
+            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+            List<XmlViewInfo> infos = proxyInfo.getViewInfos();
+            for (int i = 0; i < infos.size(); i++) {
+                String viewName = infos.get(i).view;
+                if (!importBuilder.toString().contains("com.blackchopper.briefness.BriefnessInjector"))
+                    importBuilder.append("import com.blackchopper.briefness.BriefnessInjector;\n");
+                builder.append("    public void set").append(StringUtil.toUpperCase(infos.get(i).ID)).append("(Object obj) {\n")
+                        .append("        BriefnessInjector.injector(").append(infos.get(i).ID).append(",obj)").append(";\n").append("    }\n\n");
+                builder.append("    public ").append(viewName).append(" get").append(StringUtil.toUpperCase(infos.get(i).ID)).append("() {\n")
+                        .append("        return this.").append(infos.get(i).ID).append(";\n    }\n\n");
+            }
+        }
+    }
+
     protected void generateFieldCode(StringBuilder builder) {
 
         if (bindLayout.size() > 0) {
@@ -41,7 +59,7 @@ public class JavaInfo extends AbsJavaInfo {
                     if (!importBuilder.toString().contains(ViewCollection.getFullNameByName(viewName)))
                         importBuilder.append("import ").append(ViewCollection.getFullNameByName(viewName)).append(";\n");
                 }
-                builder.append("    public ").append(viewName).append(" ").append(infos.get(i).ID).append(";\n");
+                builder.append("    ").append(viewName).append(" ").append(infos.get(i).ID).append(";\n");
             }
         }
     }
