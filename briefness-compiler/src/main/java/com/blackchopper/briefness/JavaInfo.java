@@ -140,7 +140,21 @@ public class JavaInfo extends AbsJavaInfo {
                     if (special) {
                         builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(XmlInfo.specialBind2String(info.bindSource)).append(");\n");
                     } else {
-                        builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(info.bind).append(");\n");
+
+                        String[] split = info.bind.split("get");
+                        System.out.print(info.bind + "\n");
+                        boolean isList = split.length == 3;
+                        if (isList) {
+                            System.out.print(info.bind + "--->>isList\n");
+                            String index = split[2].substring(split[2].indexOf("(") + 1, split[2].indexOf(")"));
+                            String list = split[0] + "get" + split[1].substring(0, split[1].length() - 1);
+                            builder.append("        if (" + list + " != null && " + list + ".size() > " + index + ") {\n");
+                            builder.append("            BriefnessInjector.injector(").append(info.ID).append(", ").append(info.bind).append(");\n");
+                            builder.append("        }\n");
+                        } else {
+                            builder.append("        BriefnessInjector.injector(").append(info.ID).append(", ").append(info.bind).append(");\n");
+                        }
+
                     }
                 }
             }
