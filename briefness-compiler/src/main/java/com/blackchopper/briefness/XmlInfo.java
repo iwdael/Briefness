@@ -1,6 +1,8 @@
 package com.blackchopper.briefness;
 
+import com.blackchopper.briefness.databinding.XmlBind;
 import com.blackchopper.briefness.databinding.XmlViewInfo;
+import com.blackchopper.briefness.util.Logger;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -11,9 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.blackchopper.briefness.databinding.XmlBind;
-import com.blackchopper.briefness.util.Logger;
 
 
 /**
@@ -66,6 +65,40 @@ public class XmlInfo {
 
         }
         return sb.toString().replace(" ", "");
+    }
+
+    public static String findMainModule() {
+        File dir = new File(System.getProperty("user.dir") + SPLIT);
+        Logger.v("dir:" + dir.getAbsolutePath());
+        File[] modules = dir.listFiles();
+        for (File module : modules) {
+            if (!module.isDirectory()) continue;
+            if (!new File(module.getAbsoluteFile() + "/build.gradle").exists()) continue;
+            if (readTextFile(module.getAbsolutePath() + "/build.gradle").replace(" ", "").contains("applyplugin:'com.android.application'")) {
+                Logger.v("main module: " + module.getAbsolutePath());
+                return module.getAbsolutePath();
+            }
+        }
+        return "";
+    }
+
+    public static String specialBind2String(String source) {
+        int start = source.indexOf('$') + 1;
+        int end = source.lastIndexOf("$");
+
+        String methodSource = source.substring(start, end);
+
+        int dot = methodSource.indexOf(".");
+
+        String method = methodSource.substring(0, dot) + ".get(\"" + methodSource.substring(dot + 1, methodSource.length()) + "\")";
+
+        String result = source.substring(0, start - 1) + method + source.substring(end + 1, source.length());
+
+        return result;
+    }
+
+    public static void main(String[] a) {
+        specialBind2String("$user.info$");
     }
 
     private void parserXml(String path) {
@@ -199,10 +232,22 @@ public class XmlInfo {
                 if (bind.contains("$")) {
                     int start = bind.indexOf("$") + 1;
                     int end = bind.indexOf("$", start);
-                    String var = bind.substring(start, end);
-                    String startStr = var.substring(0, var.lastIndexOf("."));
-                    String endStr = var.substring(var.lastIndexOf(".") + 1);
+                    String setMethod = bind.substring(start, end);
+                    boolean havaList = setMethod.contains("[");
+                    String index = null;
+                    if (havaList) {
+                        index = setMethod.substring(setMethod.indexOf("[") + 1, setMethod.indexOf("]"));
+                    }
+                    String startStr = setMethod.substring(0, setMethod.lastIndexOf("."));
+                    String endStr;
+                    if (havaList) {
+                        endStr = setMethod.substring(setMethod.lastIndexOf(".") + 1, setMethod.indexOf("["));
+                    } else {
+                        endStr = setMethod.substring(setMethod.lastIndexOf(".") + 1);
+                    }
                     String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
+                    if (havaList)
+                        method = method + ".get(" + index + ")";
                     builder.append(bind.substring(0, start - 1)).append(method).append(bind.substring(end + 1, bind.length())).append(";");
                 } else {
                     builder.append(bind).append(";");
@@ -212,10 +257,22 @@ public class XmlInfo {
             String bind = source;
             int start = bind.indexOf("$") + 1;
             int end = bind.indexOf("$", start);
-            String var = bind.substring(start, end);
-            String startStr = var.substring(0, var.lastIndexOf("."));
-            String endStr = var.substring(var.lastIndexOf(".") + 1);
+            String setMethod = bind.substring(start, end);
+            boolean havaList = setMethod.contains("[");
+            String index = null;
+            if (havaList) {
+                index = setMethod.substring(setMethod.indexOf("[") + 1, setMethod.indexOf("]"));
+            }
+            String startStr = setMethod.substring(0, setMethod.lastIndexOf("."));
+            String endStr;
+            if (havaList) {
+                endStr = setMethod.substring(setMethod.lastIndexOf(".") + 1, setMethod.indexOf("["));
+            } else {
+                endStr = setMethod.substring(setMethod.lastIndexOf(".") + 1);
+            }
             String method = startStr + ".get" + endStr.substring(0, 1).toUpperCase() + endStr.substring(1) + "()";
+            if (havaList)
+                method = method + ".get(" + index + ")";
             builder.append(bind.substring(0, start - 1)).append(method).append(bind.substring(end + 1, bind.length()));
             if (!source.endsWith("$")) builder.append(";");
         }
@@ -240,43 +297,6 @@ public class XmlInfo {
 
     public List<XmlViewInfo> getViewInfos() {
         return viewInfos;
-    }
-
-
-    public static String findMainModule() {
-        File dir = new File(System.getProperty("user.dir") + SPLIT);
-        Logger.v("dir:" + dir.getAbsolutePath());
-        File[] modules = dir.listFiles();
-        for (File module : modules) {
-            if (!module.isDirectory()) continue;
-            if (!new File(module.getAbsoluteFile() + "/build.gradle").exists()) continue;
-            if (readTextFile(module.getAbsolutePath() + "/build.gradle").replace(" ", "").contains("applyplugin:'com.android.application'")) {
-                Logger.v("main module: " + module.getAbsolutePath());
-                return module.getAbsolutePath();
-            }
-        }
-        return "";
-    }
-
-
-    public static String specialBind2String(String source) {
-        int start = source.indexOf('$') + 1;
-        int end = source.lastIndexOf("$");
-
-        String methodSource = source.substring(start, end);
-
-        int dot = methodSource.indexOf(".");
-
-        String method = methodSource.substring(0, dot) + ".get(\"" + methodSource.substring(dot + 1, methodSource.length()) + "\")";
-
-        String result = source.substring(0, start-1) + method + source.substring(end+1, source.length());
-
-        return result;
-    }
-
-
-    public static void main(String[] a) {
-        specialBind2String("$user.info$");
     }
 
 }
