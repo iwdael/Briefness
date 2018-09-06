@@ -110,6 +110,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 proxyInfo = new JavaInfo(elementUtils, (TypeElement) element);
                 mProxyMap.put(fullClassName, proxyInfo);
             }
+            System.out.print(":briefness:generateClass:"+fullClassName+"Briefnessor");
             BindLayout bindViewAnnotation = element.getAnnotation(BindLayout.class);
             proxyInfo.bindLayout.add(new JavaLayout(bindViewAnnotation.value()));
         }
