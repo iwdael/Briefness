@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    briefness:imports="com.blackchopper.demo_briefness.Entity,entity;com.blackchopper.demo_briefness.Entity,alisa;">
+    briefness:imports="com.hacknife.demo.Entity,entity;com.hacknife.demo.Entity,alisa;">
     //briefness:imports 导入需要和布局绑定的数据类型。绑定多个类型用分隔开。用逗号隔开数据类型和类型别名。
 
     //briefness:bind

@@ -1,13 +1,13 @@
-package com.blackchopper.demo_briefness;
+package com.hacknife.demo;
 
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 /**
- * author  : Black Chopper
+ * author  : Hacknife
  * e-mail  : 4884280@qq.com
- * github  : http://github.com/BlackChopper
+ * github  : http://github.com/hacknife
  * project : Briefness
  */
 public class ExampleUnitTest {
