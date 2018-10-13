@@ -30,7 +30,7 @@ public class JavaInfo extends AbsJavaInfo {
     @Override
     protected void generateSetDataCode(StringBuilder builder) {
         if (bindLayout.size() > 0) {
-            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString(),modulePath), modulePath);
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 String viewName = infos.get(i).view;
@@ -47,7 +47,7 @@ public class JavaInfo extends AbsJavaInfo {
     protected void generateFieldCode(StringBuilder builder) {
 
         if (bindLayout.size() > 0) {
-            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString(),modulePath), modulePath);
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 String viewName = infos.get(i).view;
@@ -67,7 +67,7 @@ public class JavaInfo extends AbsJavaInfo {
     @Override
     protected void generateClearData(StringBuilder builder) {
         if (bindLayout.size() > 0) {
-            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString(),modulePath), modulePath);
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             List<XmlBind> binds = proxyInfo.getBinds();
 
@@ -95,7 +95,7 @@ public class JavaInfo extends AbsJavaInfo {
     @Override
     protected void generateBindDataCode(StringBuilder builder) {
         if (bindLayout.size() == 0) return;
-        XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+        XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString(),modulePath), modulePath);
         List<XmlBind> binds = proxyInfo.getBinds();
         for (XmlBind bind : binds) {
             String bindclazz = bind.clazz.substring(bind.clazz.lastIndexOf(".") + 1);
@@ -167,7 +167,7 @@ public class JavaInfo extends AbsJavaInfo {
         if (bindLayout.size() > 0) {
             importBuilder.append("import com.hacknife.briefness.Utils;\n");
             builder.append("        if (!Utils.contentViewExist(host)) {\n");
-            builder.append("            host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(typeElement.getQualifiedName().toString())).append(");\n");
+            builder.append("            host.setContentView(").append("R.layout." + ClassUtil.findLayoutById(typeElement.getQualifiedName().toString(),modulePath)).append(");\n");
             builder.append("        }\n");
         }
 
@@ -177,7 +177,7 @@ public class JavaInfo extends AbsJavaInfo {
     @Override
     protected void generateBindFieldCode(StringBuilder builder, boolean isActivity) {
         if (bindLayout.size() > 0) {
-            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString()));
+            XmlInfo proxyInfo = new XmlInfo(ClassUtil.findLayoutById(typeElement.getQualifiedName().toString(),modulePath), modulePath);
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 builder.append("        ").append(infos.get(i).ID).append(" = ");

@@ -2,7 +2,6 @@ package com.hacknife.briefness;
 
 import com.hacknife.briefness.databinding.XmlBind;
 import com.hacknife.briefness.databinding.XmlViewInfo;
-import com.hacknife.briefness.util.Logger;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -38,23 +37,20 @@ public class XmlInfo {
     public static final String appbind = "app:bind";
 
 
-
-
-
     public static final String include = "include";
     public static final String layout = "layout";
     public static final String SPLIT = "/";
-
 
 
     public String xml;
 
     private List<XmlBind> binds = new ArrayList<>();
     private List<XmlViewInfo> viewInfos = new ArrayList<>();
+    private String modulePath;
 
-
-    public XmlInfo(String path) {
-        xml = findMainModule() + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
+    public XmlInfo(String path, String modulePath) {
+        this.modulePath=modulePath;
+        xml = modulePath + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
         parserXml(path);
 
     }
@@ -80,20 +76,20 @@ public class XmlInfo {
         return sb.toString().replace(" ", "");
     }
 
-    public static String findMainModule() {
-        File dir = new File(System.getProperty("user.dir") + SPLIT);
-        Logger.v("dir:" + dir.getAbsolutePath());
-        File[] modules = dir.listFiles();
-        for (File module : modules) {
-            if (!module.isDirectory()) continue;
-            if (!new File(module.getAbsoluteFile() + "/build.gradle").exists()) continue;
-            if (readTextFile(module.getAbsolutePath() + "/build.gradle").replace(" ", "").contains("applyplugin:'com.android.application'")) {
-                Logger.v("main module: " + module.getAbsolutePath());
-                return module.getAbsolutePath();
-            }
-        }
-        return "";
-    }
+//    public static String findMainModule() {
+//        File dir = new File(System.getProperty("user.dir") + SPLIT);
+//        Logger.v("dir:" + dir.getAbsolutePath());
+//        File[] modules = dir.listFiles();
+//        for (File module : modules) {
+//            if (!module.isDirectory()) continue;
+//            if (!new File(module.getAbsoluteFile() + "/build.gradle").exists()) continue;
+//            if (readTextFile(module.getAbsolutePath() + "/build.gradle").replace(" ", "").contains("applyplugin:'com.android.application'")) {
+//                Logger.v("main module: " + module.getAbsolutePath());
+//                return module.getAbsolutePath();
+//            }
+//        }
+//        return "";
+//    }
 
     public static String specialBind2String(String source) {
         int start = source.indexOf('$') + 1;
@@ -116,7 +112,7 @@ public class XmlInfo {
 
     private void parserXml(String path) {
         try {
-            String xmlName = findMainModule() + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
+            String xmlName = modulePath + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             // 获得xml解析类的引用
@@ -133,7 +129,7 @@ public class XmlInfo {
                         int count = parser.getAttributeCount();
                         //获取引用
                         for (int i = 0; i < count; i++) {
-                            if (parser.getAttributeName(i).equalsIgnoreCase(imports)||parser.getAttributeName(i).equalsIgnoreCase(appimports)) {
+                            if (parser.getAttributeName(i).equalsIgnoreCase(imports) || parser.getAttributeName(i).equalsIgnoreCase(appimports)) {
                                 String[] imports = parser.getAttributeValue(i).split(";");
                                 for (String anImport : imports) {
                                     String[] na = anImport.split(",");
@@ -156,20 +152,20 @@ public class XmlInfo {
                                 if (name.equalsIgnoreCase(id)) {
                                     info.ID = id2String(value);
                                 }
-                                if (name.equalsIgnoreCase(click)||name.equalsIgnoreCase(appclick)) {
+                                if (name.equalsIgnoreCase(click) || name.equalsIgnoreCase(appclick)) {
                                     info.click = click2String(value);
                                 }
-                                if (name.equalsIgnoreCase(longclick)||name.equalsIgnoreCase(applongclick)) {
+                                if (name.equalsIgnoreCase(longclick) || name.equalsIgnoreCase(applongclick)) {
                                     info.longClick = click2String(value);
                                 }
-                                if (name.equalsIgnoreCase(touch)||name.equalsIgnoreCase(apptouch)) {
+                                if (name.equalsIgnoreCase(touch) || name.equalsIgnoreCase(apptouch)) {
                                     info.touch = value;
                                 }
-                                if (name.equalsIgnoreCase(bind)||name.equalsIgnoreCase(appbind)) {
+                                if (name.equalsIgnoreCase(bind) || name.equalsIgnoreCase(appbind)) {
                                     info.bind = bind2String(value);
                                     info.bindSource = value;
                                 }
-                                if (name.equalsIgnoreCase(action)||name.equalsIgnoreCase(appaction)) {
+                                if (name.equalsIgnoreCase(action) || name.equalsIgnoreCase(appaction)) {
                                     info.action = value;
                                 }
                                 if (name.equalsIgnoreCase(layout)) {

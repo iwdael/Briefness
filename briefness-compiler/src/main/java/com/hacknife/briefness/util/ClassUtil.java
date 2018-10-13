@@ -3,10 +3,10 @@ package com.hacknife.briefness.util;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.File;
 import java.io.FileReader;
 
 import static com.hacknife.briefness.XmlInfo.SPLIT;
-import static com.hacknife.briefness.XmlInfo.findMainModule;
 import static com.hacknife.briefness.XmlInfo.readTextFile;
 
 /**
@@ -19,16 +19,16 @@ import static com.hacknife.briefness.XmlInfo.readTextFile;
 public class ClassUtil {
 
 
-    public static boolean instanceOfActivity(String qualifiedName) {
+    public static boolean instanceOfActivity(String qualifiedName, String modulePath) {
+        if (qualifiedName.contains("Activity")) return true;
         String prevrious = qualifiedName;
-        String current = getSuperClass(qualifiedName);
+        String current = getSuperClass(qualifiedName, modulePath);
         while (true) {
             if (prevrious.equalsIgnoreCase(current)) {
                 break;
             } else {
-
                 prevrious = current;
-                current = getSuperClass(current);
+                current = getSuperClass(current, modulePath);
             }
         }
         if (current.startsWith("android.")) {
@@ -43,15 +43,18 @@ public class ClassUtil {
 
     }
 
-    public static String getSuperClass(String qualifiedName) {
+    public static String getSuperClass(String qualifiedName, String modulePath) {
         if (qualifiedName.startsWith("android.")) {
             return qualifiedName;
         }
-        String module = findMainModule() + SPLIT;
+        String module = modulePath + SPLIT;
         String path = qualifiedName.substring(0, qualifiedName.lastIndexOf(".")).replace(".", SPLIT);
         String clazzName = qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1);
         String file = module + "src/main/java/" + path + SPLIT + clazzName + ".java";
         file = file.replace("/", "\\");
+        if (!new File(file).exists()) {
+            return qualifiedName;
+        }
         String content = readTextFile(file);
         if (!content.contains("class" + clazzName)) {
             return qualifiedName;
@@ -83,11 +86,12 @@ public class ClassUtil {
         return superClass;
     }
 
-    public static String findLayoutById(String clazz) {
-        String packageName = findPackageName();
+
+    public static String findLayoutById(String clazz, String modulePath) {
+        String packageName = findPackageName(modulePath);
 
         if (packageName.length() == 0) return "";
-        String R =findMainModule() + SPLIT
+        String R = modulePath + SPLIT
                 + "src/main/java/" + clazz.replace(".", "/") + ".java";
         R = R.replace("\\", "/");
         String content = readTextFile(R).replace(" ", "");
@@ -104,10 +108,10 @@ public class ClassUtil {
         return layout;
     }
 
-    public static String findPackageName() {
+    public static String findPackageName(String modulePath) {
         String packageName = "";
 
-        String xml = findMainModule() + SPLIT + "src" + SPLIT + "main" + SPLIT + "AndroidManifest.xml";
+        String xml = modulePath + SPLIT + "src" + SPLIT + "main" + SPLIT + "AndroidManifest.xml";
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 
@@ -133,27 +137,4 @@ public class ClassUtil {
         return packageName;
     }
 
-    public static String findViewById(String clazz, String fieldName) {
-        String packageName = findPackageName();
-
-        if (packageName.length() == 0) return "";
-        String R =findMainModule() + SPLIT
-                + "src/main/java/" + clazz.replace(".", "/") + ".java";
-        R = R.replace("\\", "/");
-        String content = readTextFile(R).replace(" ", "");
-        String cont = content.substring(0, content.indexOf(fieldName + ";"));
-        return cont.substring(cont.lastIndexOf("@BindView(") + 10, cont.lastIndexOf(")"));
-    }
-
-    public static String[] findViewsById(String clazz, String fieldName) {
-        String packageName = findPackageName();
-
-        if (packageName.length() == 0) return new String[]{};
-        String R = findMainModule()+ SPLIT
-                + "src/main/java/" + clazz.replace(".", "/") + ".java";
-        R = R.replace("\\", "/");
-        String content = readTextFile(R).replace(" ", "");
-        String cont = content.substring(0, content.indexOf(fieldName + ";"));
-        return cont.substring(cont.lastIndexOf("@BindViews({") + 12, cont.lastIndexOf("}")).split(",");
-    }
 }

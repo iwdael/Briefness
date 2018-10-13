@@ -11,6 +11,7 @@ import com.hacknife.briefness.databinding.JavaLayout;
 import com.hacknife.briefness.util.Logger;
 import com.google.auto.service.AutoService;
 
+import java.io.File;
 import java.io.Writer;
 import java.util.Set;
 
@@ -29,6 +30,11 @@ import javax.tools.JavaFileObject;
  */
 @AutoService(Processor.class)
 public class BriefnessProcessor extends AbstractBriefnessProcessor {
+    static final String briefnessInjector = "com.hacknife.briefness.BriefnessInjector";
+    boolean process = false;
+    String path;
+    String build = "build";
+
     @Override
     protected void processViews(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindViews.class);
@@ -43,15 +49,6 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindViews bindViewAnnotation = variableElement.getAnnotation(BindViews.class);
-//
-//            Logger.v(element.toString());
-//            Logger.v(bindViewAnnotation.toString());
-//            Logger.v(fullClassName);
-//
-//            String[] id=ClassUtil.findViewsById(fullClassName, element.toString());
-//            for (String s : id) {
-//                Logger.v(s);
-//            }
             proxyInfo.bindView.put(bindViewAnnotation.value(), variableElement);
         }
     }
@@ -88,10 +85,6 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 mProxyMap.put(fullClassName, proxyInfo);
             }
             BindView bindViewAnnotation = variableElement.getAnnotation(BindView.class);
-//            Logger.v(element.toString());
-//            Logger.v(bindViewAnnotation.toString());
-//            Logger.v(fullClassName);
-//            Logger.v(ClassUtil.findViewById(fullClassName, element.toString()));
             int id = bindViewAnnotation.value();
             proxyInfo.bindView.put(new int[]{id}, variableElement);
         }
@@ -100,7 +93,6 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
 
     @Override
     protected void processLayout(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
         Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindLayout.class);
         for (Element element : elementsWithBind) {
             if (!checkAnnotationValid(element, JavaLayout.class)) continue;
@@ -110,7 +102,6 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 proxyInfo = new JavaInfo(elementUtils, (TypeElement) element);
                 mProxyMap.put(fullClassName, proxyInfo);
             }
-            System.out.print(":briefness:generateClass:"+fullClassName+"Briefnessor");
             BindLayout bindViewAnnotation = element.getAnnotation(BindLayout.class);
             proxyInfo.bindLayout.add(new JavaLayout(bindViewAnnotation.value()));
         }
@@ -121,28 +112,37 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     protected void process() {
         for (String key : mProxyMap.keySet()) {
             AbsJavaInfo proxyInfo = mProxyMap.get(key);
-            try {
+            if (!process) {
                 JavaInjector injector = new JavaInjector();
 
                 try {
-                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(
-                            "com.hacknife.briefness.BriefnessInjector",
-                            proxyInfo.getTypeElement());
+                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(briefnessInjector, proxyInfo.getTypeElement());
+                    //找到当前module
+                    {
+                        File file = new File(fileObject.toUri().getPath());
+                        while (!file.getParentFile().getPath().endsWith(build)) {
+                            file = file.getParentFile();
+                        }
+                        path = file.getParentFile().getParentFile().getPath();
+                        Logger.e(path);
+                    }
+                    injector.witeCode(path);
                     Writer openWriter = fileObject.openWriter();
-                    openWriter.write(injector.getBriefnessInjectorCode());
+                    openWriter.write(injector.getBriefnessInjectorCode(path));
                     openWriter.flush();
                     openWriter.close();
                 } catch (Exception e) {
                     Logger.v(e.getMessage());
                 }
-                injector.witeCode();
-
+                process = true;
+            }
+            try {
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
                         proxyInfo.getProxyClassFullName(),
                         proxyInfo.getTypeElement()
                 );
                 Writer writer = jfo.openWriter();
-                writer.write(proxyInfo.generateJavaCode());
+                writer.write(proxyInfo.generateJavaCode(path));
                 writer.flush();
                 writer.close();
             } catch (Exception e) {
