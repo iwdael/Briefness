@@ -9,10 +9,7 @@ package com.hacknife.briefness.util;
 
 public class Logger {
     public static void v(String msg) {
-        System.out.print(":briefness:compileJava: " + msg+"\n");
+        System.out.print(":briefness:compileJava: " + msg + "\n");
     }
 
-    public static void e(String msg) {
-        System.out.print("-------------:briefness:compileJava: " + msg+"\n");
-    }
 }

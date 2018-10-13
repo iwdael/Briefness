@@ -124,7 +124,6 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                             file = file.getParentFile();
                         }
                         path = file.getParentFile().getParentFile().getPath();
-                        Logger.e(path);
                     }
                     injector.witeCode(path);
                     Writer openWriter = fileObject.openWriter();
@@ -132,7 +131,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                     openWriter.flush();
                     openWriter.close();
                 } catch (Exception e) {
-                    Logger.v(e.getMessage());
+                    e.printStackTrace();
                 }
                 process = true;
             }
@@ -141,6 +140,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                         proxyInfo.getProxyClassFullName(),
                         proxyInfo.getTypeElement()
                 );
+                Logger.v(jfo.toUri().getPath());
                 Writer writer = jfo.openWriter();
                 writer.write(proxyInfo.generateJavaCode(path));
                 writer.flush();
