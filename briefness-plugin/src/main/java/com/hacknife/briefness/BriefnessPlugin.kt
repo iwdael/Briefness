@@ -75,10 +75,10 @@ class BriefnessPlugin : Plugin<Project> {
                         inputs.file(rFile)
 
                         doLast {
-                            val parser = JavaParser.parse(rFile)
-                            parser.accept(FieldStaticVisitor(), null)
-                            FileUtil.createFile(processResources.sourceOutputDir.resolve(pathToR).resolve("R2.java").absolutePath, FileUtil.readTextFile(parser.toString()))
-//                            FinalRClassBuilder.brewJava(rFile, outputDir, rPackage, "R2", !useAndroidX)
+                            //                            val parser = JavaParser.parse(rFile)
+//                            parser.accept(FieldStaticVisitor(), null)
+//                            FileUtil.createFile(processResources.sourceOutputDir.resolve(pathToR).resolve("R2.java").absolutePath, FileUtil.readTextFile(parser.toString()))
+                            FinalRClassBuilder.brewJava(rFile, outputDir, rPackage, "R2", !useAndroidX)
                         }
                     }
                 }
