@@ -98,8 +98,10 @@ public class ClassUtil {
         R = R.replace("\\", "/");
         String content = readTextFile(R).replace(" ", "");
         int start = content.indexOf("@BindLayout(R.layout.");
+        int differ = 21;
         if (start == -1) {
             start = content.indexOf("@BindLayout(R2.layout.");
+            differ = 22;
         }
         if (start == -1) return "";
         int end = start;
@@ -109,7 +111,7 @@ public class ClassUtil {
                 break;
             }
         }
-        String layout = content.substring(start + 21, end);
+        String layout = content.substring(start + differ, end);
         return layout;
     }
 
