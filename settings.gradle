@@ -1,1 +1,1 @@
-include ':example', ':briefness', ':briefness-annotation', ':briefness-compiler'
+include ':example', ':briefness', ':briefness-annotation', ':briefness-compiler', ':briefness-plugin'

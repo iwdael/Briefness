@@ -1,5 +1,13 @@
 package com.hacknife.briefness.processor;
 
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
+import com.github.javaparser.ast.type.TypeParameter;
+import com.github.javaparser.ast.validator.chunks.ModifierValidator;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.hacknife.briefness.AbsJavaInfo;
 import com.hacknife.briefness.BindClick;
 import com.hacknife.briefness.BindLayout;
@@ -141,6 +149,10 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                         proxyInfo.getTypeElement()
                 );
                 Logger.v(jfo.toUri().getPath());
+
+                CompilationUnit unit = JavaParser.parse(new File("C:\\Users\\Hacknife\\Desktop\\Briefness\\example\\build\\generated\\source\\r\\debug\\com\\hacknife\\demo\\R.java"));
+                unit.accept(new FieldVisitor(), null);
+
                 Writer writer = jfo.openWriter();
                 writer.write(proxyInfo.generateJavaCode(path));
                 writer.flush();
@@ -151,6 +163,17 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             }
         }
 
+    }
+
+
+    public class FieldVisitor extends VoidVisitorAdapter<Void> {
+
+
+        @Override
+        public void visit(FieldDeclaration n, Void arg) {
+            n.setModifier(Modifier.STATIC, false);
+//            Logger.v(n.toString());
+        }
     }
 
 }
