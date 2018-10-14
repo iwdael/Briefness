@@ -109,8 +109,8 @@ public class MainActivity extends Activity {
 ```Java
 	dependencies {
                 ...
-          compile 'com.github.hacknife.briefness:briefness:v1.6.5'
-    	  annotationProcessor 'com.github.hacknife.briefness:briefness-compiler:v1.6.5'
+          implementation 'com.github.hacknife.briefness:briefness:v1.7.6'
+    	  annotationProcessor 'com.github.hacknife.briefness:briefness-compiler:v1.7.6'
 	}
 ```
 <br><br><br>

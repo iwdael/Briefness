@@ -7,7 +7,6 @@ import com.android.build.gradle.FeaturePlugin
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.api.BaseVariant
-import com.github.javaparser.JavaParser
 import groovy.util.XmlSlurper
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
@@ -64,20 +63,13 @@ class BriefnessPlugin : Plugin<Project> {
             variant.outputs.all { output ->
                 val processResources = output.processResources
                 task.dependsOn(processResources)
-
-                // Though there might be multiple outputs, their R files are all the same. Thus, we only
-                // need to configure the task once with the R.java input and action.
                 if (once.compareAndSet(false, true)) {
                     val pathToR = rPackage.replace('.', File.separatorChar)
                     val rFile = processResources.sourceOutputDir.resolve(pathToR).resolve("R.java")
 
                     task.apply {
                         inputs.file(rFile)
-
                         doLast {
-                            //                            val parser = JavaParser.parse(rFile)
-//                            parser.accept(FieldStaticVisitor(), null)
-//                            FileUtil.createFile(processResources.sourceOutputDir.resolve(pathToR).resolve("R2.java").absolutePath, FileUtil.readTextFile(parser.toString()))
                             FinalRClassBuilder.brewJava(rFile, outputDir, rPackage, "R2", !useAndroidX)
                         }
                     }

@@ -98,6 +98,9 @@ public class ClassUtil {
         R = R.replace("\\", "/");
         String content = readTextFile(R).replace(" ", "");
         int start = content.indexOf("@BindLayout(R.layout.");
+        if (start == -1) {
+            start = content.indexOf("@BindLayout(R2.layout.");
+        }
         if (start == -1) return "";
         int end = start;
         for (int i = end; i < content.length(); i++) {

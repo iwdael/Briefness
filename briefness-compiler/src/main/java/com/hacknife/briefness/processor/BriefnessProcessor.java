@@ -150,9 +150,6 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 );
                 Logger.v(jfo.toUri().getPath());
 
-                CompilationUnit unit = JavaParser.parse(new File("C:\\Users\\Hacknife\\Desktop\\Briefness\\example\\build\\generated\\source\\r\\debug\\com\\hacknife\\demo\\R.java"));
-                unit.accept(new FieldVisitor(), null);
-
                 Writer writer = jfo.openWriter();
                 writer.write(proxyInfo.generateJavaCode(path));
                 writer.flush();
