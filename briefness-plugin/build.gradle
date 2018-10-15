@@ -14,10 +14,10 @@ uploadArchives {
 }
 
 group = "com.hacknife"//project属性
-version = "1.7.7"//project属性
+version = "1.7.8"//project属性
 dependencies {
-    compileOnly gradleApi()
     implementation deps.android.gradlePlugin
     implementation 'com.github.javaparser:javaparser-core:3.5.14'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.71'
+//    implementation files('libs/javaparser-core-3.5.14.jar')
 }

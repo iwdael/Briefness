@@ -5,6 +5,7 @@ import com.hacknife.briefness.databinding.JavaLayout;
 import com.hacknife.briefness.databinding.XmlViewInfo;
 import com.hacknife.briefness.util.ClassUtil;
 import com.hacknife.briefness.util.ClassValidator;
+import com.hacknife.briefness.util.Logger;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -55,7 +56,7 @@ public abstract class AbsJavaInfo {
         String packageName = packageElement.getQualifiedName().toString();
         className = ClassValidator.getClassName(classElement, packageName);
         this.packageName = packageName;
-        this.proxyClassName = className + PROXY;
+         this.proxyClassName = className + PROXY;
     }
 
     public String getProxyClassFullName() {

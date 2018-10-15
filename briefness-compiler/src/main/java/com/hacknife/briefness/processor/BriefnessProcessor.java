@@ -1,13 +1,5 @@
 package com.hacknife.briefness.processor;
 
-import com.github.javaparser.JavaParser;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.expr.FieldAccessExpr;
-import com.github.javaparser.ast.type.TypeParameter;
-import com.github.javaparser.ast.validator.chunks.ModifierValidator;
-import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.hacknife.briefness.AbsJavaInfo;
 import com.hacknife.briefness.BindClick;
 import com.hacknife.briefness.BindLayout;
@@ -18,8 +10,10 @@ import com.hacknife.briefness.JavaInfo;
 import com.hacknife.briefness.databinding.JavaLayout;
 import com.hacknife.briefness.util.Logger;
 import com.google.auto.service.AutoService;
+import com.hacknife.briefness.util.StringUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.Set;
 
@@ -39,9 +33,10 @@ import javax.tools.JavaFileObject;
 @AutoService(Processor.class)
 public class BriefnessProcessor extends AbstractBriefnessProcessor {
     static final String briefnessInjector = "com.hacknife.briefness.BriefnessInjector";
-    boolean process = false;
-    String path;
-    String build = "build";
+    boolean pathInited = false;
+    boolean packageInited = false;
+    String buidPath;
+    String packages;
 
     @Override
     protected void processViews(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -120,38 +115,36 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     protected void process() {
         for (String key : mProxyMap.keySet()) {
             AbsJavaInfo proxyInfo = mProxyMap.get(key);
-            if (!process) {
-                JavaInjector injector = new JavaInjector();
 
+
+            if (!pathInited) {
+                JavaInjector injector = new JavaInjector();
                 try {
                     JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(briefnessInjector, proxyInfo.getTypeElement());
                     //找到当前module
-                    {
-                        File file = new File(fileObject.toUri().getPath());
-                        while (!file.getParentFile().getPath().endsWith(build)) {
-                            file = file.getParentFile();
-                        }
-                        path = file.getParentFile().getParentFile().getPath();
-                    }
-                    injector.witeCode(path);
+                    buidPath = StringUtil.findBuildDir(fileObject.toUri().getPath());
+                    injector.witeCode(buidPath);
                     Writer openWriter = fileObject.openWriter();
-                    openWriter.write(injector.getBriefnessInjectorCode(path));
+                    openWriter.write(injector.getBriefnessInjectorCode(buidPath));
                     openWriter.flush();
                     openWriter.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                process = true;
+                pathInited = true;
             }
             try {
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
                         proxyInfo.getProxyClassFullName(),
                         proxyInfo.getTypeElement()
                 );
+                if (!packageInited) {
+                    packages = StringUtil.findPackage(jfo.toUri().toString());
+                    packageInited = true;
+                }
                 Logger.v(jfo.toUri().getPath());
-
                 Writer writer = jfo.openWriter();
-                writer.write(proxyInfo.generateJavaCode(path));
+                writer.write(proxyInfo.generateJavaCode(buidPath));
                 writer.flush();
                 writer.close();
             } catch (Exception e) {
@@ -162,15 +155,5 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
 
     }
 
-
-    public class FieldVisitor extends VoidVisitorAdapter<Void> {
-
-
-        @Override
-        public void visit(FieldDeclaration n, Void arg) {
-            n.setModifier(Modifier.STATIC, false);
-//            Logger.v(n.toString());
-        }
-    }
 
 }
