@@ -5,6 +5,7 @@ import com.hacknife.briefness.BindClick;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
 import com.hacknife.briefness.BindViews;
+import com.hacknife.briefness.Constant;
 import com.hacknife.briefness.JavaInjector;
 import com.hacknife.briefness.JavaInfo;
 import com.hacknife.briefness.databinding.JavaLayout;
@@ -32,9 +33,8 @@ import javax.tools.JavaFileObject;
  */
 @AutoService(Processor.class)
 public class BriefnessProcessor extends AbstractBriefnessProcessor {
-    static final String briefnessInjector = "com.hacknife.briefness.BriefnessInjector";
     boolean pathInited = false;
-    boolean packageInited = false;
+    boolean inited = false;
     String buidPath;
     String packages;
 
@@ -115,32 +115,33 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     protected void process() {
         for (String key : mProxyMap.keySet()) {
             AbsJavaInfo proxyInfo = mProxyMap.get(key);
-
-
-            if (!pathInited) {
-                JavaInjector injector = new JavaInjector();
-                try {
-                    JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(briefnessInjector, proxyInfo.getTypeElement());
-                    //找到当前module
-                    buidPath = StringUtil.findBuildDir(fileObject.toUri().getPath());
-                    injector.witeCode(buidPath);
-                    Writer openWriter = fileObject.openWriter();
-                    openWriter.write(injector.getBriefnessInjectorCode(buidPath));
-                    openWriter.flush();
-                    openWriter.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                pathInited = true;
-            }
             try {
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
                         proxyInfo.getProxyClassFullName(),
                         proxyInfo.getTypeElement()
                 );
-                if (!packageInited) {
+                if (!inited) {
                     packages = StringUtil.findPackage(jfo.toUri().toString());
-                    packageInited = true;
+                    if (packages == null)
+                        error(proxyInfo.getTypeElement(), "Unable to find module package");
+                    try {
+
+                        JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(packages + Constant.dot + Constant.briefnessInjector, proxyInfo.getTypeElement());
+                        //找到当前module
+                        buidPath = StringUtil.findBuildDir(fileObject.toUri().getPath());
+                        //ViewInjector
+                        JavaInjector injector = new JavaInjector();
+                        injector.witeCode(buidPath, packages);
+                        //BriefnessInjector
+                        Writer openWriter = fileObject.openWriter();
+                        openWriter.write(injector.getBriefnessInjectorCode(buidPath, packages));
+                        openWriter.flush();
+                        openWriter.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    inited = true;
                 }
                 Logger.v(jfo.toUri().getPath());
                 Writer writer = jfo.openWriter();

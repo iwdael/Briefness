@@ -18,4 +18,5 @@ public class Constant {
     public static final String fileR = "R.java";
     public static final String dot = ".";
     public static final String separator = "/";
+    public static final String briefnessInjector = "BriefnessInjector";
 }
