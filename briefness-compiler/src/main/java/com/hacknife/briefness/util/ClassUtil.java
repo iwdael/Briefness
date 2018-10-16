@@ -90,9 +90,7 @@ public class ClassUtil {
 
 
     public static String findLayoutById(String clazz, String modulePath) {
-        String packageName = findPackageName(modulePath);
 
-        if (packageName.length() == 0) return "";
         String R = modulePath + SPLIT
                 + "src/main/java/" + clazz.replace(".", "/") + ".java";
         R = R.replace("\\", "/");
@@ -114,34 +112,4 @@ public class ClassUtil {
         String layout = content.substring(start + differ, end);
         return layout;
     }
-
-    public static String findPackageName(String modulePath) {
-        String packageName = "";
-
-        String xml = modulePath + SPLIT + "src" + SPLIT + "main" + SPLIT + "AndroidManifest.xml";
-        try {
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-
-            XmlPullParser parser = factory.newPullParser();
-            parser.setInput(new FileReader(xml));
-            int eventType = parser.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                switch (eventType) {
-                    case XmlPullParser.START_TAG:
-                        for (int i = 0; i < parser.getAttributeCount(); i++) {
-                            if (parser.getAttributeName(i).equalsIgnoreCase("package")) {
-                                packageName = parser.getAttributeValue(i);
-                            }
-                        }
-                        break;
-                }
-                eventType = parser.next();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return packageName;
-    }
-
 }

@@ -76,20 +76,7 @@ public class XmlInfo {
         return sb.toString().replace(" ", "");
     }
 
-//    public static String findMainModule() {
-//        File dir = new File(System.getProperty("user.dir") + SPLIT);
-//        Logger.v("dir:" + dir.getAbsolutePath());
-//        File[] modules = dir.listFiles();
-//        for (File module : modules) {
-//            if (!module.isDirectory()) continue;
-//            if (!new File(module.getAbsoluteFile() + "/build.gradle").exists()) continue;
-//            if (readTextFile(module.getAbsolutePath() + "/build.gradle").replace(" ", "").contains("applyplugin:'com.android.application'")) {
-//                Logger.v("main module: " + module.getAbsolutePath());
-//                return module.getAbsolutePath();
-//            }
-//        }
-//        return "";
-//    }
+
 
     public static String specialBind2String(String source) {
         int start = source.indexOf('$') + 1;

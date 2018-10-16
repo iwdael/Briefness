@@ -33,7 +33,6 @@ import javax.tools.JavaFileObject;
  */
 @AutoService(Processor.class)
 public class BriefnessProcessor extends AbstractBriefnessProcessor {
-    boolean pathInited = false;
     boolean inited = false;
     String buidPath;
     String packages;
@@ -121,14 +120,17 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                         proxyInfo.getTypeElement()
                 );
                 if (!inited) {
-                    packages = StringUtil.findPackage(jfo.toUri().toString());
+                    packages = StringUtil.findPackage(jfo.toUri().getPath());
                     if (packages == null)
                         error(proxyInfo.getTypeElement(), "Unable to find module package");
+                    else
+                        Logger.v("find package:"+packages);
                     try {
 
                         JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(packages + Constant.dot + Constant.briefnessInjector, proxyInfo.getTypeElement());
                         //找到当前module
                         buidPath = StringUtil.findBuildDir(fileObject.toUri().getPath());
+                        Logger.v("find build directory:"+buidPath);
                         //ViewInjector
                         JavaInjector injector = new JavaInjector();
                         injector.witeCode(buidPath, packages);
@@ -145,7 +147,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 }
                 Logger.v(jfo.toUri().getPath());
                 Writer writer = jfo.openWriter();
-                writer.write(proxyInfo.generateJavaCode(buidPath));
+                writer.write(proxyInfo.generateJavaCode(buidPath,packages));
                 writer.flush();
                 writer.close();
             } catch (Exception e) {

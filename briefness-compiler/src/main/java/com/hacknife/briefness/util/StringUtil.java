@@ -30,7 +30,7 @@ public class StringUtil {
                 while (!(dir.getAbsolutePath().endsWith(Constant.debug) || dir.getAbsolutePath().endsWith(Constant.release))) {
                     builder.insert(0, Constant.dot + dir.getName());
                     dir = dir.getParentFile();
-                }
+                 }
                 return builder.toString().substring(1);
             }
             dir = dir.getParentFile();
