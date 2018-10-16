@@ -18,6 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            manifest.srcFile  'src/main/manifest/AndroidManifest.xml'
+        }
+    }
 }
 
 dependencies {

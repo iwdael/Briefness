@@ -34,8 +34,8 @@ public class JavaInfo extends AbsJavaInfo {
             List<XmlViewInfo> infos = proxyInfo.getViewInfos();
             for (int i = 0; i < infos.size(); i++) {
                 String viewName = infos.get(i).view;
-                if (!importBuilder.toString().contains("com.hacknife.briefness.BriefnessInjector"))
-                    importBuilder.append("import com.hacknife.briefness.BriefnessInjector;\n");
+                if (!importBuilder.toString().contains(packages + ".BriefnessInjector"))
+                    importBuilder.append("import " + packages + ".BriefnessInjector;\n");
                 builder.append("    public void set").append(StringUtil.toUpperCase(infos.get(i).ID)).append("(Object obj) {\n")
                         .append("        BriefnessInjector.injector(").append(infos.get(i).ID).append(",obj)").append(";\n").append("    }\n\n");
                 builder.append("    public ").append(viewName).append(" get").append(StringUtil.toUpperCase(infos.get(i).ID)).append("() {\n")
