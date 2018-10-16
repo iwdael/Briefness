@@ -123,8 +123,8 @@ public class JavaInfo extends AbsJavaInfo {
                                     builder.append("        ").append(info.ID).append(".").append(method[i]).append(";\n");
                                 }
                             } else {
-                                if (!importBuilder.toString().contains("com.hacknife.briefness.BriefnessInjector"))
-                                    importBuilder.append("import com.hacknife.briefness.BriefnessInjector;\n");
+                                if (!importBuilder.toString().contains(packages + ".BriefnessInjector"))
+                                    importBuilder.append("import " + packages + ".BriefnessInjector;\n");
                                 if (special) {
                                     builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(XmlInfo.specialBind2String(methodSource[i])).append(");\n");
                                 } else {
@@ -135,8 +135,8 @@ public class JavaInfo extends AbsJavaInfo {
 
                     }
                 } else {
-                    if (!importBuilder.toString().contains("com.hacknife.briefness.BriefnessInjector"))
-                        importBuilder.append("import com.hacknife.briefness.BriefnessInjector;\n");
+                    if (!importBuilder.toString().contains(packages + ".BriefnessInjector"))
+                        importBuilder.append("import " + packages + ".BriefnessInjector;\n");
                     if (special) {
                         builder.append("        BriefnessInjector.injector(").append(info.ID).append(",").append(XmlInfo.specialBind2String(info.bindSource)).append(");\n");
                     } else {
