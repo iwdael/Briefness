@@ -2,6 +2,7 @@ package com.hacknife.briefness;
 
 import com.hacknife.briefness.databinding.XmlBind;
 import com.hacknife.briefness.databinding.XmlViewInfo;
+import com.hacknife.briefness.util.Logger;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -49,7 +50,7 @@ public class XmlInfo {
     private String modulePath;
 
     public XmlInfo(String path, String modulePath) {
-        this.modulePath=modulePath;
+        this.modulePath = modulePath;
         xml = modulePath + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
         parserXml(path);
 
@@ -77,7 +78,6 @@ public class XmlInfo {
     }
 
 
-
     public static String specialBind2String(String source) {
         int start = source.indexOf('$') + 1;
         int end = source.lastIndexOf("$");
@@ -100,7 +100,10 @@ public class XmlInfo {
     private void parserXml(String path) {
         try {
             String xmlName = modulePath + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + path + ".xml";
-
+            if (!new File(xmlName).exists()) {
+                Logger.v("not found xml :" + xmlName);
+                return;
+            }
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             // 获得xml解析类的引用
             XmlPullParser parser = factory.newPullParser();
