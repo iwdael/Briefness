@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
 	allprojects {
 		repositories {
 			...
-			maven { url 'https://hacknife.io' }
+			maven { url 'https://hacknife.com' }
 		}
 	}
 ```
