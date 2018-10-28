@@ -1,4 +1,5 @@
-# Briefness  [![](https://jitpack.io/v/com.hacknife/briefness.svg)](https://jitpack.io/#com.hacknife/briefness)
+# Briefness
+[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife/Briefness)  [![](https://img.shields.io/badge/version-v1.8.8--alpha-brightgreen.svg)](https://github.com/hacknife/Briefness)<br/>
 Briefness让移动开发更加简单，它支持数据绑定，控件绑定，布局绑定，点击事件绑定。
 ## 使用说明
 Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：findViewById,setContentView,setOnClickListener等等。[English](https://github.com/hacknife/Briefness/blob/master/README_ENGLISH.md)
@@ -100,17 +101,17 @@ public class MainActivity extends Activity {
 	allprojects {
 		repositories {
 			...
-			maven { url 'https://jitpack.io' }
+			maven { url 'https://hacknife.io' }
 		}
 	}
 ```
 ### Step 2. 添加依赖   
-合并以下代码到需要使用的application Module的dependencies尾。[点击查看详情](https://github.com/hacknife/CarouselBanner/blob/master/application_build.gradle.png)
+合并以下代码到需要使用的application Module的dependencies尾,注意替换version版本号。[点击查看详情](https://github.com/hacknife/CarouselBanner/blob/master/application_build.gradle.png)
 ```Java
 	dependencies {
                 ...
-          implementation 'com.github.hacknife.briefness:briefness:v1.7.6'
-    	  annotationProcessor 'com.github.hacknife.briefness:briefness-compiler:v1.7.6'
+          implementation 'com.hacknife.briefness:briefness:version'
+    	  annotationProcessor 'com.hacknife.briefness:briefness-compiler:version'
 	}
 ```
 <br><br><br>
