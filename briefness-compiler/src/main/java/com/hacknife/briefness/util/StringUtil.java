@@ -23,7 +23,7 @@ public class StringUtil {
             String dirPath = dir.getAbsolutePath();
             dirPath = reverse(dirPath).replaceFirst(Constant.tpa, "gifnoCdliub");
             dirPath = reverse(dirPath);
-            File R = new File(dirPath + File.separator + Constant.fileR);
+            File R = new File(dirPath + File.separator + "BuildConfig.java");
             if (R.exists()) {
                 dir = new File(dirPath);
                 StringBuilder builder = new StringBuilder();
