@@ -1,5 +1,6 @@
 # Briefness
-[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife/Briefness)  [![](https://img.shields.io/badge/version-v1.8.8--alpha-brightgreen.svg)](https://github.com/hacknife/Briefness)<br/>
+[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife/Briefness)  [![](https://jitpack.io/v/com.hacknife/briefness.svg)](https://jitpack.io/#com.hacknife/briefness)
+<br/>
 Briefness让移动开发更加简单，它支持数据绑定，控件绑定，布局绑定，点击事件绑定。
 ## 使用说明
 Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：findViewById,setContentView,setOnClickListener等等。[English](https://github.com/hacknife/Briefness/blob/master/README_ENGLISH.md)
