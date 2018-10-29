@@ -21,7 +21,7 @@ public class StringUtil {
         File dir = annotationFile.getParentFile();
         while (!(dir.getAbsolutePath().endsWith(Constant.debug) || dir.getAbsolutePath().endsWith(Constant.release))) {
             String dirPath = dir.getAbsolutePath();
-            dirPath = reverse(dirPath).replaceFirst(Constant.tpa, Constant.r);
+            dirPath = reverse(dirPath).replaceFirst(Constant.tpa, "gifnoCdliub");
             dirPath = reverse(dirPath);
             File R = new File(dirPath + File.separator + Constant.fileR);
             if (R.exists()) {
