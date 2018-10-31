@@ -93,7 +93,6 @@ public class Briefnessor {
                         "            }\n" +
                         "        });\n");
             }
-
         }
         return builder.toString();
     }
