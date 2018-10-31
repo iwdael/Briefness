@@ -30,7 +30,7 @@ public class StringUtil {
                 while (!(dir.getAbsolutePath().endsWith(Constant.debug) || dir.getAbsolutePath().endsWith(Constant.release))) {
                     builder.insert(0, Constant.dot + dir.getName());
                     dir = dir.getParentFile();
-                 }
+                }
                 return builder.toString().substring(1);
             }
             dir = dir.getParentFile();
@@ -59,5 +59,72 @@ public class StringUtil {
             return true;
         else
             return false;
+    }
+
+    public static String[] clickChangeMethod(String click) {
+        if (click == null || click.trim().length() == 0) return new String[0];
+        if (click.endsWith(";") || click.endsWith(")")) {
+            String[] methods = click.split(";");
+            String[] result = new String[methods.length];
+            for (int i = 0; i < methods.length; i++) {
+                result[i] = click2Method(methods[i]);
+            }
+            return result;
+        } else {
+            return new String[]{click + "();"};
+        }
+    }
+
+    private static String click2Method(String click) {
+        if (click.contains("$")) {
+            int start = click.indexOf("(");
+            int end = click.lastIndexOf(")");
+            String[] params = click.substring(start + 1, end).split(",");
+            StringBuilder builder = new StringBuilder();
+            builder.append(click.substring(0, start + 1));
+            for (int i = 0; i < params.length; i++) {
+                if (!params[i].contains("$")) {
+                    builder.append(params[i]);
+                } else {
+                    if (!params[i].contains(".")) {
+                        builder.append(toTextValue(params[i]));
+                    } else {
+                        builder.append(variable2Method(params[i]));
+                    }
+                }
+                if (i < params.length - 1) {
+                    builder.append(",");
+                }
+            }
+            builder.append(");");
+            return builder.toString();
+        } else {
+            return click+";";
+        }
+    }
+
+    private static String variable2Method(String variable) {
+        int start = variable.indexOf("$");
+        int end = variable.lastIndexOf("$");
+        String var = variable.substring(start + 1, end);
+        int split = var.indexOf(".");
+        String entity = var.substring(0, split);
+        String field = var.substring(split + 1, var.length());
+        StringBuilder builder = new StringBuilder();
+        builder.append(entity).append(".get").append(toUpperCase(field)).append("()");
+        return builder.toString();
+    }
+
+    private static String toTextValue(String textView) {
+        int start = textView.indexOf("$");
+        int end = textView.lastIndexOf("$");
+        String view = textView.substring(start + 1, end);
+        StringBuilder builder = new StringBuilder();
+        builder.append(view).append(".getText().toString().trim()");
+        return builder.toString();
+    }
+
+    public static void main(String[] a) {
+        System.out.print(variable2Method("$entity.username$"));
     }
 }

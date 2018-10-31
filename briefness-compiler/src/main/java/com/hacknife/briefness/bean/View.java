@@ -2,6 +2,9 @@ package com.hacknife.briefness.bean;
 
 import com.hacknife.briefness.util.ViewCollection;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Hacknife on 2018/10/31.
  */
@@ -12,9 +15,13 @@ public class View {
     String click;
     String longClick;
     String touch;
-    String bind;
+    List<Bind> bind;
     String action;
     String fullClassName;
+
+    public View() {
+        bind = new ArrayList<>();
+    }
 
     public String getClassName() {
         return className;
@@ -44,7 +51,7 @@ public class View {
     }
 
     public void setClick(String click) {
-        this.click = click;
+        this.click = click.replaceAll(" ", "");
     }
 
     public String getLongClick() {
@@ -52,7 +59,7 @@ public class View {
     }
 
     public void setLongClick(String longClick) {
-        this.longClick = longClick;
+        this.longClick = longClick.replaceAll(" ", "");
     }
 
     public String getTouch() {
@@ -63,13 +70,19 @@ public class View {
         this.touch = touch;
     }
 
-    public String getBind() {
+    public List<Bind> getBind() {
         return bind;
     }
 
     public void setBind(String bind) {
-        this.bind = bind;
+        if (bind.trim().length() == 0) return;
+        String[] vars = bind.split(";");
+        for (String var : vars) {
+            this.bind.add(new Bind(var));
+        }
     }
+
+
 
     public String getAction() {
         return action;

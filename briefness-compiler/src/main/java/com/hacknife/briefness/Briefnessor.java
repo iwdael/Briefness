@@ -1,5 +1,6 @@
 package com.hacknife.briefness;
 
+import com.hacknife.briefness.bean.Bind;
 import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.bean.Field;
 import com.hacknife.briefness.bean.Link;
@@ -77,7 +78,23 @@ public class Briefnessor {
     }
 
     private String generateLongClick() {
-        return "";
+        StringBuilder builder = new StringBuilder();
+        if (briefness.getLayout() != null) {
+            List<View> views = briefness.getLabel().getViews();
+            for (View view : views) {
+                String[] mtd = StringUtil.clickChangeMethod(view.getLongClick());
+                for (String s : mtd) {
+                    builder.append("        " + view.getId() + ".setOnLongClickListener(new View.OnLongClickListener() {\n" +
+                            "            @Override\n" +
+                            "            public boolean onLongClick(View view) {\n" +
+                            "                host." + s + "\n" +
+                            "                return false;\n" +
+                            "            }\n" +
+                            "        });\n");
+                }
+            }
+        }
+        return builder.toString();
     }
 
     private String generateClick() {
@@ -92,6 +109,20 @@ public class Briefnessor {
                         "                host." + method.getMethodName() + "(view);\n" +
                         "            }\n" +
                         "        });\n");
+            }
+        }
+        if (briefness.getLayout() != null) {
+            List<View> views = briefness.getLabel().getViews();
+            for (View view : views) {
+                String[] mtd = StringUtil.clickChangeMethod(view.getClick());
+                for (String s : mtd) {
+                    builder.append("        " + view.getId() + ".setOnClickListener(new View.OnClickListener() {\n" +
+                            "            @Override\n" +
+                            "            public void onClick(View view) {\n" +
+                            "                host." + s + "\n" +
+                            "            }\n" +
+                            "        });\n");
+                }
             }
         }
         return builder.toString();
@@ -149,7 +180,31 @@ public class Briefnessor {
     }
 
     private String generateSetBean() {
-        return "";
+        if (briefness.getLayout() == null) return "";
+        List<Link> links = briefness.getLabel().getLinkes();
+        StringBuilder builder = new StringBuilder();
+        for (Link link : links) {
+            builder.append("    public void set" + StringUtil.toUpperCase(link.getAlisa()) + "(" + StringUtil.toUpperCase(link.getClassName()) + " " + link.getAlisa() + ") {\n" +
+                    "        if (entity == null) return;\n" +
+                    "        this." + link.getAlisa() + " = " + link.getAlisa() + ";\n");
+            List<View> views = briefness.getLabel().getViews();
+            for (View view : views) {
+                List<Bind> binds = view.getBind();
+                for (Bind bind : binds) {
+                    Logger.v(bind.toString());
+                    if (bind.getAlisa().equalsIgnoreCase(link.getAlisa())) {
+                        if (link.getFullClassName().equalsIgnoreCase("android.os.Bundle")) {
+                            builder.append("        BriefnessInjector.injector(" + view.getId() + "," + bind.getAlisa() + ".get(\"" + bind.getField() + "\"));\n");
+                        }
+                    }
+                }
+
+            }
+            builder.append("    }\n\n");
+        }
+
+
+        return builder.toString();
     }
 
     private String generateView() {

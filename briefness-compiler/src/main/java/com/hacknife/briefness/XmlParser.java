@@ -54,7 +54,7 @@ public class XmlParser {
                         //获取引用
                         for (int i = 0; i < count; i++) {
                             if (parser.getAttributeName(i).contains(imports)) {
-                                String[] links = parser.getAttributeValue(i).split(";");
+                                String[] links = parser.getAttributeValue(i).replaceAll(" ", "").split(";");
                                 for (String link : links) {
                                     String[] split = link.split(",");
                                     Link aLink = new Link(split[0], split[1]);

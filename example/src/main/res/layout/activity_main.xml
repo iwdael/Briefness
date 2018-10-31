@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:briefness="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    briefness:imports="com.hacknife.demo.Entity,entity;com.hacknife.demo.Entity,alisa;">
+    app:imports="com.hacknife.demo.Entity,entity;com.hacknife.demo.Entity,alisa;android.os.Bundle,bundle;">
 
 
     <TextView
@@ -14,11 +14,13 @@
         android:layout_height="wrap_content"
         android:text="Hello World ONE"
         android:textSize="20sp"
-        briefness:bind="$entity.index$>0? R.string.success:R.string.fail;$alisa.index$>0? R.string.success:R.string.fail;"
-        briefness:click="OnClick($entity.username$);"
+        app:bind="$entity.index$>0? R.string.success:R.string.fail;$alisa.index$>0? R.string.success:R.string.fail;"
+        app:click="OnClick(entity)"
+        app:longClick="OnClick(entity)"
         tools:ignore="MissingPrefix" />
 
     <TextView
+        app:bind="$bundle.USERNAME$"
         android:id="@+id/tv_test1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
