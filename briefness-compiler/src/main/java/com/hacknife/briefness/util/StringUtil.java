@@ -52,4 +52,12 @@ public class StringUtil {
         }
         return file.getParentFile().getParentFile().getPath();
     }
+
+
+    public static boolean stringContainString(StringBuilder builder, String string) {
+        if (builder.toString().contains(string))
+            return true;
+        else
+            return false;
+    }
 }

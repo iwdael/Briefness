@@ -102,17 +102,7 @@ public abstract class AbsJavaInfo {
 
     private void generateComplierCode() {
 
-        generateFieldCode(fieldBuilder);
-        if (ClassUtil.instanceOfActivity(typeElement.getQualifiedName().toString(),modulePath)) {
-            //activity
-            generateBindActivityCode(methodBuilder);
-        } else {
-            //fragment or other
-            generateBindOtherCode(methodBuilder);
-        }
-        generateClearData(methodBuilder);
-        generateBindDataCode(methodBuilder);
-        generateSetDataCode(methodBuilder);
+
     }
 
     protected abstract void generateSetDataCode(StringBuilder methodBuilder);

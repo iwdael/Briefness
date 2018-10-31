@@ -5,9 +5,11 @@ import com.hacknife.briefness.BindClick;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
 import com.hacknife.briefness.BindViews;
+import com.hacknife.briefness.Briefnessor;
 import com.hacknife.briefness.Constant;
 import com.hacknife.briefness.JavaInjector;
 import com.hacknife.briefness.JavaInfo;
+import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.databinding.JavaLayout;
 import com.hacknife.briefness.util.Logger;
 import com.google.auto.service.AutoService;
@@ -37,23 +39,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     String buidPath;
     String packages;
 
-    @Override
-    protected void processViews(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindViews.class);
-        for (Element element : elementsWithBind) {
-            if (!checkAnnotationValid(element, BindViews.class)) continue;
-            VariableElement variableElement = (VariableElement) element;
-            TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
-            String fullClassName = classElement.getQualifiedName().toString();
-            AbsJavaInfo proxyInfo = mProxyMap.get(fullClassName);
-            if (proxyInfo == null) {
-                proxyInfo = new JavaInfo(elementUtils, classElement);
-                mProxyMap.put(fullClassName, proxyInfo);
-            }
-            BindViews bindViewAnnotation = variableElement.getAnnotation(BindViews.class);
-            proxyInfo.bindView.put(bindViewAnnotation.value(), variableElement);
-        }
-    }
+
 
     @Override
     protected void processClick(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -62,14 +48,11 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             if (!checkAnnotationValid(element, BindClick.class)) continue;
             TypeElement typeElement = (TypeElement) element.getEnclosingElement();
             String fullClassName = typeElement.getQualifiedName().toString();
-            AbsJavaInfo proxyInfo = mProxyMap.get(fullClassName);
-            if (proxyInfo == null) {
-                proxyInfo = new JavaInfo(elementUtils, typeElement);
-                mProxyMap.put(fullClassName, proxyInfo);
+            Briefnessor briefnessor = mProxyMap.get(fullClassName);
+            if (briefnessor == null) {
+                briefnessor = new Briefnessor(elementUtils, typeElement);
+                mProxyMap.put(fullClassName, briefnessor);
             }
-            BindClick bindViewAnnotation = element.getAnnotation(BindClick.class);
-            int[] id = bindViewAnnotation.value();
-            proxyInfo.bindClick.put(id, element);
         }
     }
 
@@ -81,14 +64,12 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
             VariableElement variableElement = (VariableElement) element;
             TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
             String fullClassName = classElement.getQualifiedName().toString();
-            AbsJavaInfo proxyInfo = mProxyMap.get(fullClassName);
-            if (proxyInfo == null) {
-                proxyInfo = new JavaInfo(elementUtils, classElement);
-                mProxyMap.put(fullClassName, proxyInfo);
+            Briefnessor briefnessor = mProxyMap.get(fullClassName);
+            if (briefnessor == null) {
+                briefnessor = new Briefnessor(elementUtils, classElement);
+                mProxyMap.put(fullClassName, briefnessor);
             }
-            BindView bindViewAnnotation = variableElement.getAnnotation(BindView.class);
-            int id = bindViewAnnotation.value();
-            proxyInfo.bindView.put(new int[]{id}, variableElement);
+
         }
     }
 
@@ -99,13 +80,11 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
         for (Element element : elementsWithBind) {
             if (!checkAnnotationValid(element, JavaLayout.class)) continue;
             String fullClassName = element.asType().toString();
-            AbsJavaInfo proxyInfo = mProxyMap.get(fullClassName);
-            if (proxyInfo == null) {
-                proxyInfo = new JavaInfo(elementUtils, (TypeElement) element);
-                mProxyMap.put(fullClassName, proxyInfo);
+            Briefnessor briefnessor = mProxyMap.get(fullClassName);
+            if (briefnessor == null) {
+                briefnessor = new Briefnessor(elementUtils, (TypeElement) element);
+                mProxyMap.put(fullClassName, briefnessor);
             }
-            BindLayout bindViewAnnotation = element.getAnnotation(BindLayout.class);
-            proxyInfo.bindLayout.add(new JavaLayout(bindViewAnnotation.value()));
         }
     }
 
@@ -113,21 +92,21 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     @Override
     protected void process() {
         for (String key : mProxyMap.keySet()) {
-            AbsJavaInfo proxyInfo = mProxyMap.get(key);
+            Briefnessor briefnessor = mProxyMap.get(key);
             try {
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
-                        proxyInfo.getProxyClassFullName(),
-                        proxyInfo.getTypeElement()
+                        briefnessor.getProxyClassFullName(),
+                        briefnessor.getTypeElement()
                 );
                 if (!inited) {
                     packages = StringUtil.findPackage(jfo.toUri().getPath());
                     if (packages == null)
-                        error(proxyInfo.getTypeElement(), "Unable to find module package");
+                        error(briefnessor.getTypeElement(), "Unable to find module package");
                     else
                         Logger.v("find package:"+packages);
                     try {
 
-                        JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(packages + Constant.dot + Constant.briefnessInjector, proxyInfo.getTypeElement());
+                        JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(packages + Constant.dot + Constant.briefnessInjector, briefnessor.getTypeElement());
                         //找到当前module
                         buidPath = StringUtil.findBuildDir(fileObject.toUri().getPath());
                         Logger.v("find build directory:"+buidPath);
@@ -147,11 +126,11 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                 }
                 Logger.v(jfo.toUri().getPath());
                 Writer writer = jfo.openWriter();
-                writer.write(proxyInfo.generateJavaCode(buidPath,packages));
+                writer.write(briefnessor.generateJavaCode(buidPath,packages));
                 writer.flush();
                 writer.close();
             } catch (Exception e) {
-                error(proxyInfo.getTypeElement(), "Unable to write injector for type %s: %s", proxyInfo.getTypeElement(), e.getMessage());
+                error(briefnessor.getTypeElement(), "Unable to write injector for type %s: %s", briefnessor.getTypeElement(), e.getMessage());
                 e.printStackTrace();
             }
         }

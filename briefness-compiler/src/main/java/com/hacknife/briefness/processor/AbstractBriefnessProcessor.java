@@ -6,6 +6,8 @@ import com.hacknife.briefness.BindClick;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
 import com.hacknife.briefness.BindViews;
+import com.hacknife.briefness.Briefnessor;
+import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.util.ClassValidator;
 
 import java.util.HashSet;
@@ -35,7 +37,7 @@ import javax.tools.Diagnostic;
 public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
     protected Messager messager;
     protected Elements elementUtils;
-    protected Map<String, AbsJavaInfo> mProxyMap = new LinkedHashMap<>();
+    protected Map<String, Briefnessor> mProxyMap = new LinkedHashMap<>();
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -43,15 +45,11 @@ public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
         mProxyMap.clear();
         processLayout(annotations, roundEnv);
         processView(annotations, roundEnv);
-        processViews(annotations, roundEnv);
         processClick(annotations, roundEnv);
         process();
         return true;
     }
 
-
-
-    protected abstract void processViews(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
     protected abstract void processClick(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
@@ -74,9 +72,7 @@ public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
         HashSet<String> supportType = new LinkedHashSet<>();
         supportType.add(BindLayout.class.getCanonicalName());
         supportType.add(BindView.class.getCanonicalName());
-        supportType.add(BindViews.class.getCanonicalName());
         supportType.add(BindClick.class.getCanonicalName());
-
         return supportType;
     }
 
