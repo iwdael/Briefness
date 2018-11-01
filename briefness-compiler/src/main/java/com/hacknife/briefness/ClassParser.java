@@ -34,7 +34,7 @@ public class ClassParser {
                 public void visit(ClassOrInterfaceDeclaration n, Object arg) {
                     super.visit(n, arg);
                     String[] ids = checkAnnatation(n.getAnnotations());
-                    if (ids != null)
+                    if (ids != null && ids.length == 1)
                         briefness.setLayout(ids[0].substring(ids[0].lastIndexOf(".") + 1));
                 }
 

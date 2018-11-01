@@ -58,7 +58,7 @@ public class Briefnessor {
         javaSource = String.format(Constant.javaPath, buidPath, packages.replace(".", "/"), className);
         briefness = new Briefness();
         ClassParser.parser(javaSource, briefness);
-        Logger.p(javaSource);
+         
         Logger.v(javaSource + ":" + briefness.getLayout());
         XmlParser.parser(buidPath, briefness.getLayout(), briefness);
         return Constant.briefnessor
