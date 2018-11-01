@@ -26,7 +26,6 @@ public class ClassParser {
     public static String BindLayout = "BindLayout";
 
     public static void parser(String path, Briefness briefness) {
-
         try {
             CompilationUnit parse = JavaParser.parse(new File(path));
             VoidVisitorAdapter<Object> adapter = new VoidVisitorAdapter<Object>() {
@@ -56,6 +55,7 @@ public class ClassParser {
             };
             adapter.visit(parse, null);
         } catch (Exception e) {
+            Logger.v(e.getMessage());
         }
     }
 

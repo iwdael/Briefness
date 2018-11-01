@@ -7,4 +7,5 @@ import com.hacknife.briefness.BindLayout;
  */
 @BindLayout(R2.layout.activity_main)
 public class TestViewHolder extends ViewHolder<Entity,TestViewHolderBriefnessor> {
+
 }

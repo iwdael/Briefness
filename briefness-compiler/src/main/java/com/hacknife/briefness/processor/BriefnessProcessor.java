@@ -1,4 +1,5 @@
 package com.hacknife.briefness.processor;
+
 import com.hacknife.briefness.BindClick;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
@@ -8,6 +9,7 @@ import com.hacknife.briefness.JavaInjector;
 import com.hacknife.briefness.util.Logger;
 import com.google.auto.service.AutoService;
 import com.hacknife.briefness.util.StringUtil;
+
 import java.io.Writer;
 import java.util.Set;
 
@@ -29,7 +31,6 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     boolean inited = false;
     String buidPath;
     String packages;
-
 
 
     @Override
@@ -94,13 +95,13 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                     if (packages == null)
                         error(briefnessor.getTypeElement(), "Unable to find module package");
                     else
-                        Logger.v("find package:"+packages);
+                        Logger.v("find package:" + packages);
                     try {
 
                         JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(packages + Constant.dot + Constant.briefnessInjector, briefnessor.getTypeElement());
                         //找到当前module
                         buidPath = StringUtil.findBuildDir(fileObject.toUri().getPath());
-                        Logger.v("find build directory:"+buidPath);
+                        Logger.v("find build directory:" + buidPath);
                         //ViewInjector
                         JavaInjector injector = new JavaInjector();
                         injector.witeCode(buidPath, packages);
@@ -115,9 +116,8 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
 
                     inited = true;
                 }
-                Logger.v(jfo.toUri().getPath());
                 Writer writer = jfo.openWriter();
-                writer.write(briefnessor.generateJavaCode(buidPath,packages));
+                writer.write(briefnessor.generateJavaCode(buidPath, packages));
                 writer.flush();
                 writer.close();
             } catch (Exception e) {
