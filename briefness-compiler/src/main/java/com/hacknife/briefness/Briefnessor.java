@@ -258,14 +258,13 @@ public class Briefnessor {
 
     private String generateIView() {
         StringBuilder builder = new StringBuilder();
-        if (briefness.getLayout() == null) {
-            List<Field> fields = briefness.getFileds();
-            for (Field field : fields) {
-                String fullClassName = ViewCollection.getFullNameByName(field.getClassName());
-                if (fullClassName.length() != 0 && (!StringUtil.stringContainString(builder, fullClassName)))
-                    builder.append("import ").append(fullClassName).append(";\n");
-            }
-        } else {
+        List<Field> fields = briefness.getFileds();
+        for (Field field : fields) {
+            String fullClassName = ViewCollection.getFullNameByName(field.getClassName());
+            if (fullClassName.length() != 0 && (!StringUtil.stringContainString(builder, fullClassName)))
+                builder.append("import ").append(fullClassName).append(";\n");
+        }
+        if (briefness.getLayout() != null) {
             List<View> views = briefness.getLabel().getViews();
             for (View view : views) {
                 String fullClassName = view.getFullClassName();

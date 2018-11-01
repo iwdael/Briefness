@@ -28,10 +28,9 @@ public class View {
     }
 
     public void setClassName(String className) {
-
         if (className.contains(".")) {
-            this.className = className.substring(className.indexOf(".") + 1);
             fullClassName = className;
+            this.className = className.substring(className.lastIndexOf(".") + 1);
         } else {
             this.className = className;
             fullClassName = ViewCollection.getFullNameByName(className);
@@ -81,7 +80,6 @@ public class View {
             this.bind.add(new Bind(var));
         }
     }
-
 
 
     public String getAction() {
