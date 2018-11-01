@@ -1,8 +1,13 @@
 package com.hacknife.briefness.util;
 
 import com.hacknife.briefness.Constant;
+import com.hacknife.briefness.bean.Link;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * author  : Hacknife
@@ -61,70 +66,126 @@ public class StringUtil {
             return false;
     }
 
-    public static String[] clickChangeMethod(String click) {
-        if (click == null || click.trim().length() == 0) return new String[0];
+    public static Map<String, String[]> clickChangeMethod(String click, List<Link> links) {
+        Map<String, String[]> map = new HashMap<>();
+        if (click == null || click.trim().length() == 0) {
+            map.put(Constant.METHOD, new String[0]);
+            map.put(Constant.PROTECT, new String[0]);
+            return map;
+        }
         if (click.endsWith(";") || click.endsWith(")")) {
             String[] methods = click.split(";");
+            String[] protect = new String[methods.length];
             String[] result = new String[methods.length];
             for (int i = 0; i < methods.length; i++) {
-                result[i] = click2Method(methods[i]);
+                StringBuilder protectBuilder = new StringBuilder();
+                result[i] = click2Method(methods[i], links, protectBuilder);
+                protect[i] = protectBuilder.toString();
             }
-            return result;
+            map.put(Constant.METHOD, result);
+            map.put(Constant.PROTECT, protect);
+            return map;
         } else {
-            return new String[]{click + "();"};
+            map.put(Constant.METHOD, new String[]{click + "();"});
+            map.put(Constant.PROTECT, new String[]{""});
+            return map;
         }
     }
 
-    private static String click2Method(String click) {
+    private static String click2Method(String click, List<Link> links, StringBuilder protectBuilder) {
         if (click.contains("$")) {
             int start = click.indexOf("(");
             int end = click.lastIndexOf(")");
-            String[] params = click.substring(start + 1, end).split(",");
             StringBuilder builder = new StringBuilder();
             builder.append(click.substring(0, start + 1));
+            String[] params = click.substring(start + 1, end).split(",");
             for (int i = 0; i < params.length; i++) {
-                if (!params[i].contains("$")) {
-                    builder.append(params[i]);
-                } else {
-                    if (!params[i].contains(".")) {
-                        builder.append(toTextValue(params[i]));
-                    } else {
-                        builder.append(variable2Method(params[i]));
-                    }
-                }
-                if (i < params.length - 1) {
-                    builder.append(",");
-                }
+                String param = params[i];
+                StringBuilder protect = new StringBuilder();
+                builder.append(variable2Method(param, links, protect));
+                if (i != params.length - 1)
+                    builder.append(" , ");
+                if (protectBuilder.length() != 0 && protect.length() != 0)
+                    protectBuilder.append(" && ");
+
+                protectBuilder.append(protect);
             }
+
             builder.append(");");
             return builder.toString();
         } else {
-            return click+";";
+            return click + ";";
         }
     }
 
-    private static String variable2Method(String variable) {
-        int start = variable.indexOf("$");
-        int end = variable.lastIndexOf("$");
-        String var = variable.substring(start + 1, end);
-        int split = var.indexOf(".");
-        String entity = var.substring(0, split);
-        String field = var.substring(split + 1, var.length());
+    public static String variable2Method(String variable, List<Link> links, StringBuilder protect) {
+        if (!variable.contains("$")) return variable;
         StringBuilder builder = new StringBuilder();
-        builder.append(entity).append(".get").append(toUpperCase(field)).append("()");
-        return builder.toString();
+        int start = variable.indexOf("$") + 1;
+        int end = variable.indexOf("$", start);
+        builder.append(variable.substring(0, start - 1));
+        String par = variable.substring(start, end);
+        if (par.contains(".")) {
+            par = par.replaceAll(" ", "");
+            int split = par.indexOf(".");
+            String entity = par.substring(0, split);
+            String field = par.substring(split + 1, par.length());
+            String index = null;
+            if (field.contains("[") && field.contains("]")) {
+                int fieldIndex = field.indexOf("[");
+                index = field.substring(fieldIndex + 1, field.length() - 1);
+                field = field.substring(0, fieldIndex);
+            }
+            int type = 1;//自定义javabean，map,bundle;
+            for (Link link : links) {
+                Map map = new HashMap();
+                map.get("");
+                if (link.getAlisa().equalsIgnoreCase(entity) && link.getFullClassName().equalsIgnoreCase("android.os.Bundle")) {
+                    type = 2;
+                    break;
+                }
+                if (link.getAlisa().equalsIgnoreCase(entity) && link.getFullClassName().equalsIgnoreCase("java.util.Map")) {
+                    type = 2;
+                }
+            }
+            if (type == 1) {
+                builder.append(entity + ".get" + StringUtil.toUpperCase(field) + "()");
+            } else if (type == 2) {
+                builder.append(entity + ".get(\"" + field + "\")");
+            }
+            if (index != null) {
+                protect.append(entity + ".get" + StringUtil.toUpperCase(field) + "() != null && " + entity + ".get" + StringUtil.toUpperCase(field) + "().size()>" + index);
+                builder.append(".get(" + index + ")");
+            }
+        } else {
+            builder.append(par + ".getText().toString().trim()");
+        }
+        builder.append(variable.substring(end + 1, variable.length()));
+        String var = builder.toString();
+        if (var.contains("$")) {
+            if (var.contains("[") && var.contains("]")) {
+                protect.append(" && ");
+            }
+            return variable2Method(var, links, protect);
+        } else {
+            return var;
+        }
     }
 
-    private static String toTextValue(String textView) {
-        int start = textView.indexOf("$");
-        int end = textView.lastIndexOf("$");
-        String view = textView.substring(start + 1, end);
-        StringBuilder builder = new StringBuilder();
-        builder.append(view).append(".getText().toString().trim()");
-        return builder.toString();
-    }
 
     public static void main(String[] a) {
-        System.out.print(variable2Method("$entity.username$"));
+        List<Link> links = new ArrayList<>();
+        links.add(new Link("android.os.Bundle", "bundle"));
+        links.add(new Link("java.util.Map", "map"));
+        links.add(new Link("com.hacknife.demo.User", "user"));
+        String var = "onListener";
+        Map<String, String[]> map = clickChangeMethod(var, links);
+        String[] methods = map.get("METHOD");
+        String[] protects = map.get("PROTECT");
+        for (int i = 0; i < methods.length; i++) {
+            System.out.print("method:-->>" + methods[i] + "\n\n");
+            System.out.print("protect:-->>" + protects[i] + "\n\n");
+        }
+
     }
 }

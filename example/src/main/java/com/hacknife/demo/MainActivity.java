@@ -30,16 +30,10 @@ public class MainActivity extends Activity {
         briefnessor = (MainActivityBriefnessor) Briefness.bind(this);
     }
 
-    public void onClick(View v) {
-    }
-
-    public void onTestClick(View v) {
-    }
 
     @BindClick(R.id.tv_test)
     public void click(View view) {
-//        briefnessor.setAlisa(new Entity());
-//        briefnessor.setEntity(new Entity());
+
     }
 
     @BindClick({R.id.tv_test, R.id.tv_test1})
@@ -47,7 +41,20 @@ public class MainActivity extends Activity {
 
     }
 
-    public void OnClick(String username) {
+
+    public void onUserClick(String s) {
+
+    }
+
+    public void onListener() {
+
+    }
+
+    public void onUserLongClick(String s) {
+
+    }
+
+    public void ontest() {
 
     }
 }

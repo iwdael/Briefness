@@ -38,4 +38,18 @@ public class MainFragment extends Fragment {
     public void OnClick(String username) {
 
     }
+
+    public void onUserClick(String s) {
+    }
+
+    public void onListener() {
+
+    }
+
+    public void onUserLongClick(String s) {
+    }
+
+    public void ontest() {
+
+    }
 }

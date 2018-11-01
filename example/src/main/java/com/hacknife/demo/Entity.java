@@ -1,5 +1,7 @@
 package com.hacknife.demo;
 
+import java.util.List;
+
 /**
  * author  : Black Chopper
  * e-mail  : 4884280@qq.com
@@ -11,6 +13,11 @@ public class Entity {
     private String username;
     private String password;
     private int index;
+    private List<String> list;
+
+    public List<String> getList() {
+        return list;
+    }
 
     public void setUsername(String username) {
         this.username = username;

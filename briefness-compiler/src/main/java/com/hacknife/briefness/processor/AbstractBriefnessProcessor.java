@@ -1,13 +1,9 @@
 package com.hacknife.briefness.processor;
 
-
-import com.hacknife.briefness.AbsJavaInfo;
 import com.hacknife.briefness.BindClick;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
-import com.hacknife.briefness.BindViews;
 import com.hacknife.briefness.Briefnessor;
-import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.util.ClassValidator;
 
 import java.util.HashSet;

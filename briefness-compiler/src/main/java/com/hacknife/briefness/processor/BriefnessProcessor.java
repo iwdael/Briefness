@@ -1,22 +1,14 @@
 package com.hacknife.briefness.processor;
-
-import com.hacknife.briefness.AbsJavaInfo;
 import com.hacknife.briefness.BindClick;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
-import com.hacknife.briefness.BindViews;
 import com.hacknife.briefness.Briefnessor;
 import com.hacknife.briefness.Constant;
 import com.hacknife.briefness.JavaInjector;
-import com.hacknife.briefness.JavaInfo;
-import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.databinding.JavaLayout;
 import com.hacknife.briefness.util.Logger;
 import com.google.auto.service.AutoService;
 import com.hacknife.briefness.util.StringUtil;
-
-import java.io.File;
-import java.io.IOException;
 import java.io.Writer;
 import java.util.Set;
 

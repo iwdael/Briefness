@@ -14,18 +14,18 @@
         android:layout_height="wrap_content"
         android:text="Hello World ONE"
         android:textSize="20sp"
-        app:bind="$entity.index$>0? R.string.success:R.string.fail;$alisa.index$>0? R.string.success:R.string.fail;"
-        app:click="OnClick(entity)"
-        app:longClick="OnClick(entity)"
+        app:bind="$ entity .index$>0? R.string.success:R.string.fail; $ alisa.index $>0? R.string.success:R.string.fail;"
+        app:click="onUserClick($entity.list[0]$);onListener()"
+        app:longClick="onUserLongClick($entity.list[0]$);ontest();"
         tools:ignore="MissingPrefix" />
 
     <TextView
-        app:bind="$bundle.USERNAME$"
         android:id="@+id/tv_test1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World TWO"
         android:textSize="20sp"
+        app:bind="$bundle.USERNAME$;$alisa.list[3]$"
         tools:ignore="MissingPrefix" />
 
 </LinearLayout>

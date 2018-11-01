@@ -7,6 +7,8 @@ package com.hacknife.briefness;
  * project : Briefness
  */
 public class Constant {
+    public static final String METHOD="METHOD";
+    public static final String PROTECT="PROTECT";
     public static final String debug = "debug";
     public static final String release = "release";
     public static final String source = "source";
@@ -46,7 +48,7 @@ public class Constant {
             "import java.util.ArrayList;\n" +
             "import android.app.Activity;\n" +
             "import android.view.View;\n" +
-            "import --iPackage--.--proxy--;\n" +
+            "import --iPackage--.--className--;\n" +
             "import com.hacknife.briefness.Briefnessor;\n" +
             "import --package--.R;\n" +
             "--iView--" +

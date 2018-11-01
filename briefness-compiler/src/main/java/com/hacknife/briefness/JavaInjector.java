@@ -1,12 +1,10 @@
 package com.hacknife.briefness;
 
 import com.hacknife.briefness.databinding.JavaLayout;
-import com.hacknife.briefness.util.ClassUtil;
 import com.hacknife.briefness.util.FileUtil;
 
 import java.io.File;
-
-import static com.hacknife.briefness.XmlInfo.SPLIT;
+import static com.hacknife.briefness.XmlParser.SPLIT;
 
 /**
  * author  : Hacknife

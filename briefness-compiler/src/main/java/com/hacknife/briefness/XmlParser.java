@@ -76,19 +76,19 @@ public class XmlParser {
                                     view.setId(id2String(value));
                                 }
                                 if (name.contains(click)) {
-                                    view.setClick(value);
+                                    view.setClick(deleteBlank(value));
                                 }
                                 if (name.contains(longclick)) {
-                                    view.setLongClick(value);
+                                    view.setLongClick(deleteBlank(value));
                                 }
                                 if (name.contains(touch)) {
-                                    view.setTouch(value);
+                                    view.setTouch(deleteBlank(value));
                                 }
                                 if (name.contains(bind)) {
-                                    view.setBind(value);
+                                    view.setBind(deleteBlank(value));
                                 }
                                 if (name.contains(action)) {
-                                    view.setAction(value);
+                                    view.setAction(deleteBlank(value));
                                 }
                                 if (name.equalsIgnoreCase(layout)) {
                                     parser(buidDir, value.replace("@layout/", ""), briefness);
@@ -118,5 +118,9 @@ public class XmlParser {
             target = source.substring(source.indexOf("@id/") + 4, source.length());
         }
         return target;
+    }
+
+    public static String deleteBlank(String str) {
+        return str.replaceAll(" ", "");
     }
 }
