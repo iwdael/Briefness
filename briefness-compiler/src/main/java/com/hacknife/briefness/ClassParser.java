@@ -12,6 +12,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.bean.Field;
 import com.hacknife.briefness.bean.Method;
+import com.hacknife.briefness.util.Logger;
 
 import java.io.File;
 
@@ -25,6 +26,7 @@ public class ClassParser {
     public static String BindLayout = "BindLayout";
 
     public static void parser(String path, Briefness briefness) {
+
         try {
             CompilationUnit parse = JavaParser.parse(new File(path));
             VoidVisitorAdapter<Object> adapter = new VoidVisitorAdapter<Object>() {

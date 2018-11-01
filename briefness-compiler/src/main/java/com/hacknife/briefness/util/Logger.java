@@ -12,4 +12,7 @@ public class Logger {
         System.out.print(":briefness:compileJava: " + msg + "\n");
     }
 
+    public static void p(String msg) {
+        System.out.print(":briefness:parser: " + msg + "\n");
+    }
 }
