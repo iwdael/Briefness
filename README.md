@@ -1,9 +1,8 @@
 # Briefness
-[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife/Briefness)  [![](https://jitpack.io/v/com.hacknife/briefness.svg)](https://jitpack.io/#com.hacknife/briefness)
-<br/>
+[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/language-java-yellow.svg)](https://github.com/hacknife) [![](https://jitpack.io/v/com.hacknife/briefness.svg)](https://jitpack.io/#com.hacknife/briefness) [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/hacknife)<br/><br/>
 Briefness让移动开发更加简单，它支持数据绑定，控件绑定，布局绑定，点击事件绑定。
 ## 使用说明
-Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：findViewById,setContentView,setOnClickListener等等。[English](https://github.com/hacknife/Briefness/blob/master/README_ENGLISH.md)
+Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：findViewById,setContentView,setOnClickListener等等.
 ### 代码示例
 在你需要使用Briefness之前，先把它绑定到Activity，如果是多个Activity都需要使用，可以在基类中绑定。
 ```Java
