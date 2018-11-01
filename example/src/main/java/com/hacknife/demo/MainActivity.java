@@ -14,30 +14,9 @@ import com.hacknife.briefness.Briefness;
 
 
 @BindLayout(R2.layout.activity_main)
-public class MainActivity extends Activity {
-    private MainActivityBriefnessor briefnessor;
-    Message message;
-    @BindView(R.id.tv_test)
-    TextView tv_test;
-    TextView[] textViews;
+public class MainActivity extends BaseActivity<MainActivityBriefnessor> {
 
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        briefnessor = (MainActivityBriefnessor) Briefness.bind(this);
-    }
-
-
-    @BindClick(R.id.tv_test)
-    public void click(View view) {
-
-    }
-
-    @BindClick({R.id.tv_test, R.id.tv_test1})
-    public void clicks(View view) {
-
-    }
 
 
     public void onUserClick(String s) {
@@ -54,5 +33,10 @@ public class MainActivity extends Activity {
 
     public void ontest() {
 
+    }
+
+
+    public interface CallBack{
+        void  call();
     }
 }
