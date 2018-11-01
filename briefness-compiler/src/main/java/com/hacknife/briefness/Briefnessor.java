@@ -207,7 +207,7 @@ public class Briefnessor {
         StringBuilder builder = new StringBuilder();
         for (Link link : links) {
             builder.append("    public void set" + StringUtil.toUpperCase(link.getAlisa()) + "(" + StringUtil.toUpperCase(link.getClassName()) + " " + link.getAlisa() + ") {\n" +
-                    "        if (entity == null) return;\n" +
+                    "        if (" + link.getAlisa() + " == null) return;\n" +
                     "        this." + link.getAlisa() + " = " + link.getAlisa() + ";\n");
             List<View> views = briefness.getLabel().getViews();
             for (View view : views) {
