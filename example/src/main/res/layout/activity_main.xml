@@ -7,6 +7,7 @@
     android:orientation="vertical"
     app:imports="com.hacknife.demo.Entity,entity;com.hacknife.demo.Entity,alisa;android.os.Bundle,bundle;">
 
+    <include layout="@layout/support_simple_spinner_dropdown_item" />
 
     <TextView
         android:id="@+id/tv_test"
