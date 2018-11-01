@@ -68,11 +68,11 @@ public class ClassParser {
         if (anntation.contains("{")) {
             int start = anntation.indexOf("{");
             int end = anntation.lastIndexOf("}");
-            return anntation.substring(start + 1, end).replaceAll(" ", "");
+            return anntation.substring(start + 1, end).replaceAll(" ", "").replaceAll("R2","R");
         } else {
             int start = anntation.indexOf("(");
             int end = anntation.lastIndexOf(")");
-            return anntation.substring(start + 1, end).replaceAll(" ", "");
+            return anntation.substring(start + 1, end).replaceAll(" ", "").replaceAll("R2","R");
         }
 
     }
