@@ -13,7 +13,7 @@ import com.hacknife.briefness.BindView;
 import com.hacknife.briefness.Briefness;
 
 
-@BindLayout(R.layout.activity_main)
+@BindLayout(R2.layout.activity_main)
 public class MainActivity extends Activity {
     private MainActivityBriefnessor briefnessor;
     Message message;

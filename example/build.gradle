@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.hacknife.briefness'
+apply plugin: 'com.hacknife.briefness'
 
 android {
     compileSdkVersion 26

@@ -59,7 +59,7 @@ public class ClassParser {
     private static String[] checkAnnatation(NodeList<AnnotationExpr> annotationExprs) {
         for (AnnotationExpr annotationExpr : annotationExprs) {
             if (annotationExpr.toString().contains(BindLayout) || annotationExpr.toString().contains(BindView) || annotationExpr.toString().contains(BindClick))
-                return subString(annotationExpr.toString()).split(",");
+                return subString(annotationExpr.toString().replaceAll("R2", "R")).split(",");
         }
         return null;
     }
@@ -68,11 +68,11 @@ public class ClassParser {
         if (anntation.contains("{")) {
             int start = anntation.indexOf("{");
             int end = anntation.lastIndexOf("}");
-            return anntation.substring(start + 1, end).replaceAll(" ", "").replaceAll("R2","R");
+            return anntation.substring(start + 1, end).replaceAll(" ", "");
         } else {
             int start = anntation.indexOf("(");
             int end = anntation.lastIndexOf(")");
-            return anntation.substring(start + 1, end).replaceAll(" ", "").replaceAll("R2","R");
+            return anntation.substring(start + 1, end).replaceAll(" ", "");
         }
 
     }

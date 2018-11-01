@@ -10,13 +10,16 @@ buildscript {
         jcenter()
         google()
         flatDir name: 'localRepository', dir: "briefness-plugin/localRepository/libs"
+        maven{
+            url 'https://hacknife.com'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.71"
 //        classpath 'com.hacknife:briefness-plugin:1.0'
-
+        classpath 'com.hacknife.briefness:briefness-plugin:1.8.8-alpha4'
     }
 
 
@@ -27,6 +30,9 @@ allprojects {
         jcenter()
         google()
         flatDir name: 'localRepository', dir: "briefness-plugin/localRepository/libs"
+        maven{
+            url 'https://hacknife.com'
+        }
     }
 }
 

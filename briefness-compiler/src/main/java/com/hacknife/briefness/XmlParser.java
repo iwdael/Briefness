@@ -30,6 +30,7 @@ public class XmlParser {
 
 
     public static void parser(String buidDir, String layoutName, Briefness briefness) {
+        if (layoutName == null) return;
         String xmlName = buidDir + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + layoutName + ".xml";
         if (!new File(xmlName).exists()) {
             Logger.v("not found xml :" + xmlName);
