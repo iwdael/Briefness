@@ -5,7 +5,6 @@ import com.hacknife.briefness.BindView;
 import com.hacknife.briefness.Briefnessor;
 import com.hacknife.briefness.Constant;
 import com.hacknife.briefness.JavaInjector;
-import com.hacknife.briefness.databinding.JavaLayout;
 import com.hacknife.briefness.util.Logger;
 import com.google.auto.service.AutoService;
 import com.hacknife.briefness.util.StringUtil;
@@ -70,7 +69,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     protected void processLayout(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindLayout.class);
         for (Element element : elementsWithBind) {
-            if (!checkAnnotationValid(element, JavaLayout.class)) continue;
+            if (!checkAnnotationValid(element, BindLayout.class)) continue;
             String fullClassName = element.asType().toString();
             Briefnessor briefnessor = mProxyMap.get(fullClassName);
             if (briefnessor == null) {

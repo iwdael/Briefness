@@ -1,9 +1,10 @@
 package com.hacknife.briefness;
 
-import com.hacknife.briefness.databinding.JavaLayout;
+
 import com.hacknife.briefness.util.FileUtil;
 
 import java.io.File;
+
 import static com.hacknife.briefness.XmlParser.SPLIT;
 
 /**
@@ -130,7 +131,6 @@ public class JavaInjector {
         StringBuilder builder = new StringBuilder();
         return builder.append(PACKAGE(packages))
                 .append(IMPORT(packages))
-                .append(JavaLayout.author)
                 .append(CLASS).toString();
     }
 }

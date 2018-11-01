@@ -9,10 +9,10 @@ import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
 
 /**
- * author  : Black Chopper
+ * author  : hacknife
  * e-mail  : 4884280@qq.com
- * github  : http://github.com/BlackChopper
- * project : BriefnessInjector
+ * github  : http://github.com/hacknife
+ * project : Briefness
  */
 
 @BindLayout(R.layout.activity_main)

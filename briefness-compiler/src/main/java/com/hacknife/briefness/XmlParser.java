@@ -3,8 +3,6 @@ package com.hacknife.briefness;
 import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.bean.Link;
 import com.hacknife.briefness.bean.View;
-import com.hacknife.briefness.databinding.XmlBind;
-import com.hacknife.briefness.databinding.XmlViewInfo;
 import com.hacknife.briefness.util.Logger;
 
 import org.xmlpull.v1.XmlPullParser;
