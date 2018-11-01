@@ -55,7 +55,7 @@ public class Briefnessor {
             host = "host.";
         else
             host = "view.";
-        javaSource = String.format(Constant.javaPath, buidPath, packages.replace(".", "/"), className);
+        javaSource = String.format(Constant.javaPath, buidPath, packageName.replace(".", "/"), className);
         briefness = new Briefness();
         ClassParser.parser(javaSource, briefness);
         Logger.v(javaSource + ":" + briefness.getLayout());
