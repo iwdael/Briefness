@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.hacknife.briefness.BindClick;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
-import com.hacknife.briefness.BindViews;
 import com.hacknife.briefness.Briefness;
 
 
@@ -20,7 +19,6 @@ public class MainActivity extends Activity {
     Message message;
     @BindView(R.id.tv_test)
     TextView tv_test;
-    @BindViews({R.id.tv_test, R.id.tv_test1})
     TextView[] textViews;
 
 
