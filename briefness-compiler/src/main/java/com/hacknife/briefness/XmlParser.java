@@ -47,7 +47,8 @@ public class XmlParser {
 
                         break;
                     case XmlPullParser.START_TAG:
-                        boolean have = false;
+                        boolean validView = false;
+                        String includeLayout = null;
                         int count = parser.getAttributeCount();
                         //获取引用
                         for (int i = 0; i < count; i++) {
@@ -59,17 +60,24 @@ public class XmlParser {
                                     briefness.getLabel().addLink(aLink);
                                 }
                             }
-                            if (parser.getAttributeName(i).contains(id) | parser.getName().contains(include)) {
-                                have = true;
+                            if (parser.getAttributeName(i).contains(id))
+                                validView = true;
+                            if (parser.getName().contains(include) && parser.getAttributeName(i).contains(layout)) {
+                                includeLayout = parser.getAttributeValue(i).replace("@layout/", "");
                             }
                         }
+                        if (includeLayout != null) {
+                            parser(buidDir, includeLayout, briefness);
+                            validView = false;
+                        }
                         //获取信息
-                        if (have) {
+                        if (validView) {
                             View view = new View();
                             view.setClassName(parser.getName());
                             for (int i = 0; i < count; i++) {
                                 String name = parser.getAttributeName(i);
                                 String value = parser.getAttributeValue(i);
+
                                 if (name.equalsIgnoreCase(id)) {
                                     view.setId(id2String(value));
                                 }
@@ -88,12 +96,8 @@ public class XmlParser {
                                 if (name.contains(action)) {
                                     view.setAction(deleteBlank(value));
                                 }
-                                if (name.equalsIgnoreCase(layout)) {
-                                    parser(buidDir, value.replace("@layout/", ""), briefness);
-                                }
                             }
-                            if (!view.getClassName().equalsIgnoreCase(include))
-                                briefness.getLabel().addView(view);
+                            briefness.getLabel().addView(view);
                         }
                         break;
                     case XmlPullParser.END_TAG:
@@ -103,7 +107,7 @@ public class XmlParser {
 
             }
         } catch (Exception e) {
-
+            Logger.v(e.getMessage());
         }
     }
 

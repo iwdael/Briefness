@@ -15,7 +15,7 @@ import com.hacknife.demo.R;
  * github  : http://github.com/hacknife
  * project : Briefness
  */
-@BindLayout(R.layout.activity_base)
+
 public class AboutActivity extends Activity {
 
     @Override

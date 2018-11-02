@@ -1,5 +1,6 @@
 package com.hacknife.briefness.bean;
 
+import com.hacknife.briefness.util.Logger;
 import com.hacknife.briefness.util.ViewCollection;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class View {
     }
 
     public void setClick(String click) {
-        this.click = click.replaceAll(" ", "");
+        this.click = click;
     }
 
     public String getLongClick() {

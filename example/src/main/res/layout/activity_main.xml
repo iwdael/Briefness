@@ -5,9 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:imports="com.hacknife.demo.Entity,entity;com.hacknife.demo.Entity,alisa;android.os.Bundle,bundle;">
+    app:imports="com.hacknife.demo.Entity,entity;com.hacknife.demo.Entity,alisa;android.os.Bundle,bundle;"
+    tools:ignore="MissingPrefix">
 
-    <include layout="@layout/include_recyclerview" />
+
+    <LinearLayout
+        android:id="@+id/ll_wrap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bind="$bundle.SHOW$">
+
+        <include layout="@layout/include_recyclerview" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_test"
@@ -16,9 +25,7 @@
         android:text="Hello World ONE"
         android:textSize="20sp"
         app:bind="$ entity .index$>0? R.string.success:R.string.fail; $ alisa.index $>0? R.string.success:R.string.fail;"
-        app:click="onUserClick($entity.list[0]$);onListener()"
-        app:longClick="onUserLongClick($entity.list[0]$);ontest();"
-        tools:ignore="MissingPrefix" />
+        app:click="onTextClick(tv_test)" />
 
     <TextView
         android:id="@+id/tv_test1"
@@ -26,7 +33,6 @@
         android:layout_height="wrap_content"
         android:text="Hello World TWO"
         android:textSize="20sp"
-        app:bind="$bundle.USERNAME$;$alisa.list[3]$"
-        tools:ignore="MissingPrefix" />
+        app:bind="$bundle.USERNAME$;$alisa.list[3]$" />
 
 </LinearLayout>

@@ -58,7 +58,7 @@ public class Briefnessor {
         javaSource = String.format(Constant.javaPath, buidPath, packageName.replace(".", "/"), className);
         briefness = new Briefness();
         ClassParser.parser(javaSource, briefness);
-        Logger.v(javaSource + ":" + briefness.getLayout());
+        Logger.p(javaSource + ":" + briefness.getLayout());
         XmlParser.parser(buidPath, briefness.getLayout(), briefness);
         return Constant.briefnessor
                 .replaceAll(Constant.className, className)
@@ -130,7 +130,7 @@ public class Briefnessor {
                 Map<String, String[]> map = StringUtil.clickChangeMethod(view.getClick(), links);
                 String[] method = map.get(Constant.METHOD);
                 String[] protects = map.get(Constant.PROTECT);
-                if (method.length == 0) break;
+                if (method.length == 0) continue;
                 builder.append("        " + view.getId() + ".setOnClickListener(new View.OnClickListener() {\n" +
                         "            @Override\n" +
                         "            public void onClick(View v) {\n");

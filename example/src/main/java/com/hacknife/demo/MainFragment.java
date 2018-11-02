@@ -18,34 +18,7 @@ import com.hacknife.briefness.BindView;
 
 public class MainFragment extends Fragment {
 
-    @BindView({R.id.tv_test,R.id.tv_test,R.id.tv_test})
-    TextView[] tv_test3;
-    public Message message;
 
 
-    @BindClick({R.id.tv_test,R.id.tv_test,R.id.tv_test})
-    public void onClick(View v) {
-    }
 
-    public void onTestClick(View v) {
-
-    }
-
-    public void OnClick(String username) {
-
-    }
-
-    public void onUserClick(String s) {
-    }
-
-    public void onListener() {
-
-    }
-
-    public void onUserLongClick(String s) {
-    }
-
-    public void ontest() {
-
-    }
 }
