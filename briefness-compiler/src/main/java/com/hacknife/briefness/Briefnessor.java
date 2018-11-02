@@ -90,7 +90,7 @@ public class Briefnessor {
                 if (methods.length == 0) break;
                 builder.append("        " + view.getId() + ".setOnLongClickListener(new View.OnLongClickListener() {\n" +
                         "            @Override\n" +
-                        "            public boolean onLongClick(View view) {\n");
+                        "            public boolean onLongClick(View v) {\n");
                 for (int i = 0; i < methods.length; i++) {
                     if (protects[i].length() > 0) {
                         builder.append("                if(" + protects[i] + ") {\n");
@@ -117,8 +117,8 @@ public class Briefnessor {
             for (String id : ids) {
                 builder.append("        " + host + "findViewById(" + id + ").setOnClickListener(new View.OnClickListener() {\n" +
                         "            @Override\n" +
-                        "            public void onClick(View view) {\n" +
-                        "                host." + method.getMethodName() + "(view);\n" +
+                        "            public void onClick(View v) {\n" +
+                        "                host." + method.getMethodName() + "(v);\n" +
                         "            }\n" +
                         "        });\n");
             }
@@ -133,7 +133,7 @@ public class Briefnessor {
                 if (method.length == 0) break;
                 builder.append("        " + view.getId() + ".setOnClickListener(new View.OnClickListener() {\n" +
                         "            @Override\n" +
-                        "            public void onClick(View view) {\n");
+                        "            public void onClick(View v) {\n");
                 for (int i = 0; i < method.length; i++) {
                     if (protects[i].length() > 0) {
                         builder.append("                if(" + protects[i] + ") {\n");
