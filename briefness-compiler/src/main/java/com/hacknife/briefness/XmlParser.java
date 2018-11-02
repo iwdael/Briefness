@@ -16,12 +16,12 @@ import java.io.FileReader;
  */
 
 public class XmlParser {
-    public static final String imports = "imports";
-    public static final String click = "click";
-    public static final String longclick = "longClick";
-    public static final String touch = "touch";
-    public static final String bind = "bind";
-    public static final String action = "action";
+    public static final String imports = ":imports";
+    public static final String click = ":click";
+    public static final String longclick = ":longClick";
+    public static final String touch = ":touch";
+    public static final String bind = ":bind";
+    public static final String action = ":action";
     public static final String id = "android:id";
 
     public static final String SPLIT = "/";
@@ -81,19 +81,19 @@ public class XmlParser {
                                 if (name.equalsIgnoreCase(id)) {
                                     view.setId(id2String(value));
                                 }
-                                if (name.contains(click)) {
+                                if (name.endsWith(click)) {
                                     view.setClick(deleteBlank(value));
                                 }
-                                if (name.contains(longclick)) {
+                                if (name.endsWith(longclick)) {
                                     view.setLongClick(deleteBlank(value));
                                 }
-                                if (name.contains(touch)) {
+                                if (name.endsWith(touch)) {
                                     view.setTouch(deleteBlank(value));
                                 }
-                                if (name.contains(bind)) {
+                                if (name.endsWith(bind)) {
                                     view.setBind(deleteBlank(value));
                                 }
-                                if (name.contains(action)) {
+                                if (name.endsWith(action)) {
                                     view.setAction(deleteBlank(value));
                                 }
                             }
