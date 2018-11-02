@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:bind="$bundle.SHOW$">
-
         <include layout="@layout/include_recyclerview" />
     </LinearLayout>
 
@@ -24,8 +23,8 @@
         android:layout_height="wrap_content"
         android:text="Hello World ONE"
         android:textSize="20sp"
-        app:bind="$ entity .index$>0? R.string.success:R.string.fail; $ alisa.index $>0? R.string.success:R.string.fail;"
-        app:click="onTextClick(tv_test)" />
+        app:bind="$entity.index$ | $alisa.index$"
+        app:click="onTextClick|onChooseClick" />
 
     <TextView
         android:id="@+id/tv_test1"
@@ -33,6 +32,6 @@
         android:layout_height="wrap_content"
         android:text="Hello World TWO"
         android:textSize="20sp"
-        app:bind="$bundle.USERNAME$;$alisa.list[3]$" />
+        app:bind="$bundle.USERNAME$|$alisa.list$" />
 
 </LinearLayout>

@@ -44,8 +44,10 @@ public class Bind {
         String[] variables;
         if (bind == null || bind.replaceAll(" ", "").length() == 0)
             variables = new String[0];
-        else
+        else if (bind.contains(";"))
             variables = bind.split(";");
+        else
+            variables = bind.split("\\|");
         method = new String[variables.length];
         protect = new String[variables.length];
         alisa = new String[variables.length];

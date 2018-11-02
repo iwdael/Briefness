@@ -73,13 +73,22 @@ public class StringUtil {
             map.put(Constant.PROTECT, new String[0]);
             return map;
         }
-        if (click.endsWith(";") || click.endsWith(")")) {
-            String[] methods = click.split(";");
+        if (click.contains(";") || click.endsWith(")") || click.contains("|")) {
+            String[] methods;
+            if (click.contains("|")) {
+                methods = click.split("\\|");
+            } else {
+                methods = click.split(";");
+            }
             String[] protect = new String[methods.length];
             String[] result = new String[methods.length];
             for (int i = 0; i < methods.length; i++) {
                 StringBuilder protectBuilder = new StringBuilder();
-                result[i] = click2Method(methods[i], links, protectBuilder);
+                if (!methods[i].endsWith(")")) {
+                    result[i] = methods[i] + "();";
+                } else {
+                    result[i] = click2Method(methods[i], links, protectBuilder);
+                }
                 protect[i] = protectBuilder.toString();
             }
             map.put(Constant.METHOD, result);
@@ -174,18 +183,22 @@ public class StringUtil {
 
 
     public static void main(String[] a) {
-        List<Link> links = new ArrayList<>();
-        links.add(new Link("android.os.Bundle", "bundle"));
-        links.add(new Link("java.util.Map", "map"));
-        links.add(new Link("com.hacknife.demo.User", "user"));
-        String var = "onListener";
-        Map<String, String[]> map = clickChangeMethod(var, links);
-        String[] methods = map.get("METHOD");
-        String[] protects = map.get("PROTECT");
-        for (int i = 0; i < methods.length; i++) {
-            System.out.print("method:-->>" + methods[i] + "\n\n");
-            System.out.print("protect:-->>" + protects[i] + "\n\n");
+//        List<Link> links = new ArrayList<>();
+//        links.add(new Link("android.os.Bundle", "bundle"));
+//        links.add(new Link("java.util.Map", "map"));
+//        links.add(new Link("com.hacknife.demo.User", "user"));
+//        String var = "onListener";
+//        Map<String, String[]> map = clickChangeMethod(var, links);
+//        String[] methods = map.get("METHOD");
+//        String[] protects = map.get("PROTECT");
+//        for (int i = 0; i < methods.length; i++) {
+//            System.out.print("method:-->>" + methods[i] + "\n\n");
+//            System.out.print("protect:-->>" + protects[i] + "\n\n");
+//        }
+        String str = "$user.username$|$user.pswd$";
+        String split[] = str.split("\\|");
+        for (int i = 0; i < split.length; i++) {
+            System.out.print(split[i] + "\n");
         }
-
     }
 }
