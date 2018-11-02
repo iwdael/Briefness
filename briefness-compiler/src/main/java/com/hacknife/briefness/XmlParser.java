@@ -62,7 +62,7 @@ public class XmlParser {
                             }
                             if (parser.getAttributeName(i).contains(id))
                                 validView = true;
-                            if (parser.getName().contains(include) && parser.getAttributeName(i).contains(layout)) {
+                            if (parser.getName().contains(include) && parser.getAttributeName(i).equalsIgnoreCase(layout)) {
                                 includeLayout = parser.getAttributeValue(i).replace("@layout/", "");
                             }
                         }
