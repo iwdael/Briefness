@@ -12,7 +12,8 @@
 * 支持library、application
 * 支持布局绑定
 ## 概述
-Briefness能够减少在项目开发中一些重复繁琐的工作，同时能够规避因数据异常引发的空指针。
+Briefness能够避免在项目开发中一些重复繁琐的工作，规避因数据异常引发的空指针异常，提高开发效率。它量身为[MVVM](https://baike.baidu.com/item/MVVM)框架打造，实现UI逻辑与业务分离，解耦，提高可重用性。
+它提供了3种注解方式，9种xml属性完成数据绑定，事件绑定等操作。
 ## 使用说明
 Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：findViewById,setContentView,setOnClickListener等等.
 ### 代码示例
