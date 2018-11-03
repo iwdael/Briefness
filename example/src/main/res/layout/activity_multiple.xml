@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/tv_sex"
             style="@style/text_childer"
-            app:bind="$mul.gender$|$mul.genderColor$" />
+            app:bind="$mul.gender$;$mul.genderColor$;$mul.genderColor$;$mul.genderColor$;$mul.genderColor$;" />
 
     </LinearLayout>
 

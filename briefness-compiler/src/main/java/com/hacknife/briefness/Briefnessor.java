@@ -91,7 +91,7 @@ public class Briefnessor {
                 Map<String, String[]> mapVM = StringUtil.clickChangeMethod(view.getLongClick(), links);
                 String[] methodsVM = mapVM.get(Constant.METHOD);
                 String[] protectsVM = mapVM.get(Constant.PROTECT);
-                if (methods.length == 0&& methodsVM.length==0) continue;
+                if (methods.length == 0 && methodsVM.length == 0) continue;
                 builder.append("        " + view.getId() + ".setOnLongClickListener(new View.OnLongClickListener() {\n" +
                         "            @Override\n" +
                         "            public boolean onLongClick(View v) {\n");
@@ -239,22 +239,22 @@ public class Briefnessor {
                     "        this." + link.getAlisa() + " = " + link.getAlisa() + ";\n");
             List<View> views = briefness.getLabel().getViews();
             for (View view : views) {
-                List<Bind> binds = view.getBind();
-                for (Bind bind : binds) {
-                    String[] methods = bind.getMethod(links);
-                    String[] protect = bind.getProtect(links);
-                    String[] alisas = bind.getAlisa(links);
-                    for (int i = 0; i < methods.length; i++) {
-                        if (!alisas[i].equalsIgnoreCase(link.getAlisa())) continue;
-                        if (protect[i].length() == 0) {
-                            builder.append("        BriefnessInjector.injector(" + view.getId() + "," + methods[i] + ");\n");
-                        } else {
-                            builder.append("        if(" + protect[i] + ") {\n");
-                            builder.append("            BriefnessInjector.injector(" + view.getId() + "," + methods[i] + ");\n");
-                            builder.append("        }\n");
-                        }
+                Bind bind = view.getBind();
+                if (bind == null) continue;
+                String[] methods = bind.getMethod(links);
+                String[] protect = bind.getProtect(links);
+                String[] alisas = bind.getAlisa(links);
+                for (int i = 0; i < methods.length; i++) {
+                    if (!alisas[i].equalsIgnoreCase(link.getAlisa())) continue;
+                    if (protect[i].length() == 0) {
+                        builder.append("        BriefnessInjector.injector(" + view.getId() + "," + methods[i] + ");\n");
+                    } else {
+                        builder.append("        if(" + protect[i] + ") {\n");
+                        builder.append("            BriefnessInjector.injector(" + view.getId() + "," + methods[i] + ");\n");
+                        builder.append("        }\n");
                     }
                 }
+
 
             }
             builder.append("    }\n\n");

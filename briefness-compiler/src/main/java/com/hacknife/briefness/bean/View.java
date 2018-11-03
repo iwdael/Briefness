@@ -18,12 +18,11 @@ public class View {
     String touch;
     String transfer;
     String longTransfer;
-    List<Bind> bind;
+    Bind bind;
     String action;
     String fullClassName;
 
     public View() {
-        bind = new ArrayList<>();
     }
 
     public String getClassName() {
@@ -72,7 +71,7 @@ public class View {
         this.touch = touch;
     }
 
-    public List<Bind> getBind() {
+    public Bind getBind() {
         return bind;
     }
 
@@ -86,10 +85,8 @@ public class View {
 
     public void setBind(String bind) {
         if (bind.trim().length() == 0) return;
-        String[] vars = bind.split(";");
-        for (String var : vars) {
-            this.bind.add(new Bind(var));
-        }
+        this.bind=new Bind(bind);
+
     }
 
 
