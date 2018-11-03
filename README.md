@@ -14,8 +14,9 @@
 ## 概述
 Briefness能够避免在项目开发中一些重复繁琐的工作，规避因数据异常引发的空指针异常，提高开发效率。它量身为[MVVM](https://baike.baidu.com/item/MVVM)框架打造，实现UI逻辑与业务分离，解耦，提高可重用性。
 它提供了3种注解方式，9种xml属性完成数据绑定，事件绑定等操作。
+
 |属性|功能|
-|------|------|
+|:------:|:------:|
 |imports|引入需要绑定的类|
 |viewModel|引入Viewmodel|
 |bind|绑定数据|
@@ -25,9 +26,9 @@ Briefness能够避免在项目开发中一些重复繁琐的工作，规避因�
 |longTransfer|向ViewModel发送长按事件|
 |action|暂定|
 |touch|暂定 |
-<br/><br/>
+
 |注解|功能|
-|------|------|
+|:------:|:------:|
 |BindLayout|绑定布局，并解析布局文件|
 |BindView|绑定控件|
 |BindClick|绑定点击时间|
