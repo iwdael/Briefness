@@ -32,7 +32,11 @@ Briefness能够避免在项目开发中一些重复繁琐的工作，规避因�
 |BindLayout|绑定布局，并解析布局文件|
 |BindView|绑定控件|
 |BindClick|绑定点击时间|
-
+## 使用说明
+> 在使用Briefness提供的功能之前，必须调用Briefness.bind方法，该方法会返回Briefenssor的一个实现类。
+> 在绑定和引入类中，如果你需要绑定多个数据，或者引入多个类，请使用“|”符号隔开。
+> "$"符号必须是成对使用的，使用"$"引起来的变量表示是需要变换的。
+> [更多说明]
 ## 如何配置
 将本仓库引入你的项目:
 ### Step 1. 添加JitPack仓库到Build文件
@@ -56,6 +60,6 @@ Briefness能够避免在项目开发中一些重复繁琐的工作，规避因�
 ```
 <br><br><br>
 ## 感谢浏览
-如果你有任何疑问，请加入QQ群，我将竭诚为你解答。欢迎Star和Fork本仓库，当然也欢迎你关注我。
+如果你有任何疑问，请加入QQ群，我将竭诚为你解答，请不要吝啬你的小星星。
 <br>
 ![Image Text](https://github.com/hacknife/CarouselBanner/blob/master/qq_group.png)
