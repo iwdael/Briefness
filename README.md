@@ -9,6 +9,7 @@
 * 支持点击事件双向绑定(Activity中绑、layout中也可以)
 * 支持长按点击事件绑定
 * 支持library、application
+* 支持布局绑定
 ## 使用说明
 Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：findViewById,setContentView,setOnClickListener等等.
 ### 代码示例

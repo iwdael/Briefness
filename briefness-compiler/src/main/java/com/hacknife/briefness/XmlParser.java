@@ -22,6 +22,9 @@ public class XmlParser {
     public static final String touch = ":touch";
     public static final String bind = ":bind";
     public static final String action = ":action";
+    public static final String viewModel = ":viewModel";
+    public static final String transfer = ":transfer";
+    public static final String longTransfer = ":longTransfer";
     public static final String id = "android:id";
 
     public static final String SPLIT = "/";
@@ -52,7 +55,10 @@ public class XmlParser {
                         int count = parser.getAttributeCount();
                         //获取引用
                         for (int i = 0; i < count; i++) {
-                            if (parser.getAttributeName(i).contains(imports)) {
+                            if (parser.getAttributeName(i).endsWith(viewModel)) {
+                                briefness.getLabel().addLink(new Link(parser.getAttributeValue(i).replaceAll(" ", ""), "viewModel"));
+                            }
+                            if (parser.getAttributeName(i).endsWith(imports)) {
                                 String[] links;
                                 if (parser.getAttributeValue(i).contains("|")) {
                                     links = parser.getAttributeValue(i).replaceAll(" ", "").split("\\|");
@@ -100,6 +106,12 @@ public class XmlParser {
                                 }
                                 if (name.endsWith(action)) {
                                     view.setAction(deleteBlank(value));
+                                }
+                                if (name.endsWith(transfer)) {
+                                    view.setTransfer(deleteBlank(value));
+                                }
+                                if (name.endsWith(longTransfer)) {
+                                    view.setTransfer(deleteBlank(value));
                                 }
                             }
                             briefness.getLabel().addView(view);

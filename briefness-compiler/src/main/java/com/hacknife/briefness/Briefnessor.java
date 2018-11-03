@@ -87,7 +87,11 @@ public class Briefnessor {
                 Map<String, String[]> map = StringUtil.clickChangeMethod(view.getLongClick(), links);
                 String[] methods = map.get(Constant.METHOD);
                 String[] protects = map.get(Constant.PROTECT);
-                if (methods.length == 0) break;
+
+                Map<String, String[]> mapVM = StringUtil.clickChangeMethod(view.getLongClick(), links);
+                String[] methodsVM = mapVM.get(Constant.METHOD);
+                String[] protectsVM = mapVM.get(Constant.PROTECT);
+                if (methods.length == 0&& methodsVM.length==0) continue;
                 builder.append("        " + view.getId() + ".setOnLongClickListener(new View.OnLongClickListener() {\n" +
                         "            @Override\n" +
                         "            public boolean onLongClick(View v) {\n");
@@ -98,6 +102,15 @@ public class Briefnessor {
                         builder.append("                }\n");
                     } else {
                         builder.append("                host." + methods[i] + "\n");
+                    }
+                }
+                for (int i = 0; i < methodsVM.length; i++) {
+                    if (protectsVM[i].length() > 0) {
+                        builder.append("                if(" + protectsVM[i] + ") {\n");
+                        builder.append("                    host." + methodsVM[i] + "\n");
+                        builder.append("                }\n");
+                    } else {
+                        builder.append("                host." + methodsVM[i] + "\n");
                     }
                 }
                 builder.append("                return false;\n");
@@ -130,7 +143,13 @@ public class Briefnessor {
                 Map<String, String[]> map = StringUtil.clickChangeMethod(view.getClick(), links);
                 String[] method = map.get(Constant.METHOD);
                 String[] protects = map.get(Constant.PROTECT);
-                if (method.length == 0) continue;
+
+
+                Map<String, String[]> mapVM = StringUtil.clickChangeMethod(view.getTransfer(), links);
+                String[] methodVM = mapVM.get(Constant.METHOD);
+                String[] protectsVM = mapVM.get(Constant.PROTECT);
+
+                if (method.length == 0 && methodVM.length == 0) continue;
                 builder.append("        " + view.getId() + ".setOnClickListener(new View.OnClickListener() {\n" +
                         "            @Override\n" +
                         "            public void onClick(View v) {\n");
@@ -141,6 +160,15 @@ public class Briefnessor {
                         builder.append("                }\n");
                     } else {
                         builder.append("                host." + method[i] + "\n");
+                    }
+                }
+                for (int i = 0; i < methodVM.length; i++) {
+                    if (protectsVM[i].length() > 0) {
+                        builder.append("                if(" + protectsVM[i] + ") {\n");
+                        builder.append("                    viewModel." + methodVM[i] + "\n");
+                        builder.append("                }\n");
+                    } else {
+                        builder.append("                viewModel." + methodVM[i] + "\n");
                     }
                 }
                 builder.append("            }\n" +

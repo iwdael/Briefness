@@ -7,5 +7,8 @@
         <attr name="touch" format="string" />
         <attr name="bind" format="string" />
         <attr name="action" format="string" />
+        <attr name="viewModel" format="string" />
+        <attr name="transfer" format="string" />
+        <attr name="longTransfer" format="string" />
     </declare-styleable>
 </resources>

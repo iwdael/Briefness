@@ -16,6 +16,8 @@ public class View {
     String click;
     String longClick;
     String touch;
+    String transfer;
+    String longTransfer;
     List<Bind> bind;
     String action;
     String fullClassName;
@@ -74,6 +76,14 @@ public class View {
         return bind;
     }
 
+    public String getTransfer() {
+        return transfer;
+    }
+
+    public void setTransfer(String transfer) {
+        this.transfer = transfer;
+    }
+
     public void setBind(String bind) {
         if (bind.trim().length() == 0) return;
         String[] vars = bind.split(";");
@@ -93,6 +103,14 @@ public class View {
 
     public String getFullClassName() {
         return fullClassName;
+    }
+
+    public String getLongTransfer() {
+        return longTransfer;
+    }
+
+    public void setLongTransfer(String longTransfer) {
+        this.longTransfer = longTransfer;
     }
 
     @Override
