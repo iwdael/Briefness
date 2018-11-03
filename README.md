@@ -125,22 +125,22 @@ public class MainActivity extends Activity {
 ## 如何配置
 将本仓库引入你的项目:
 ### Step 1. 添加JitPack仓库到Build文件
-合并以下代码到项目根目录下的build.gradle文件的repositories尾。[点击查看详情](https://github.com/hacknife/CarouselBanner/blob/master/root_build.gradle.png)
+合并以下代码到项目根目录下的build.gradle文件的repositories尾。
 ```Java
 	allprojects {
 		repositories {
 			...
-			maven { url 'https://hacknife.com' }
+			maven { url 'https://jitpack.io' }
 		}
 	}
 ```
 ### Step 2. 添加依赖   
-合并以下代码到需要使用的application Module的dependencies尾,注意替换version版本号。[点击查看详情](https://github.com/hacknife/CarouselBanner/blob/master/application_build.gradle.png)
+合并以下代码到需要使用的application Module的dependencies尾。
 ```Java
 	dependencies {
                 ...
-          implementation 'com.hacknife.briefness:briefness:version'
-    	  annotationProcessor 'com.hacknife.briefness:briefness-compiler:version'
+          implementation 'com.hacknife.briefness:briefness:tag'
+    	  annotationProcessor 'com.hacknife.briefness:briefness-compiler:tag'
 	}
 ```
 <br><br><br>
