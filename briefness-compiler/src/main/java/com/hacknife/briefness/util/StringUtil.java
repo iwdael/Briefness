@@ -163,7 +163,7 @@ public class StringUtil {
                 builder.append(entity + ".get(\"" + field + "\")");
             }
             if (index != null) {
-                protect.append(entity + ".get" + StringUtil.toUpperCase(field) + "() != null && " + entity + ".get" + StringUtil.toUpperCase(field) + "().size()>" + index);
+                protect.append(entity + " != null && " + entity + ".get" + StringUtil.toUpperCase(field) + "() != null && " + entity + ".get" + StringUtil.toUpperCase(field) + "().size()>" + index);
                 builder.append(".get(" + index + ")");
             }
         } else {

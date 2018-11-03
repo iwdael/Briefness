@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:imports="com.hacknife.demo.bean.User,user|com.hacknife.demo.bean.User,friend"
+    tools:ignore="MissingPrefix">
+
+    <include layout="@layout/include_toolbar" />
+
+    <LinearLayout style="@style/text_parent">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="昵称：" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bind="$user.nickName$"
+            tools:text="123" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/text_parent">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="性别：" />
+
+        <TextView
+            android:id="@+id/tv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bind="$user.gender$"
+            tools:text="123" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/text_parent">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="角色等级：" />
+
+        <TextView
+            android:id="@+id/tv_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bind="$user.rank$"
+            tools:text="123" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/text_parent">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="技能一：" />
+
+        <TextView
+            android:id="@+id/tv_skill_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bind="$user.skill[0]$"
+            tools:text="123" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/text_parent">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="技能二：" />
+
+        <TextView
+            android:id="@+id/tv_skill_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bind="$user.skill[1]$"
+            tools:text="123" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/text_parent">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="技能三：" />
+
+        <TextView
+            android:id="@+id/tv_skill_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bind="$user.skill[2]$"
+            tools:text="123" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/text_parent">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="技能四：" />
+
+        <TextView
+            android:id="@+id/tv_skill_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bind="$user.skill[3]$"
+            tools:text="123" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_comparision"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:text="谁的等级高"
+        app:click="onComparisonClick($user.level$>$friend.level$)" />
+</LinearLayout>

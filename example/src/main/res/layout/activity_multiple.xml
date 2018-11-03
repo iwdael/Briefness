@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:imports="com.hacknife.demo.bean.Multiple,mul|com.hacknife.demo.bean.MulObj,obj"
+    tools:ignore="MissingPrefix">
+
+    <include layout="@layout/include_toolbar" />
+
+    <LinearLayout style="@style/text_parent">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="性别：" />
+
+        <TextView
+            android:id="@+id/tv_sex"
+            style="@style/text_childer"
+            app:bind="$mul.gender$|$mul.genderColor$" />
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/text_parent">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="等级：" />
+
+        <TextView
+            android:id="@+id/tv_star"
+            style="@style/text_childer"
+            android:background="@color/bg"
+            android:text="###########"
+            app:bind="$obj.star$" />
+
+    </LinearLayout>
+</LinearLayout>

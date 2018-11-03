@@ -287,12 +287,16 @@ public class Briefnessor {
     }
 
     private String generateContentView() {
-        if (ClassUtil.instanceOfActivity(className))
-            return "        if (!Utils.contentViewExist(host)) {\n" +
-                    "            host.setContentView(R.layout." + briefness.getLayout() + ");\n" +
-                    "        }\n";
-        else
+        if (ClassUtil.instanceOfActivity(className)) {
+            if (briefness.getLayout() != null)
+                return "        if (!Utils.contentViewExist(host)) {\n" +
+                        "            host.setContentView(R.layout." + briefness.getLayout() + ");\n" +
+                        "        }\n";
+            else
+                return "";
+        } else {
             return "        View view = (View) source;\n";
+        }
     }
 
 
