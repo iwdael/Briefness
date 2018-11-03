@@ -1,6 +1,14 @@
 # Briefness
 [![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/language-java-yellow.svg)](https://github.com/hacknife) [![](https://jitpack.io/v/com.hacknife/briefness.svg)](https://jitpack.io/#com.hacknife/briefness) [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/hacknife)<br/><br/>
-Briefness让移动开发更加简单，它支持数据绑定，控件绑定，布局绑定，点击事件绑定。
+一个比DataBinding、XUtil、Butterknife 更加好用的框架，支持绑定数据、绑定View、绑定布局、绑定事件。
+## 特点
+* 支持任意数据类型绑定(包含自定义控件)
+* 支持任意类绑定(Activity、Fragment、Dialog、View 如果有需要普通类也可以)
+* 预防空指针引发的异常(防止项目开发中，数据异常引起的空指针)
+* 支持View绑定(我不建议你这样做，因为根本没有必要)
+* 支持点击事件双向绑定(Activity中绑、layout中也可以)
+* 支持长按点击事件绑定
+* 支持library、application
 ## 使用说明
 Briefness 能够简化开发，去掉一些重复且枯燥的工作,比如：findViewById,setContentView,setOnClickListener等等.
 ### 代码示例
