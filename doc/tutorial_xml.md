@@ -40,7 +40,7 @@ public class MultipleActivityBriefnessor implements Briefnessor<MultipleActivity
 }
 ```
 #### bind
-绑定数据，数据需要用成对的“$”符号包裹起来，如果有多个数据，需要用“|”隔开。
+需要绑定数据的控件必须添加android:id标签，数据源需要用成对的“$”符号包裹起来，如果有多个数据，需要用“|”隔开。
 ```
         <TextView
             android:id="@+id/tv_sex"
@@ -107,3 +107,44 @@ public class ViewInjector {
     }
 }
 ```
+#### click longClick
+单击，长按事件的控件必须添加android:id标签。如果需要传出需要变换数据的数据源，请使用成对“$”符号，如果需要相应多个点击事件，请用“|”隔开。
+```
+    <Button
+        android:id="@+id/btn_bind_data_error"
+        app:click="onMultipleClick($btn_bind_data_error$)" />
+
+    <Button
+        android:id="@+id/btn_bind_recycler"
+        app:click="onRecyclerViewClick" />
+```
+自动生成
+```
+public class DemoActivityBriefnessor implements Briefnessor<DemoActivity> {
+    public Button btn_bind_data_error;
+    public Button btn_bind_recycler;
+    ...
+    @Override
+    public void bind(final DemoActivity host, Object source) {
+        ...
+        btn_bind_data_error = (Button) host.findViewById(R.id.btn_bind_data_error);
+        btn_bind_recycler = (Button) host.findViewById(R.id.btn_bind_recycler);
+        btn_bind_data_error.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                host.onMultipleClick(btn_bind_data_error.getText().toString().trim());
+            }
+        });
+        btn_bind_recycler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                host.onRecyclerViewClick();
+            }
+        });
+    }
+    ...
+}
+```
+#### viewModel
+待续
+
