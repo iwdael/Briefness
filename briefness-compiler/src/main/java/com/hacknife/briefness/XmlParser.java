@@ -12,9 +12,11 @@ import java.io.File;
 import java.io.FileReader;
 
 /**
- * Created by Hacknife on 2018/10/31.
+ * author  : Hacknife
+ * e-mail  : 4884280@qq.com
+ * github  : http://github.com/hacknife
+ * project : Briefness
  */
-
 public class XmlParser {
     public static final String imports = ":imports";
     public static final String click = ":click";
