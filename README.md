@@ -1,5 +1,5 @@
 # Briefness
-[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/language-java-yellow.svg)](https://github.com/hacknife) [![](https://jitpack.io/v/com.hacknife/briefness.svg)](https://jitpack.io/#com.hacknife/briefness) [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/hacknife)<br/><br/>
+[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/language-java-yellow.svg)](https://github.com/hacknife) [![](https://jitpack.io/v/com.hacknife/briefness.svg)](https://jitpack.io/#com.hacknife/briefness) [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/license-apache--2.0-green.svg)](https://github.com/hacknife)<br/><br/>
 一个比DataBinding、XUtil、Butterknife 更加好用的框架，支持绑定数据、绑定View、绑定布局、绑定事件。
 ## 特点
 * 支持MVVM(Model-View-ViewModel)
