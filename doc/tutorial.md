@@ -54,7 +54,7 @@ public abstract class BaseDialog<T extends Briefnessor> extends Dialog {
 ### 注解
 BindLayout、BindView、BindClick均可以根据需求任意类中使用，make project [🔨]，会自动生成该 “类名+Briefnessor” 的类，该类提供了所有你需要的功能。
 #### BindLayout
-功能为绑定布局（不用setContentView），同时解析布局文件。*注意：该方法绑定布局功能针对Activity类*
+功能为绑定布局（不用setContentView），同时解析布局文件。***注意：该方法绑定布局功能针对Activity类***
 ```
 @BindLayout(R.layout.activity_demo)
 public class DemoActivity extends BaseActivity<DemoActivityBriefnessor> {
