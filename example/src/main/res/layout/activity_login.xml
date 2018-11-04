@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:imports="com.hacknife.demo.bean.LoginResult,result"
+    app:viewModel="com.hacknife.demo.mvvm.viewmodel.ILoginViewModel"
+    tools:ignore="MissingPrefix">
+
+    <EditText
+        android:id="@+id/et_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="10dp"
+        android:hint="账号" />
+
+    <EditText
+        android:id="@+id/et_pswd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="10dp"
+        android:hint="密码" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="10dp"
+        android:text="登陆"
+        app:transfer="onLoginClick($et_account$,$et_pswd$)" />
+
+    <LinearLayout style="@style/text_parent" android:layout_marginHorizontal="40dp">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="返回码" />
+
+        <TextView
+            android:id="@+id/tv_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bind="$result.code$" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/text_parent" android:layout_marginHorizontal="40dp">
+
+        <TextView
+            style="@style/text_childer"
+            android:text="结果:" />
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bind="$result.msg$" />
+    </LinearLayout>
+</LinearLayout>

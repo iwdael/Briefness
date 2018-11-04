@@ -13,4 +13,6 @@ public interface Briefnessor<T> {
     void clear();
 
     void clearAll();
+
+    void bindViewModel(Object viewModel);
 }

@@ -75,7 +75,19 @@ public class Briefnessor {
                 .replaceAll(Constant.longClick, generateLongClick())
                 .replaceAll(Constant.set, generateSetBean())
                 .replaceAll(Constant.clear, generateClear())
-                .replaceAll(Constant.clearAll, generateClearAll());
+                .replaceAll(Constant.clearAll, generateClearAll())
+                .replaceAll(Constant.viewModel, generateViewModel());
+    }
+
+    private String generateViewModel() {
+        if (briefness.getLayout() == null) return "";
+        List<Link> links = briefness.getLabel().getLinkes();
+        for (Link link : links) {
+            if (link.getAlisa().equalsIgnoreCase("viewModel")) {
+                return "        this.viewModel = (" + link.getClassName() + ") viewModel;\n";
+            }
+        }
+        return "";
     }
 
     private String generateLongClick() {
@@ -234,6 +246,8 @@ public class Briefnessor {
         List<Link> links = briefness.getLabel().getLinkes();
         StringBuilder builder = new StringBuilder();
         for (Link link : links) {
+            if (link.getAlisa().equalsIgnoreCase("viewModel"))
+                continue;
             builder.append("    public void set" + StringUtil.toUpperCase(link.getAlisa()) + "(" + StringUtil.toUpperCase(link.getClassName()) + " " + link.getAlisa() + ") {\n" +
                     "        if (" + link.getAlisa() + " == null) return;\n" +
                     "        this." + link.getAlisa() + " = " + link.getAlisa() + ";\n");
@@ -259,8 +273,6 @@ public class Briefnessor {
             }
             builder.append("    }\n\n");
         }
-
-
         return builder.toString();
     }
 

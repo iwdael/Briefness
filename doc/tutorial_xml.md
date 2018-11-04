@@ -42,6 +42,10 @@ public class MultipleActivityBriefnessor implements Briefnessor<MultipleActivity
 #### bind
 需要绑定数据的控件必须添加android:id标签，数据源需要用成对的“$”符号包裹起来，如果有多个数据，需要用“|”隔开。
 ```
+        <!--<TextView-->
+            <!--android:id="@+id/tv_sex"-->
+            <!--style="@style/text_childer"-->
+            <!--app:bind="$mul.gender$|$obj.star$" />-->
         <TextView
             android:id="@+id/tv_sex"
             style="@style/text_childer"
@@ -146,5 +150,87 @@ public class DemoActivityBriefnessor implements Briefnessor<DemoActivity> {
 }
 ```
 #### viewModel
-待续
+引入需要绑定ViewModel接口
+```
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:viewModel="com.hacknife.demo.mvvm.viewmodel.ILoginViewModel"
+    tools:ignore="MissingPrefix">
+```
+自动生成
+```
+public class LoginActivityBriefnessor implements Briefnessor<LoginActivity> {
 
+    public ILoginViewModel viewModel;
+    ...
+    @Override
+    public void bindViewModel(Object viewModel) {
+        this.viewModel = (ILoginViewModel) viewModel;
+    }
+}
+```
+#### transfer longTransfer
+向viewModel发送单击消息和长按消息，应用方式和click longClick一样。
+```
+    <EditText
+        android:id="@+id/et_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="10dp"
+        android:hint="账号" />
+
+    <EditText
+        android:id="@+id/et_pswd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="10dp"
+        android:hint="密码" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="10dp"
+        android:text="登陆"
+        app:transfer="onLoginClick($et_account$,$et_pswd$)" />
+```
+自动生成
+```
+public class LoginActivityBriefnessor implements Briefnessor<LoginActivity> {
+    public EditText et_account;
+    public EditText et_pswd;
+    public Button btn_login;
+    public LoginResult result;
+    public ILoginViewModel viewModel;
+    ...
+    @Override
+    public void bind(final LoginActivity host, Object source) {
+        if (!Utils.contentViewExist(host)) {
+            host.setContentView(R.layout.activity_login);
+        }
+        et_account = (EditText) host.findViewById(R.id.et_account);
+        et_pswd = (EditText) host.findViewById(R.id.et_pswd);
+        btn_login = (Button) host.findViewById(R.id.btn_login);
+        btn_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.onLoginClick(et_account.getText().toString().trim() , et_pswd.getText().toString().trim());
+            }
+        });
+
+    }
+
+    @Override
+    public void bindViewModel(Object viewModel) {
+        this.viewModel = (ILoginViewModel) viewModel;
+    }
+    ...
+}
+```

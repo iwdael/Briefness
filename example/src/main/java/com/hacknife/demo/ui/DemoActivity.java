@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.demo.R;
+import com.hacknife.demo.mvvm.LoginActivity;
 
 /**
  * author  : hacknife
@@ -31,5 +32,9 @@ public class DemoActivity extends BaseActivity<DemoActivityBriefnessor> {
     public void onMultipleClick(String trim) {
         Toast.makeText(DemoActivity.this, trim, Toast.LENGTH_SHORT).show();
         startActivity(MultipleActivity.class);
+    }
+
+    public void onMVVMClick() {
+        startActivity(LoginActivity.class);
     }
 }
