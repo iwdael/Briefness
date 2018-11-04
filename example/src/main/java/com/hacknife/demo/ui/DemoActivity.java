@@ -13,7 +13,7 @@ import com.hacknife.demo.R;
  * project : briefness
  */
 @BindLayout(R.layout.activity_demo)
-public class DemoActivity extends BaseActivity {
+public class DemoActivity extends BaseActivity<DemoActivityBriefnessor> {
 
     @Override
     protected int attachTitleRes() {

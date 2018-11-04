@@ -17,22 +17,22 @@ public class Briefness {
         return bind(target, target);
     }
 
-    public static Briefnessor bind(Object target, Object source) {
+    public static Briefnessor bind(Object target, Object view) {
         Briefnessor proxyActivity = findProxyActivity(target);
         if (proxyActivity != null)
-            proxyActivity.bind(target, source);
+            proxyActivity.bind(target, view);
         Class<?> clazz = target.getClass();
         while (true) {
             clazz = clazz.getSuperclass();
             if (clazz.getName().startsWith("android.app.") | clazz.getName().startsWith("android.support.") | clazz.getName().startsWith("java.lang."))
                 break;
             Briefnessor proxy = findProxySuperActivity(clazz);
-            if (proxy != null) proxy.bind(target, source);
+            if (proxy != null) proxy.bind(target, view);
         }
         return proxyActivity;
     }
 
-    public static void bind(Briefnessor briefnessor, Object source) {
+    private static void bind(Briefnessor briefnessor, Object source) {
         briefnessor.bind(source, null);
     }
 
