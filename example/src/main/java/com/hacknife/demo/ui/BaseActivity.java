@@ -20,9 +20,10 @@ import com.hacknife.demo.R;
  * project : briefness
  */
 public abstract class BaseActivity<T extends Briefnessor> extends AppCompatActivity {
+    T briefnessor;
     @BindView(R.id.toolBar_title)
     TextView toolBar_title;
-    T briefnessor;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,10 +37,7 @@ public abstract class BaseActivity<T extends Briefnessor> extends AppCompatActiv
     public void OnBackClick(View v) {
         finish();
     }
-
-
     protected abstract int attachTitleRes();
-
 
     protected void startActivity(Class<? extends AppCompatActivity> clazz) {
         Intent intent = new Intent(this, clazz);

@@ -130,3 +130,58 @@ public class DemoActivityBriefnessor implements Briefnessor<DemoActivity> {
     }
 }
 ```
+#### BindView BindClick
+功能主要分别为绑定控件，绑定单击事件，基本上没有用，除了一些特殊应用，比如在基类中。
+```
+public abstract class BaseActivity<T extends Briefnessor> extends AppCompatActivity {
+    T briefnessor;
+    @BindView(R.id.toolBar_title)
+    TextView toolBar_title;
+
+//    @BindView({R.id.text1,R.id.text2,R.id.text3})
+//    TextView[] textViews;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        briefnessor = (T) Briefness.bind(this);
+        toolBar_title.setText(attachTitleRes());
+    }
+
+
+    @BindClick(R.id.toolBar_back)
+    public void OnBackClick(View v) {
+        finish();
+    }
+    protected abstract int attachTitleRes();
+
+    protected void startActivity(Class<? extends AppCompatActivity> clazz) {
+        Intent intent = new Intent(this, clazz);
+        startActivity(intent);
+    }
+}
+```
+该类为自动生成.
+```
+public class BaseActivityBriefnessor implements Briefnessor<BaseActivity> {
+
+    @Override
+    public void bind(final BaseActivity host, Object source) {
+        host.toolBar_title = (TextView) host.findViewById(R.id.toolBar_title);
+        host.findViewById(R.id.toolBar_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                host.OnBackClick(v);
+            }
+        });
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    @Override
+    public void clearAll() {
+    }
+}
+
+```
