@@ -22,7 +22,7 @@ Briefness能够避免在项目开发中一些重复繁琐的工作，规避因�
 |viewModel|引入Viewmodel|
 |bind|绑定数据|
 |click|绑定点击事件|
-|longClick|绑定长按点击时间|
+|longClick|绑定长按点击事件|
 |transfer|向ViewModel发送点击事件|
 |longTransfer|向ViewModel发送长按事件|
 |action|暂定|
