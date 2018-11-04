@@ -4,12 +4,17 @@ import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.bean.Link;
 import com.hacknife.briefness.bean.View;
 import com.hacknife.briefness.util.Logger;
+import com.hacknife.briefness.util.StringUtil;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.File;
 import java.io.FileReader;
+
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
 
 /**
  * author  : Hacknife
@@ -34,7 +39,7 @@ public class XmlParser {
     public static final String layout = "layout";
 
 
-    public static void parser(String buidDir, String layoutName, Briefness briefness) {
+    public static void parser(String buidDir, String layoutName, Briefness briefness, ProcessingEnvironment processingEnv, TypeElement typeElement) {
         String xmlName = buidDir + SPLIT + "src" + SPLIT + "main" + SPLIT + "res" + SPLIT + "layout" + SPLIT + layoutName + ".xml";
         if (!new File(xmlName).exists()) {
             Logger.v("not found xml :" + xmlName);
@@ -58,6 +63,13 @@ public class XmlParser {
                         //获取引用
                         for (int i = 0; i < count; i++) {
                             if (parser.getAttributeName(i).endsWith(viewModel)) {
+                                if (parser.getAttributeValue(i).contains(";") || parser.getAttributeValue(i).contains("|")) {
+                                    error(
+                                            processingEnv,
+                                            "Briefness: viewModel tag error in " + layoutName + ".xml",
+                                            typeElement
+                                    );
+                                }
                                 briefness.getLabel().addLink(new Link(parser.getAttributeValue(i).replaceAll(" ", ""), "viewModel"));
                             }
                             if (parser.getAttributeName(i).endsWith(imports)) {
@@ -66,6 +78,14 @@ public class XmlParser {
                                     links = parser.getAttributeValue(i).replaceAll(" ", "").split("\\|");
                                 } else {
                                     links = parser.getAttributeValue(i).replaceAll(" ", "").split(";");
+                                }
+                                for (String link : links) {
+                                    if (link.contains("|") || link.contains(";") || (!link.contains(",")))
+                                        error(
+                                                processingEnv,
+                                                "Briefness: imports tag error in " + layoutName + ".xml",
+                                                typeElement
+                                        );
                                 }
                                 for (String link : links) {
                                     String[] split = link.split(",");
@@ -80,7 +100,7 @@ public class XmlParser {
                             }
                         }
                         if (includeLayout != null) {
-                            parser(buidDir, includeLayout, briefness);
+                            parser(buidDir, includeLayout, briefness, processingEnv, typeElement);
                             validView = false;
                         }
                         //获取信息
@@ -90,30 +110,75 @@ public class XmlParser {
                             for (int i = 0; i < count; i++) {
                                 String name = parser.getAttributeName(i);
                                 String value = parser.getAttributeValue(i);
-
                                 if (name.equalsIgnoreCase(id)) {
                                     view.setId(id2String(value));
                                 }
                                 if (name.endsWith(click)) {
-                                    view.setClick(deleteBlank(value));
+                                    String str = deleteBlank(value);
+                                    if (!checkLegality(str)) {
+                                        error(
+                                                processingEnv,
+                                                "Briefness: click tag error in " + layoutName + ".xml",
+                                                typeElement
+                                        );
+                                    } else {
+                                        view.setClick(str);
+                                    }
+
                                 }
                                 if (name.endsWith(longclick)) {
-                                    view.setLongClick(deleteBlank(value));
+                                    String str = deleteBlank(value);
+                                    if (!checkLegality(str)) {
+                                        error(
+                                                processingEnv,
+                                                "Briefness: longClick tag error in " + layoutName + ".xml",
+                                                typeElement
+                                        );
+                                    } else {
+                                        view.setLongClick(str);
+                                    }
                                 }
                                 if (name.endsWith(touch)) {
                                     view.setTouch(deleteBlank(value));
                                 }
                                 if (name.endsWith(bind)) {
-                                    view.setBind(deleteBlank(value));
+                                    String str = deleteBlank(value);
+                                    if (!checkLegality(str)) {
+                                        error(
+                                                processingEnv,
+                                                "Briefness: bind tag error in " + layoutName + ".xml",
+                                                typeElement
+                                        );
+                                    } else {
+                                        view.setBind(str);
+                                    }
                                 }
                                 if (name.endsWith(action)) {
                                     view.setAction(deleteBlank(value));
                                 }
                                 if (name.endsWith(transfer)) {
-                                    view.setTransfer(deleteBlank(value));
+                                    String str = deleteBlank(value);
+                                    if (!checkLegality(str)) {
+                                        error(
+                                                processingEnv,
+                                                "Briefness: transfer tag error in " + layoutName + ".xml",
+                                                typeElement
+                                        );
+                                    } else {
+                                        view.setTransfer(str);
+                                    }
                                 }
                                 if (name.endsWith(longTransfer)) {
-                                    view.setTransfer(deleteBlank(value));
+                                    String str = deleteBlank(value);
+                                    if (!checkLegality(str)) {
+                                        error(
+                                                processingEnv,
+                                                "Briefness: longTransfer tag error in " + layoutName + ".xml",
+                                                typeElement
+                                        );
+                                    } else {
+                                        view.setLongTransfer(str);
+                                    }
                                 }
                             }
                             briefness.getLabel().addView(view);
@@ -144,4 +209,29 @@ public class XmlParser {
     public static String deleteBlank(String str) {
         return str.replaceAll(" ", "");
     }
+
+
+    private static void error(ProcessingEnvironment environment, String msg, TypeElement element) {
+        environment.getMessager().printMessage(Diagnostic.Kind.ERROR, msg, element);
+    }
+
+    public static void main(String[] args) {
+        String str = "jhakhgakgr$dfj$flj;f$";
+        System.out.print(StringUtil.charCount(str, "$"));
+    }
+
+    private static boolean checkLegality(String string) {
+        String[] split;
+        if (string.contains("|")) {
+            split = string.split("\\|");
+        } else {
+            split = string.split(";");
+        }
+        for (String s : split) {
+            if (StringUtil.charCount(s, "$") % 2 != 0)
+                return false;
+        }
+        return true;
+    }
+
 }

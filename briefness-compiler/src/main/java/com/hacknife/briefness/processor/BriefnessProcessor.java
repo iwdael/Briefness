@@ -117,7 +117,7 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                     inited = true;
                 }
                 Writer writer = jfo.openWriter();
-                writer.write(briefnessor.generateJavaCode(buidPath, packages));
+                writer.write(briefnessor.generateJavaCode(buidPath, packages,processingEnv,briefnessor.getTypeElement()));
                 writer.flush();
                 writer.close();
             } catch (Exception e) {

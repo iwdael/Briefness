@@ -201,4 +201,15 @@ public class StringUtil {
             System.out.print(split[i] + "\n");
         }
     }
+
+
+    public static int charCount(String str, String find) {
+        int index = 0;
+        int count = 0;
+        while ((index = str.indexOf(find, index)) != -1) {
+            index += find.length();
+            count++;
+        }
+        return count;
+    }
 }

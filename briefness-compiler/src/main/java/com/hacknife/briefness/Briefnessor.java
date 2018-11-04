@@ -15,6 +15,7 @@ import com.hacknife.briefness.util.ViewCollection;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
@@ -50,7 +51,7 @@ public class Briefnessor {
         return typeElement;
     }
 
-    public String generateJavaCode(String buidPath, String packages) {
+    public String generateJavaCode(String buidPath, String packages, ProcessingEnvironment processingEnv, TypeElement typeElement) {
         if (ClassUtil.instanceOfActivity(className))
             host = "host.";
         else
@@ -59,7 +60,7 @@ public class Briefnessor {
         briefness = new Briefness();
         ClassParser.parser(javaSource, briefness);
         Logger.p(javaSource + ":" + briefness.getLayout());
-        XmlParser.parser(buidPath, briefness.getLayout(), briefness);
+        XmlParser.parser(buidPath, briefness.getLayout(), briefness, processingEnv,typeElement);
         return Constant.briefnessor
                 .replaceAll(Constant.className, className)
                 .replaceAll(Constant.iPackage, packageName)
