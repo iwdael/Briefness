@@ -52,7 +52,7 @@ public abstract class BaseDialog<T extends Briefnessor> extends Dialog {
 ```
 其它类的绑定方式，往后看你就知道。
 ### 注解
-BindLayout、BindView、BindClick均可以根据需求任意类中使用，make project [🔨]，会自动生成该 “类名+Briefnessor” 的类，该类提供了所有你需要的功能。
+BindLayout、BindView、BindClick均可以根据需求任意类中使用，make project [🔨]，会自动生成该 “类名+Briefnessor” 的类，和唯一个ViewInjector类(和数据绑定相关)，Briefnessor子类提供了所有你需要的功能。ViewInjector这里不提，后续数据绑定会讲到。
 #### BindLayout
 功能为绑定布局（不用setContentView），同时解析布局文件。***注意：该方法绑定布局功能针对Activity类***
 ```
