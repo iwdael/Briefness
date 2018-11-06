@@ -44,7 +44,7 @@ Briefness能够避免在项目开发中一些重复繁琐的工作，规避因�
 
 5. [XML属性标签使用说明](https://github.com/hacknife/briefness/blob/master/doc/tutorial_xml.md)
 
-6. MVVM的使用与框架搭建请查看demo中mvvm目录(.\briefness\example\src\main\java\com\hacknife\demo\mvvm)
+6. [MVVM的使用与框架搭建](https://www.jianshu.com/p/2f60736b6900)
 ## 如何配置
 将本仓库引入你的项目:
 ### Step 1. 添加JitPack仓库到Build文件
