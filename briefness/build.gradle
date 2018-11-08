@@ -1,21 +1,35 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.novoda.bintray-release'
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
-
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
 	 compile project(path: ':briefness-annotation')
 }
-group='com.blackchopper.android'
+group='com.hacknife.android'
+
+publish{
+    userOrg = 'hacknife'
+    groupId = 'com.hacknife.briefness'
+    artifactId = 'briefness'
+    publishVersion = '1.9.1'
+    desc = 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.'
+    website = 'https://github.com/hacknife/briefness'
+}

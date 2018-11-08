@@ -9,9 +9,9 @@ buildscript {
     repositories {
         jcenter()
         google()
-        flatDir name: 'localRepository', dir: "briefness-plugin/localRepository/libs"
+//        flatDir name: 'localRepository', dir: "briefness-plugin/localRepository/libs"
         maven{
-            url 'https://hacknife.com'
+            url 'https://dl.bintray.com/hacknife/maven'
         }
     }
     dependencies {
@@ -20,6 +20,8 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.71"
 //        classpath 'com.hacknife:briefness-plugin:1.0'
         classpath 'com.hacknife.briefness:briefness-plugin:1.9.1'
+        classpath 'com.novoda:bintray-release:0.7.0'
+
     }
 
 
@@ -29,10 +31,15 @@ allprojects {
     repositories {
         jcenter()
         google()
-        flatDir name: 'localRepository', dir: "briefness-plugin/localRepository/libs"
+//        flatDir name: 'localRepository', dir: "briefness-plugin/localRepository/libs"
         maven{
-            url 'https://hacknife.com'
+            url 'https://dl.bintray.com/hacknife/maven'
         }
+    }
+
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
     }
 }
 

@@ -1,6 +1,5 @@
 package com.hacknife.demo.bean;
 
-import android.support.constraint.solver.ArrayLinkedVariables;
 
 import java.util.List;
 
