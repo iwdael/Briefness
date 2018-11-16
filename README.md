@@ -61,6 +61,18 @@ Briefness能够避免在项目开发中一些重复繁琐的工作，规避因�
     	  annotationProcessor 'com.hacknife.briefness:briefness-compiler:1.9.1'
 	}
 ```
+## 混淆
+```Java
+-keep class * implements com.hacknife.briefness.Briefnessor{*;}
+-keep @com.hacknife.briefness.BindLayout class *
+-keep public interface com.hacknife.briefness.Briefnessor{public *;}
+-keep class **.BriefnessInjector {
+    *;
+}
+-keep class **.ViewInjector {
+     *;
+}
+```
 <br><br><br>
 ## 感谢浏览
 请不要吝啬你的小星星，如果你有任何疑问，请加入QQ群，我将竭诚为你解答。
