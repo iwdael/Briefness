@@ -256,6 +256,9 @@ public class Briefnessor {
         List<Link> links = briefness.getLabel().getLinkes();
         StringBuilder builder = new StringBuilder();
         for (Link link : links) {
+            builder.append("        if (this." + link.getAlisa() + " != null && (((Object) this." + link.getAlisa() + ")) instanceof LiveData) {\n" +
+                    "            ((LiveData) ((Object) " + link.getAlisa() + ")).bindTape(null);\n" +
+                    "        }\n");
             builder.append("        this.").append(link.getAlisa()).append(" = null;\n");
         }
         return builder.toString();
@@ -272,6 +275,9 @@ public class Briefnessor {
                     "        if (" + link.getAlisa() + " == null) return;\n" +
                     "        if ((this." + link.getAlisa() + " == null || this." + link.getAlisa() + " != " + link.getAlisa() + ") && (((Object) " + link.getAlisa() + ") instanceof LiveData)) {\n" +
                     "            ((LiveData) ((Object) " + link.getAlisa() + ")).bindTape(this);\n" +
+                    "        }\n" +
+                    "        if (this." + link.getAlisa() + " != null && (((Object) this." + link.getAlisa() + ")) instanceof LiveData) {\n" +
+                    "            ((LiveData) ((Object) this." + link.getAlisa() + ")).bindTape(null);\n" +
                     "        }\n" +
                     "        this." + link.getAlisa() + " = " + link.getAlisa() + ";\n");
             List<View> views = briefness.getLabel().getViews();
