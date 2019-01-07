@@ -60,7 +60,7 @@ public class Briefnessor {
         briefness = new Briefness();
         ClassParser.parser(javaSource, briefness);
         Logger.p(javaSource + ":" + briefness.getLayout());
-        XmlParser.parser(buidPath, briefness.getLayout(), briefness, processingEnv,typeElement);
+        XmlParser.parser(buidPath, briefness.getLayout(), briefness, processingEnv, typeElement);
         return Constant.briefnessor
                 .replaceAll(Constant.className, className)
                 .replaceAll(Constant.iPackage, packageName)
@@ -77,7 +77,26 @@ public class Briefnessor {
                 .replaceAll(Constant.set, generateSetBean())
                 .replaceAll(Constant.clear, generateClear())
                 .replaceAll(Constant.clearAll, generateClearAll())
-                .replaceAll(Constant.viewModel, generateViewModel());
+                .replaceAll(Constant.viewModel, generateViewModel())
+                .replaceAll(Constant.notify, generateNotify());
+    }
+
+    private String generateNotify() {
+        List<Link> links = briefness.getLabel().getLinkes();
+        StringBuilder builder = new StringBuilder();
+        builder.append("    @Override\n" +
+                "    public void notifyDataChange(Class clazz) {\n" +
+                "        if (clazz == null) {\n" +
+                "        } ");
+        for (Link link : links) {
+            if (link.getAlisa().equalsIgnoreCase("viewModel"))
+                continue;
+            builder.append("else if (clazz == " + StringUtil.toUpperCase(link.getClassName()) + ".class) {\n" +
+                    "            set" + StringUtil.toUpperCase(link.getAlisa()) + "(this." + link.getAlisa() + ");\n" +
+                    "        }");
+        }
+        builder.append("\n    }\n");
+        return builder.toString();
     }
 
     private String generateViewModel() {
@@ -251,6 +270,9 @@ public class Briefnessor {
                 continue;
             builder.append("    public void set" + StringUtil.toUpperCase(link.getAlisa()) + "(" + StringUtil.toUpperCase(link.getClassName()) + " " + link.getAlisa() + ") {\n" +
                     "        if (" + link.getAlisa() + " == null) return;\n" +
+                    "        if ((this." + link.getAlisa() + " == null || this." + link.getAlisa() + " != " + link.getAlisa() + ") && (((Object) " + link.getAlisa() + ") instanceof LiveData)) {\n" +
+                    "            ((LiveData) ((Object) " + link.getAlisa() + ")).bindTape(this);\n" +
+                    "        }\n" +
                     "        this." + link.getAlisa() + " = " + link.getAlisa() + ";\n");
             List<View> views = briefness.getLabel().getViews();
             for (View view : views) {
