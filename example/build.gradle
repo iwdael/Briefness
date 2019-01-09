@@ -3,7 +3,7 @@ apply plugin: 'com.hacknife.briefness'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.hacknife.demo"
         minSdkVersion 19
@@ -19,6 +19,7 @@ android {
 
 dependencies {
     implementation 'com.android.support:appcompat-v7:26.+'
+    implementation 'com.android.support:design:26.1.0'
     implementation project(':briefness')
     annotationProcessor project(':briefness-compiler')
 //    implementation 'com.hacknife.briefness:briefness:1.9.1'

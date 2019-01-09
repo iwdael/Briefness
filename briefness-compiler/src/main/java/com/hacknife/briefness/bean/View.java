@@ -1,10 +1,9 @@
 package com.hacknife.briefness.bean;
 
-import com.hacknife.briefness.util.Logger;
 import com.hacknife.briefness.util.ViewCollection;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Hacknife on 2018/10/31.
@@ -15,14 +14,12 @@ public class View {
     String id;
     String click;
     String longClick;
-    String touch;
-    String transfer;
-    String longTransfer;
     Bind bind;
-    String action;
     String fullClassName;
+    Map<String, String> transfer;
 
     public View() {
+        transfer = new HashMap<>();
     }
 
     public String getClassName() {
@@ -47,68 +44,19 @@ public class View {
         this.id = id;
     }
 
-    public String getClick() {
-        return click;
-    }
-
-    public void setClick(String click) {
-        this.click = click;
-    }
-
-    public String getLongClick() {
-        return longClick;
-    }
-
-    public void setLongClick(String longClick) {
-        this.longClick = longClick.replaceAll(" ", "");
-    }
-
-    public String getTouch() {
-        return touch;
-    }
-
-    public void setTouch(String touch) {
-        this.touch = touch;
-    }
-
     public Bind getBind() {
         return bind;
     }
 
-    public String getTransfer() {
-        return transfer;
-    }
-
-    public void setTransfer(String transfer) {
-        this.transfer = transfer;
-    }
-
     public void setBind(String bind) {
         if (bind.trim().length() == 0) return;
-        this.bind=new Bind(bind);
-
-    }
-
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
+        this.bind = new Bind(bind);
     }
 
     public String getFullClassName() {
         return fullClassName;
     }
 
-    public String getLongTransfer() {
-        return longTransfer;
-    }
-
-    public void setLongTransfer(String longTransfer) {
-        this.longTransfer = longTransfer;
-    }
 
     @Override
     public String toString() {
@@ -117,10 +65,16 @@ public class View {
                 ", id='" + id + '\'' +
                 ", click='" + click + '\'' +
                 ", longClick='" + longClick + '\'' +
-                ", touch='" + touch + '\'' +
                 ", bind='" + bind + '\'' +
-                ", action='" + action + '\'' +
                 ", fullClassName='" + fullClassName + '\'' +
                 '}';
+    }
+
+    public void setTransfer(String name, String str) {
+        transfer.put(name, str);
+    }
+
+    public Map<String, String> getTransfer() {
+        return transfer;
     }
 }

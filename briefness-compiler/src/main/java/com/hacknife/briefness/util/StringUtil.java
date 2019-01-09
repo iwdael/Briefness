@@ -212,4 +212,17 @@ public class StringUtil {
         }
         return count;
     }
+
+    public static boolean checkMethodHavePreffix(String method) {
+        int index = method.indexOf("(");
+        return method.substring(0, index).contains(".");
+    }
+
+    public static String insertParamter(String method, String para) {
+        StringBuilder builder = new StringBuilder();
+        int index = method.indexOf("(") + 1;
+        int lastIndex = method.indexOf(")");
+        builder.append(method.subSequence(0, index));
+        return builder.append(para).append(index == lastIndex ? "" : ", ").append(method.subSequence(index, method.length())).toString();
+    }
 }

@@ -26,13 +26,22 @@ public class XmlParser {
     public static final String imports = ":imports";
     public static final String click = ":click";
     public static final String longclick = ":longClick";
-    public static final String touch = ":touch";
     public static final String bind = ":bind";
-    public static final String action = ":action";
     public static final String viewModel = ":viewModel";
-    public static final String transfer = ":transfer";
-    public static final String longTransfer = ":longTransfer";
     public static final String id = "android:id";
+    /**
+     * <attr name="textChange" format="string" />
+     * <attr name="checkedChange" format="string" />
+     * <attr name="tabSelected" format="string" />
+     * <attr name="tabUnselected" format="string" />
+     * <attr name="pageSelected" format="string" />
+     */
+    public static final String textChange = ":textChange";
+    public static final String checkedChange = ":checkedChange";
+    public static final String tabSelected = ":tabSelected";
+    public static final String tabUnselected = ":tabUnselected";
+    public static final String pageSelected = ":pageSelected";
+
 
     public static final String SPLIT = "/";
     public static final String include = "include";
@@ -113,34 +122,35 @@ public class XmlParser {
                                 if (name.equalsIgnoreCase(id)) {
                                     view.setId(id2String(value));
                                 }
-                                if (name.endsWith(click)) {
+                                /**
+                                 * <attr name="textChange" format="string" />
+                                 * <attr name="checkedChange" format="string" />
+                                 * <attr name="tabSelected" format="string" />
+                                 * <attr name="tabUnselected" format="string" />
+                                 * <attr name="pageSelected" format="string" />
+                                 */
+                                if (name.endsWith(click) ||
+                                        name.endsWith(longclick) ||
+                                        name.endsWith(textChange) ||
+                                        name.endsWith(checkedChange) ||
+                                        name.endsWith(tabSelected) ||
+                                        name.endsWith(tabUnselected) ||
+                                        name.endsWith(pageSelected)
+                                        ) {
                                     String str = deleteBlank(value);
                                     if (!checkLegality(str)) {
                                         error(
                                                 processingEnv,
-                                                "Briefness: click tag error in " + layoutName + ".xml",
+                                                "Briefness: " + name + " tag error in " + layoutName + ".xml",
                                                 typeElement
                                         );
                                     } else {
-                                        view.setClick(str);
+                                        view.setTransfer(name, str);
                                     }
 
                                 }
-                                if (name.endsWith(longclick)) {
-                                    String str = deleteBlank(value);
-                                    if (!checkLegality(str)) {
-                                        error(
-                                                processingEnv,
-                                                "Briefness: longClick tag error in " + layoutName + ".xml",
-                                                typeElement
-                                        );
-                                    } else {
-                                        view.setLongClick(str);
-                                    }
-                                }
-                                if (name.endsWith(touch)) {
-                                    view.setTouch(deleteBlank(value));
-                                }
+
+
                                 if (name.endsWith(bind)) {
                                     String str = deleteBlank(value);
                                     if (!checkLegality(str)) {
@@ -151,33 +161,6 @@ public class XmlParser {
                                         );
                                     } else {
                                         view.setBind(str);
-                                    }
-                                }
-                                if (name.endsWith(action)) {
-                                    view.setAction(deleteBlank(value));
-                                }
-                                if (name.endsWith(transfer)) {
-                                    String str = deleteBlank(value);
-                                    if (!checkLegality(str)) {
-                                        error(
-                                                processingEnv,
-                                                "Briefness: transfer tag error in " + layoutName + ".xml",
-                                                typeElement
-                                        );
-                                    } else {
-                                        view.setTransfer(str);
-                                    }
-                                }
-                                if (name.endsWith(longTransfer)) {
-                                    String str = deleteBlank(value);
-                                    if (!checkLegality(str)) {
-                                        error(
-                                                processingEnv,
-                                                "Briefness: longTransfer tag error in " + layoutName + ".xml",
-                                                typeElement
-                                        );
-                                    } else {
-                                        view.setLongTransfer(str);
                                     }
                                 }
                             }

@@ -12,6 +12,7 @@ import com.hacknife.briefness.util.Logger;
 import com.hacknife.briefness.util.StringUtil;
 import com.hacknife.briefness.util.ViewCollection;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,14 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
+
+import static com.hacknife.briefness.XmlParser.checkedChange;
+import static com.hacknife.briefness.XmlParser.click;
+import static com.hacknife.briefness.XmlParser.longclick;
+import static com.hacknife.briefness.XmlParser.pageSelected;
+import static com.hacknife.briefness.XmlParser.tabSelected;
+import static com.hacknife.briefness.XmlParser.tabUnselected;
+import static com.hacknife.briefness.XmlParser.textChange;
 
 /**
  * Created by Hacknife on 2018/10/31.
@@ -33,6 +42,7 @@ public class Briefnessor {
     private Briefness briefness;
     private String javaSource;
     private String host;
+    private List<String> imports = new ArrayList<>();
 
     public Briefnessor(Elements elementUtils, TypeElement classElement) {
         this.typeElement = classElement;
@@ -72,13 +82,22 @@ public class Briefnessor {
                 .replaceAll(Constant.javabean, generateJavabean())
                 .replaceAll(Constant.view, generateView())
                 .replaceAll(Constant.findView, generateFindView())
-                .replaceAll(Constant.click, generateClick())
-                .replaceAll(Constant.longClick, generateLongClick())
+                .replaceAll(Constant.transfer, generateTransfer())
                 .replaceAll(Constant.set, generateSetBean())
                 .replaceAll(Constant.clear, generateClear())
                 .replaceAll(Constant.clearAll, generateClearAll())
                 .replaceAll(Constant.viewModel, generateViewModel())
-                .replaceAll(Constant.notify, generateNotify());
+                .replaceAll(Constant.notify, generateNotify())
+                .replaceAll(Constant.iimport, generateImport());
+    }
+
+    private String generateImport() {
+        StringBuilder builder = new StringBuilder();
+        for (String s : imports) {
+            if (!builder.toString().contains(s))
+                builder.append("import ").append(s).append(";\n");
+        }
+        return builder.toString();
     }
 
     private String generateNotify() {
@@ -110,51 +129,7 @@ public class Briefnessor {
         return "";
     }
 
-    private String generateLongClick() {
-        StringBuilder builder = new StringBuilder();
-        if (briefness.getLayout() != null) {
-            List<Link> links = briefness.getLabel().getLinkes();
-            List<View> views = briefness.getLabel().getViews();
-            for (View view : views) {
-                Map<String, String[]> map = StringUtil.clickChangeMethod(view.getLongClick(), links);
-                String[] methods = map.get(Constant.METHOD);
-                String[] protects = map.get(Constant.PROTECT);
-
-                Map<String, String[]> mapVM = StringUtil.clickChangeMethod(view.getLongClick(), links);
-                String[] methodsVM = mapVM.get(Constant.METHOD);
-                String[] protectsVM = mapVM.get(Constant.PROTECT);
-                if (methods.length == 0 && methodsVM.length == 0) continue;
-                builder.append("        " + view.getId() + ".setOnLongClickListener(new View.OnLongClickListener() {\n" +
-                        "            @Override\n" +
-                        "            public boolean onLongClick(View v) {\n");
-                for (int i = 0; i < methods.length; i++) {
-                    if (protects[i].length() > 0) {
-                        builder.append("                if(" + protects[i] + ") {\n");
-                        builder.append("                    host." + methods[i] + "\n");
-                        builder.append("                }\n");
-                    } else {
-                        builder.append("                host." + methods[i] + "\n");
-                    }
-                }
-                for (int i = 0; i < methodsVM.length; i++) {
-                    if (protectsVM[i].length() > 0) {
-                        builder.append("                if(" + protectsVM[i] + ") {\n");
-                        builder.append("                    host." + methodsVM[i] + "\n");
-                        builder.append("                }\n");
-                    } else {
-                        builder.append("                host." + methodsVM[i] + "\n");
-                    }
-                }
-                builder.append("                return false;\n");
-                builder.append("            }\n" +
-                        "        });\n");
-
-            }
-        }
-        return builder.toString();
-    }
-
-    private String generateClick() {
+    private String generateTransfer() {
         StringBuilder builder = new StringBuilder();
         List<Method> methods = briefness.getMethods();
         for (Method method : methods) {
@@ -172,42 +147,226 @@ public class Briefnessor {
             List<View> views = briefness.getLabel().getViews();
             List<Link> links = briefness.getLabel().getLinkes();
             for (View view : views) {
-                Map<String, String[]> map = StringUtil.clickChangeMethod(view.getClick(), links);
-                String[] method = map.get(Constant.METHOD);
-                String[] protects = map.get(Constant.PROTECT);
-
-
-                Map<String, String[]> mapVM = StringUtil.clickChangeMethod(view.getTransfer(), links);
-                String[] methodVM = mapVM.get(Constant.METHOD);
-                String[] protectsVM = mapVM.get(Constant.PROTECT);
-
-                if (method.length == 0 && methodVM.length == 0) continue;
-                builder.append("        " + view.getId() + ".setOnClickListener(new View.OnClickListener() {\n" +
-                        "            @Override\n" +
-                        "            public void onClick(View v) {\n");
-                for (int i = 0; i < method.length; i++) {
-                    if (protects[i].length() > 0) {
-                        builder.append("                if(" + protects[i] + ") {\n");
-                        builder.append("                    host." + method[i] + "\n");
-                        builder.append("                }\n");
-                    } else {
-                        builder.append("                host." + method[i] + "\n");
+                Map<String, String> transfers = view.getTransfer();
+                for (Map.Entry<String, String> entry : transfers.entrySet()) {
+                    Map<String, String[]> map = StringUtil.clickChangeMethod(entry.getValue(), links);
+                    String[] method = map.get(Constant.METHOD);
+                    String[] protect = map.get(Constant.PROTECT);
+                    if (method.length == 0) continue;
+                    if (entry.getKey().endsWith(click)) {
+                        generateClick(builder, view.getId(), method, protect);
+                    } else if (entry.getKey().endsWith(longclick)) {
+                        generateLongClick(builder, view.getId(), method, protect);
+                    } else if (entry.getKey().endsWith(textChange)) {
+                        generateTextChange(builder, view.getId(), method, protect);
+                    } else if (entry.getKey().endsWith(tabSelected)) {
+                        generateTabSelected(builder, view.getId(), method, protect);
+                    } else if (entry.getKey().endsWith(tabUnselected)) {
+                        generateTabUnselected(builder, view.getId(), method, protect);
+                    } else if (entry.getKey().endsWith(pageSelected)) {
+                        generatePageSelected(builder, view.getId(), method, protect);
+                    } else if (entry.getKey().endsWith(checkedChange)) {
+                        generateCheckChange(builder, view.getId(), method, protect);
                     }
                 }
-                for (int i = 0; i < methodVM.length; i++) {
-                    if (protectsVM[i].length() > 0) {
-                        builder.append("                if(" + protectsVM[i] + ") {\n");
-                        builder.append("                    viewModel." + methodVM[i] + "\n");
-                        builder.append("                }\n");
-                    } else {
-                        builder.append("                viewModel." + methodVM[i] + "\n");
-                    }
-                }
-                builder.append("            }\n" +
-                        "        });\n");
+
+
             }
         }
         return builder.toString();
+    }
+
+    private void generateTabUnselected(StringBuilder builder, String id, String[] method, String[] protect) {
+        builder.append("        " + id + ".addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {\n" +
+                "            @Override\n" +
+                "            public void onTabReselected(TabLayout.Tab tab) {\n" +
+                "            }\n" +
+                "\n" +
+                "            @Override\n" +
+                "            public void onTabSelected(TabLayout.Tab tab) {\n" +
+                "            }\n" +
+                "\n" +
+                "            @Override\n" +
+                "            public void onTabUnselected(TabLayout.Tab tab) {\n");
+        for (int i = 0; i < method.length; i++) {
+            if (protect[i].length() > 0) {
+                builder.append("                if(" + protect[i] + ") {\n");
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "tab") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
+                builder.append("                }\n");
+            } else {
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "tab") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
+            }
+        }
+        builder.append("            }\n" +
+                "        });\n");
+    }
+
+    private void generateTabSelected(StringBuilder builder, String id, String[] method, String[] protect) {
+        builder.append("        " + id + ".addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {\n" +
+                "            @Override\n" +
+                "            public void onTabUnselected(TabLayout.Tab tab) {\n" +
+                "\n" +
+                "            }\n" +
+                "\n" +
+                "            @Override\n" +
+                "            public void onTabReselected(TabLayout.Tab tab) {\n" +
+                "\n" +
+                "            }\n" +
+                "\n" +
+                "            @Override\n" +
+                "            public void onTabSelected(TabLayout.Tab tab) {\n");
+        for (int i = 0; i < method.length; i++) {
+            if (protect[i].length() > 0) {
+                builder.append("                if(" + protect[i] + ") {\n");
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "tab") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
+                builder.append("                }\n");
+            } else {
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "tab") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
+            }
+        }
+        builder.append("            }\n" +
+                "        });\n");
+    }
+
+    private void generateCheckChange(StringBuilder builder, String id, String[] method, String[] protect) {
+        imports.add("android.widget.CompoundButton");
+        builder.append("        " + id + ".setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {\n" +
+                "            @Override\n" +
+                "            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {\n");
+        for (int i = 0; i < method.length; i++) {
+            if (protect[i].length() > 0) {
+                builder.append("                if(" + protect[i] + ") {\n");
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "checked") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "checked") + "\n");
+                builder.append("                }\n");
+            } else {
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "checked") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "checked") + "\n");
+            }
+        }
+        builder.append("            }\n" +
+                "        });\n");
+    }
+
+    private void generatePageSelected(StringBuilder builder, String id, String[] method, String[] protect) {
+        builder.append("        " + id + ".addOnPageChangeListener(new ViewPager.OnPageChangeListener() {\n" +
+                "            @Override\n" +
+                "            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {\n" +
+                "                \n" +
+                "            }\n" +
+                "\n" +
+                "\n" +
+                "            @Override\n" +
+                "            public void onPageScrollStateChanged(int state) {\n" +
+                "\n" +
+                "            }\n" +
+                "\n" +
+                "            @Override\n" +
+                "            public void onPageSelected(int position) {\n");
+        for (int i = 0; i < method.length; i++) {
+            if (protect[i].length() > 0) {
+                builder.append("                if(" + protect[i] + ") {\n");
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "position") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "position") + "\n");
+                builder.append("                }\n");
+            } else {
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "position") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "position") + "\n");
+            }
+        }
+        builder.append("            }\n" +
+                "        });\n");
+    }
+
+    private void generateTextChange(StringBuilder builder, String id, String[] method, String[] protect) {
+        imports.add("com.hacknife.briefness.TextWatcher");
+        builder.append("        " + id + ".addTextChangedListener(new TextWatcher() {\n" +
+                "            @Override\n" +
+                "            public void onTextChange(String content) {\n");
+        for (int i = 0; i < method.length; i++) {
+            if (protect[i].length() > 0) {
+                builder.append("                if(" + protect[i] + ") {\n");
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "content") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "content") + "\n");
+                builder.append("                }\n");
+            } else {
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "content") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "content") + "\n");
+            }
+        }
+        builder.append("            }\n" +
+                "        });\n");
+    }
+
+    private void generateLongClick(StringBuilder builder, String id, String[] method, String[] protect) {
+        builder.append("        " + id + ".setOnLongClickListener(new View.OnLongClickListener() {\n" +
+                "            @Override\n" +
+                "            public boolean onLongClick(View v) {\n");
+        for (int i = 0; i < method.length; i++) {
+            if (protect[i].length() > 0) {
+                builder.append("                if(" + protect[i] + ") {\n");
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + method[i] + "\n");
+                else
+                    builder.append("                host." + method[i] + "\n");
+                builder.append("                }\n");
+            } else {
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + method[i] + "\n");
+                else
+                    builder.append("                host." + method[i] + "\n");
+            }
+        }
+        builder.append("                return true;\n" +
+                "            }\n" +
+                "        });\n");
+    }
+
+    private void generateClick(StringBuilder builder, String id, String[] method, String[] protect) {
+        builder.append("        " + id + ".setOnClickListener(new View.OnClickListener() {\n" +
+                "            @Override\n" +
+                "            public void onClick(View v) {\n");
+        for (int i = 0; i < method.length; i++) {
+            if (protect[i].length() > 0) {
+                builder.append("                if(" + protect[i] + ") {\n");
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + method[i] + "\n");
+                else
+                    builder.append("                host." + method[i] + "\n");
+                builder.append("                }\n");
+            } else {
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + method[i] + "\n");
+                else
+                    builder.append("                host." + method[i] + "\n");
+            }
+        }
+        builder.append("            }\n" +
+                "        });\n");
     }
 
     private String generateFindView() {
