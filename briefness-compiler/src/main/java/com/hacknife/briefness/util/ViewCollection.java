@@ -241,4 +241,18 @@ public class ViewCollection {
             "android.webkit.WebViewDatabase",
             "android.webkit.WebViewFragment"
     };
+
+    public static String getValueByFullClassName(String fullClassName) {
+        if (fullClassName.equals("android.widget.TextView"))
+            return ".getText().toString().trim()";
+        else if (fullClassName.equals("android.widget.SeekBar"))
+            return ".getProgress()";
+        else if (fullClassName.equals("android.widget.ProgressBar"))
+            return ".getProgress()";
+        else if (fullClassName.equals("android.widget.EditText"))
+            return ".getText().toString().trim()";
+        else if (fullClassName.equals("android.widget.CheckBox"))
+            return ".isChecked()";
+        return "";
+    }
 }

@@ -21,13 +21,14 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
-import static com.hacknife.briefness.XmlParser.checkedChange;
+import static com.hacknife.briefness.XmlParser.checkedChanged;
 import static com.hacknife.briefness.XmlParser.click;
 import static com.hacknife.briefness.XmlParser.longclick;
 import static com.hacknife.briefness.XmlParser.pageSelected;
+import static com.hacknife.briefness.XmlParser.progressChanged;
 import static com.hacknife.briefness.XmlParser.tabSelected;
 import static com.hacknife.briefness.XmlParser.tabUnselected;
-import static com.hacknife.briefness.XmlParser.textChange;
+import static com.hacknife.briefness.XmlParser.textChanged;
 
 /**
  * Created by Hacknife on 2018/10/31.
@@ -132,6 +133,7 @@ public class Briefnessor {
     private String generateTransfer() {
         StringBuilder builder = new StringBuilder();
         List<Method> methods = briefness.getMethods();
+
         for (Method method : methods) {
             String[] ids = method.getIds();
             for (String id : ids) {
@@ -149,7 +151,7 @@ public class Briefnessor {
             for (View view : views) {
                 Map<String, String> transfers = view.getTransfer();
                 for (Map.Entry<String, String> entry : transfers.entrySet()) {
-                    Map<String, String[]> map = StringUtil.clickChangeMethod(entry.getValue(), links);
+                    Map<String, String[]> map = StringUtil.clickChangeMethod(entry.getValue(), links,views);
                     String[] method = map.get(Constant.METHOD);
                     String[] protect = map.get(Constant.PROTECT);
                     if (method.length == 0) continue;
@@ -157,7 +159,7 @@ public class Briefnessor {
                         generateClick(builder, view.getId(), method, protect);
                     } else if (entry.getKey().endsWith(longclick)) {
                         generateLongClick(builder, view.getId(), method, protect);
-                    } else if (entry.getKey().endsWith(textChange)) {
+                    } else if (entry.getKey().endsWith(textChanged)) {
                         generateTextChange(builder, view.getId(), method, protect);
                     } else if (entry.getKey().endsWith(tabSelected)) {
                         generateTabSelected(builder, view.getId(), method, protect);
@@ -165,8 +167,10 @@ public class Briefnessor {
                         generateTabUnselected(builder, view.getId(), method, protect);
                     } else if (entry.getKey().endsWith(pageSelected)) {
                         generatePageSelected(builder, view.getId(), method, protect);
-                    } else if (entry.getKey().endsWith(checkedChange)) {
+                    } else if (entry.getKey().endsWith(checkedChanged)) {
                         generateCheckChange(builder, view.getId(), method, protect);
+                    } else if (entry.getKey().endsWith(progressChanged)) {
+                        generateProgressChanged(builder, view.getId(), method, protect);
                     }
                 }
 
@@ -174,6 +178,30 @@ public class Briefnessor {
             }
         }
         return builder.toString();
+    }
+
+    private void generateProgressChanged(StringBuilder builder, String id, String[] method, String[] protect) {
+        imports.add("com.hacknife.briefness.OnSeekBarChangeListener");
+        builder.append("        " + id + ".setOnSeekBarChangeListener(new OnSeekBarChangeListener(){\n" +
+                "            @Override\n" +
+                "            public void onProgressChanged(SeekBar seekBar, State state, int progress, boolean fromUser) {\n");
+        for (int i = 0; i < method.length; i++) {
+            if (protect[i].length() > 0) {
+                builder.append("                if(" + protect[i] + ") {\n");
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
+                builder.append("                }\n");
+            } else {
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
+            }
+        }
+        builder.append("            }\n" +
+                "        });\n");
     }
 
     private void generateTabUnselected(StringBuilder builder, String id, String[] method, String[] protect) {

@@ -63,4 +63,5 @@
             android:layout_height="wrap_content"
             app:bind="$result.msg$" />
     </LinearLayout>
+
 </LinearLayout>

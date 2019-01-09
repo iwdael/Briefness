@@ -12,11 +12,14 @@ import java.util.Map;
 public class View {
     String className;
     String id;
-    String click;
-    String longClick;
     Bind bind;
     String fullClassName;
     Map<String, String> transfer;
+    String value;
+
+    public String getValue() {
+        return value;
+    }
 
     public View() {
         transfer = new HashMap<>();
@@ -34,6 +37,7 @@ public class View {
             this.className = className;
             fullClassName = ViewCollection.getFullNameByName(className);
         }
+        value =ViewCollection.getValueByFullClassName(fullClassName);
     }
 
     public String getId() {
@@ -63,8 +67,6 @@ public class View {
         return "View{" +
                 "className='" + className + '\'' +
                 ", id='" + id + '\'' +
-                ", click='" + click + '\'' +
-                ", longClick='" + longClick + '\'' +
                 ", bind='" + bind + '\'' +
                 ", fullClassName='" + fullClassName + '\'' +
                 '}';

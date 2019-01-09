@@ -36,11 +36,12 @@ public class XmlParser {
      * <attr name="tabUnselected" format="string" />
      * <attr name="pageSelected" format="string" />
      */
-    public static final String textChange = ":textChange";
-    public static final String checkedChange = ":checkedChange";
+    public static final String textChanged = ":textChanged";
+    public static final String checkedChanged = ":checkedChanged";
     public static final String tabSelected = ":tabSelected";
     public static final String tabUnselected = ":tabUnselected";
     public static final String pageSelected = ":pageSelected";
+    public static final String progressChanged = ":progressChanged";
 
 
     public static final String SPLIT = "/";
@@ -131,10 +132,11 @@ public class XmlParser {
                                  */
                                 if (name.endsWith(click) ||
                                         name.endsWith(longclick) ||
-                                        name.endsWith(textChange) ||
-                                        name.endsWith(checkedChange) ||
+                                        name.endsWith(textChanged) ||
+                                        name.endsWith(checkedChanged) ||
                                         name.endsWith(tabSelected) ||
                                         name.endsWith(tabUnselected) ||
+                                        name.endsWith(progressChanged) ||
                                         name.endsWith(pageSelected)
                                         ) {
                                     String str = deleteBlank(value);

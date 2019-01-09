@@ -29,8 +29,8 @@ public class DemoActivity extends BaseActivity<DemoActivityBriefnessor> {
         startActivity(NormalActivity.class);
     }
 
-    public void onMultipleClick(String trim) {
-        Toast.makeText(DemoActivity.this, trim, Toast.LENGTH_SHORT).show();
+    public void onMultipleClick( ) {
+
         startActivity(MultipleActivity.class);
     }
 

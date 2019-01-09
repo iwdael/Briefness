@@ -25,7 +25,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="20dp"
         android:text="@string/title_multiple"
-        app:click="onMultipleClick($btn_bind_data_error$)" />
+        app:click="onMultipleClick" />
 
     <Button
         android:id="@+id/btn_bind_recycler"

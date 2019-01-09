@@ -2,9 +2,9 @@ package com.hacknife.briefness.util;
 
 import com.hacknife.briefness.Constant;
 import com.hacknife.briefness.bean.Link;
+import com.hacknife.briefness.bean.View;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +66,7 @@ public class StringUtil {
             return false;
     }
 
-    public static Map<String, String[]> clickChangeMethod(String click, List<Link> links) {
+    public static Map<String, String[]> clickChangeMethod(String click, List<Link> links, List<View> views) {
         Map<String, String[]> map = new HashMap<>();
         if (click == null || click.trim().length() == 0) {
             map.put(Constant.METHOD, new String[0]);
@@ -87,7 +87,7 @@ public class StringUtil {
                 if (!methods[i].endsWith(")")) {
                     result[i] = methods[i] + "();";
                 } else {
-                    result[i] = click2Method(methods[i], links, protectBuilder);
+                    result[i] = click2Method(methods[i], links, protectBuilder, views);
                 }
                 protect[i] = protectBuilder.toString();
             }
@@ -101,7 +101,7 @@ public class StringUtil {
         }
     }
 
-    private static String click2Method(String click, List<Link> links, StringBuilder protectBuilder) {
+    private static String click2Method(String click, List<Link> links, StringBuilder protectBuilder, List<View> views) {
         if (click.contains("$")) {
             int start = click.indexOf("(");
             int end = click.lastIndexOf(")");
@@ -111,12 +111,11 @@ public class StringUtil {
             for (int i = 0; i < params.length; i++) {
                 String param = params[i];
                 StringBuilder protect = new StringBuilder();
-                builder.append(variable2Method(param, links, protect));
+                builder.append(parameter2Method(param, links, protect, views));
                 if (i != params.length - 1)
                     builder.append(" , ");
                 if (protectBuilder.length() != 0 && protect.length() != 0)
                     protectBuilder.append(" && ");
-
                 protectBuilder.append(protect);
             }
 
@@ -124,6 +123,65 @@ public class StringUtil {
             return builder.toString();
         } else {
             return click + ";";
+        }
+    }
+
+    public static String parameter2Method(String variable, List<Link> links, StringBuilder protect, List<View> views) {
+        if (!variable.contains("$")) return variable;
+        StringBuilder builder = new StringBuilder();
+        int start = variable.indexOf("$") + 1;
+        int end = variable.indexOf("$", start);
+        builder.append(variable.substring(0, start - 1));
+        String par = variable.substring(start, end);
+        if (par.contains(".")) {
+            par = par.replaceAll(" ", "");
+            int split = par.indexOf(".");
+            String entity = par.substring(0, split);
+            String field = par.substring(split + 1, par.length());
+            String index = null;
+            if (field.contains("[") && field.contains("]")) {
+                int fieldIndex = field.indexOf("[");
+                index = field.substring(fieldIndex + 1, field.length() - 1);
+                field = field.substring(0, fieldIndex);
+            }
+            int type = 1;//自定义javabean，map,bundle;
+            for (Link link : links) {
+                Map map = new HashMap();
+                map.get("");
+                if (link.getAlisa().equalsIgnoreCase(entity) && link.getFullClassName().equalsIgnoreCase("android.os.Bundle")) {
+                    type = 2;
+                    break;
+                }
+                if (link.getAlisa().equalsIgnoreCase(entity) && link.getFullClassName().equalsIgnoreCase("java.util.Map")) {
+                    type = 2;
+                }
+            }
+            if (type == 1) {
+                builder.append(entity + ".get" + StringUtil.toUpperCase(field) + "()");
+            } else if (type == 2) {
+                builder.append(entity + ".get(\"" + field + "\")");
+            }
+            if (index != null) {
+                protect.append(entity + " != null && " + entity + ".get" + StringUtil.toUpperCase(field) + "() != null && " + entity + ".get" + StringUtil.toUpperCase(field) + "().size()>" + index);
+                builder.append(".get(" + index + ")");
+            }
+        } else {
+            for (View view : views) {
+                if (view.getId().equals(par)) {
+                    builder.append(par).append(view.getValue());
+                    break;
+                }
+            }
+        }
+        builder.append(variable.substring(end + 1, variable.length()));
+        String var = builder.toString();
+        if (var.contains("$")) {
+            if (var.contains("[") && var.contains("]")) {
+                protect.append(" && ");
+            }
+            return parameter2Method(var, links, protect, views);
+        } else {
+            return var;
         }
     }
 

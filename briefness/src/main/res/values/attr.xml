@@ -6,10 +6,11 @@
         <attr name="longClick" format="string" />
         <attr name="bind" format="string" />
         <attr name="viewModel" format="string" />
-        <attr name="textChange" format="string" />
-        <attr name="checkedChange" format="string" />
+        <attr name="textChanged" format="string" />
+        <attr name="checkedChanged" format="string" />
         <attr name="tabSelected" format="string" />
         <attr name="tabUnselected" format="string" />
         <attr name="pageSelected" format="string" />
+        <attr name="progressChanged" format="string" />
     </declare-styleable>
 </resources>
