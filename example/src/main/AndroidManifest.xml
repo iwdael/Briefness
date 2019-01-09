@@ -20,6 +20,7 @@
         <activity android:name=".ui.MultipleActivity" />
         <activity android:name=".ui.RecyclerViewActivity" />
         <activity android:name=".mvvm.LoginActivity" />
+        <activity android:name=".ui.LiveDataActivity"></activity>
     </application>
 
 </manifest>

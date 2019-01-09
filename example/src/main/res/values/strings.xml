@@ -7,4 +7,5 @@
     <string name="title_multiple">数据绑定--多类型</string>
     <string name="title_recyclerview">数据绑定--RecyclerView应用</string>
     <string name="title_mvvm">MVVM</string>
+    <string name="title_live">响应</string>
 </resources>

@@ -30,6 +30,10 @@ public abstract class BaseActivity<T extends Briefnessor> extends AppCompatActiv
         super.onCreate(savedInstanceState);
         briefnessor = (T) Briefness.bind(this);
         toolBar_title.setText(attachTitleRes());
+        initView();
+    }
+
+    protected void initView() {
     }
 
 
@@ -37,6 +41,7 @@ public abstract class BaseActivity<T extends Briefnessor> extends AppCompatActiv
     public void OnBackClick(View v) {
         finish();
     }
+
     protected abstract int attachTitleRes();
 
     protected void startActivity(Class<? extends AppCompatActivity> clazz) {

@@ -37,4 +37,8 @@ public class DemoActivity extends BaseActivity<DemoActivityBriefnessor> {
     public void onMVVMClick() {
         startActivity(LoginActivity.class);
     }
+
+    public void onLiveDataClick() {
+        startActivity(LiveDataActivity.class);
+    }
 }
