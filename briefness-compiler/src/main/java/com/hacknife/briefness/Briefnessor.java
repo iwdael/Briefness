@@ -151,7 +151,7 @@ public class Briefnessor {
             for (View view : views) {
                 Map<String, String> transfers = view.getTransfer();
                 for (Map.Entry<String, String> entry : transfers.entrySet()) {
-                    Map<String, String[]> map = StringUtil.clickChangeMethod(entry.getValue(), links,views);
+                    Map<String, String[]> map = StringUtil.clickChangeMethod(entry.getValue(), links, views);
                     String[] method = map.get(Constant.METHOD);
                     String[] protect = map.get(Constant.PROTECT);
                     if (method.length == 0) continue;
@@ -463,7 +463,7 @@ public class Briefnessor {
                     "        if ((this." + link.getAlisa() + " == null || this." + link.getAlisa() + " != " + link.getAlisa() + ") && (((Object) " + link.getAlisa() + ") instanceof LiveData)) {\n" +
                     "            ((LiveData) ((Object) " + link.getAlisa() + ")).bindTape(this);\n" +
                     "        }\n" +
-                    "        if (this." + link.getAlisa() + " != null && (((Object) this." + link.getAlisa() + ")) instanceof LiveData) {\n" +
+                    "        if (this." + link.getAlisa() + " != null && this." + link.getAlisa() + " != " + link.getAlisa() + " && (((Object) this." + link.getAlisa() + ")) instanceof LiveData) {\n" +
                     "            ((LiveData) ((Object) this." + link.getAlisa() + ")).bindTape(null);\n" +
                     "        }\n" +
                     "        this." + link.getAlisa() + " = " + link.getAlisa() + ";\n");
