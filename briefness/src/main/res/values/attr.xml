@@ -7,7 +7,7 @@
         <attr name="bind" format="string" />
         <attr name="viewModel" format="string" />
         <attr name="textChanged" format="string" />
-        <attr name="checkedChanged" format="string" />
+        <attr name="checkChanged" format="string" />
         <attr name="tabSelected" format="string" />
         <attr name="tabUnselected" format="string" />
         <attr name="pageSelected" format="string" />

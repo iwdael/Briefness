@@ -1,5 +1,5 @@
 # Briefness
-[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/language-java-yellow.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/Jcenter-1.9.5-brightgreen.svg)](https://jcenter.bintray.com/com/hacknife/briefness/) [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/license-apache--2.0-green.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/api-11+-green.svg)](https://github.com/hacknife)<br/><br/>
+[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/language-java-yellow.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/Jcenter-1.9.7-brightgreen.svg)](https://jcenter.bintray.com/com/hacknife/briefness/) [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/license-apache--2.0-green.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/api-11+-green.svg)](https://github.com/hacknife)<br/><br/>
 数据绑定、布局绑定、控件绑定、事件绑定、数据异常预处理、开发更加简单。
 ## 特点
 * 支持MVVM(Model-View-ViewModel)
@@ -16,18 +16,21 @@
 Briefness能够避免在项目开发中一些重复繁琐的工作，规避因数据异常引发的空指针异常，提高开发效率。它量身为[MVVM](https://baike.baidu.com/item/MVVM)框架打造，实现UI逻辑与业务分离，解耦，提高可重用性。
 它提供了3种注解方式，9种xml属性完成数据绑定，事件绑定等操作。
 
-|属性|功能|
-|:------:|:------:|
-|imports|引入需要绑定的类|
-|viewModel|引入Viewmodel|
-|bind|绑定数据|
-|click|绑定点击事件|
-|longClick|绑定长按点击事件|
-|transfer|向ViewModel发送点击事件|
-|longTransfer|向ViewModel发送长按事件|
-|action|暂定|
-|touch|暂定 |
-
+|属性|功能|控件|
+|:------:|:------:|:------:|
+|imports|引入需要绑定的类|root view|
+|viewModel|引入Viewmodel|root view|
+|bind|绑定数据|view|
+|click|点击监听|view|
+|longClick|长按监听|view| 
+|textChanged|文本变化监听|TextView|
+|checkChanged|选择变化监听|CheckBox|
+|tabSelected|选择变化监听|TabLayout|
+|tabUnselected|选择变化监听|TabLayout|
+|pageSelected|选择变化监听|ViewPager|
+|progressChanged|进度变化监听|SeekBar|
+|radioChanged|选择变化监听|RadioButton|
+ 
 |注解|功能|
 |:------:|:------:|
 |BindLayout|绑定布局，并解析布局文件|
@@ -57,8 +60,8 @@ Briefness能够避免在项目开发中一些重复繁琐的工作，规避因�
 ```Java
 	dependencies {
                 ...
-              implementation 'com.hacknife.briefness:briefness:1.9.5'
-    	      annotationProcessor 'com.hacknife.briefness:briefness-compiler:1.9.5'
+              implementation 'com.hacknife.briefness:briefness:1.9.7'
+    	      annotationProcessor 'com.hacknife.briefness:briefness-compiler:1.9.7'
 	}
 ```
 ## 混淆

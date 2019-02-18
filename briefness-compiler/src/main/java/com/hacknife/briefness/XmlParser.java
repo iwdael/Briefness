@@ -37,7 +37,7 @@ public class XmlParser {
      * <attr name="pageSelected" format="string" />
      */
     public static final String textChanged = ":textChanged";
-    public static final String checkedChanged = ":checkedChanged";
+    public static final String checkedChanged = ":checkChanged";
     public static final String radioChanged = ":radioChanged";
     public static final String tabSelected = ":tabSelected";
     public static final String tabUnselected = ":tabUnselected";

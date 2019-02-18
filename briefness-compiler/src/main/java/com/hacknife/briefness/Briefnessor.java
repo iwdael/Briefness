@@ -184,9 +184,10 @@ public class Briefnessor {
     }
 
     private void generateRadioChanged(StringBuilder builder, String id, String[] method, String[] protect) {
-        builder.append("        " + id + ".setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {\n" +
+        imports.add("com.hacknife.briefness.OnRadioButtonCheckedChangeListener");
+        builder.append("        " + id + ".setOnCheckedChangeListener(new OnRadioButtonCheckedChangeListener() {\n" +
                 "            @Override\n" +
-                "            public void onCheckedChanged(RadioGroup radioGroup, int id) {\n");
+                "            public void onChecked(RadioGroup radioGroup, int id) {\n");
         for (int i = 0; i < method.length; i++) {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
@@ -296,10 +297,11 @@ public class Briefnessor {
     }
 
     private void generateCheckChange(StringBuilder builder, String id, String[] method, String[] protect) {
+        imports.add("com.hacknife.briefness.OnCheckBoxCheckedChangeListener");
         imports.add("android.widget.CompoundButton");
-        builder.append("        " + id + ".setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {\n" +
+        builder.append("        " + id + ".setOnCheckedChangeListener(new OnCheckBoxCheckedChangeListener() {\n" +
                 "            @Override\n" +
-                "            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {\n");
+                "            public void onChecked(CompoundButton compoundButton, boolean checked) {\n");
         for (int i = 0; i < method.length; i++) {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
