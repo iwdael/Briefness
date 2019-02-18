@@ -38,6 +38,7 @@ public class XmlParser {
      */
     public static final String textChanged = ":textChanged";
     public static final String checkedChanged = ":checkedChanged";
+    public static final String radioChanged = ":radioChanged";
     public static final String tabSelected = ":tabSelected";
     public static final String tabUnselected = ":tabUnselected";
     public static final String pageSelected = ":pageSelected";
@@ -134,6 +135,7 @@ public class XmlParser {
                                         name.endsWith(longclick) ||
                                         name.endsWith(textChanged) ||
                                         name.endsWith(checkedChanged) ||
+                                        name.endsWith(radioChanged) ||
                                         name.endsWith(tabSelected) ||
                                         name.endsWith(tabUnselected) ||
                                         name.endsWith(progressChanged) ||

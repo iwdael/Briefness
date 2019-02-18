@@ -12,5 +12,6 @@
         <attr name="tabUnselected" format="string" />
         <attr name="pageSelected" format="string" />
         <attr name="progressChanged" format="string" />
+        <attr name="radioChanged" format="string" />
     </declare-styleable>
 </resources>

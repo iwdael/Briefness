@@ -1,5 +1,5 @@
 # Briefness
-[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/language-java-yellow.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/Jcenter-1.9.3-brightgreen.svg)](https://jcenter.bintray.com/com/hacknife/briefness/) [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/license-apache--2.0-green.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/api-11+-green.svg)](https://github.com/hacknife)<br/><br/>
+[![](https://img.shields.io/badge/platform-android-orange.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/language-java-yellow.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/Jcenter-1.9.5-brightgreen.svg)](https://jcenter.bintray.com/com/hacknife/briefness/) [![](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/license-apache--2.0-green.svg)](https://github.com/hacknife) [![](https://img.shields.io/badge/api-11+-green.svg)](https://github.com/hacknife)<br/><br/>
 数据绑定、布局绑定、控件绑定、事件绑定、数据异常预处理、开发更加简单。
 ## 特点
 * 支持MVVM(Model-View-ViewModel)
@@ -57,8 +57,8 @@ Briefness能够避免在项目开发中一些重复繁琐的工作，规避因�
 ```Java
 	dependencies {
                 ...
-              implementation 'com.hacknife.briefness:briefness:1.9.3'
-    	      annotationProcessor 'com.hacknife.briefness:briefness-compiler:1.9.3'
+              implementation 'com.hacknife.briefness:briefness:1.9.5'
+    	      annotationProcessor 'com.hacknife.briefness:briefness-compiler:1.9.5'
 	}
 ```
 ## 混淆

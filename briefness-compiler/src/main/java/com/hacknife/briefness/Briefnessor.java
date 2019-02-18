@@ -26,6 +26,7 @@ import static com.hacknife.briefness.XmlParser.click;
 import static com.hacknife.briefness.XmlParser.longclick;
 import static com.hacknife.briefness.XmlParser.pageSelected;
 import static com.hacknife.briefness.XmlParser.progressChanged;
+import static com.hacknife.briefness.XmlParser.radioChanged;
 import static com.hacknife.briefness.XmlParser.tabSelected;
 import static com.hacknife.briefness.XmlParser.tabUnselected;
 import static com.hacknife.briefness.XmlParser.textChanged;
@@ -169,6 +170,8 @@ public class Briefnessor {
                         generatePageSelected(builder, view.getId(), method, protect);
                     } else if (entry.getKey().endsWith(checkedChanged)) {
                         generateCheckChange(builder, view.getId(), method, protect);
+                    } else if (entry.getKey().endsWith(radioChanged)) {
+                        generateRadioChanged(builder, view.getId(), method, protect);
                     } else if (entry.getKey().endsWith(progressChanged)) {
                         generateProgressChanged(builder, view.getId(), method, protect);
                     }
@@ -180,8 +183,32 @@ public class Briefnessor {
         return builder.toString();
     }
 
+    private void generateRadioChanged(StringBuilder builder, String id, String[] method, String[] protect) {
+        builder.append("        " + id + ".setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {\n" +
+                "            @Override\n" +
+                "            public void onCheckedChanged(RadioGroup radioGroup, int id) {\n");
+        for (int i = 0; i < method.length; i++) {
+            if (protect[i].length() > 0) {
+                builder.append("                if(" + protect[i] + ") {\n");
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
+                builder.append("                }\n");
+            } else {
+                if (StringUtil.checkMethodHavePreffix(method[i]))
+                    builder.append("                " + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
+                else
+                    builder.append("                host." + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
+            }
+        }
+        builder.append("            }\n" +
+                "        });\n");
+    }
+
     private void generateProgressChanged(StringBuilder builder, String id, String[] method, String[] protect) {
         imports.add("com.hacknife.briefness.OnSeekBarChangeListener");
+        imports.add("android.widget.SeekBar");
         builder.append("        " + id + ".setOnSeekBarChangeListener(new OnSeekBarChangeListener(){\n" +
                 "            @Override\n" +
                 "            public void onProgressChanged(SeekBar seekBar, State state, int progress, boolean fromUser) {\n");

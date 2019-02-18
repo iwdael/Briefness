@@ -27,6 +27,7 @@ public class Briefness {
             if (clazz.getName().startsWith("android.app.") | clazz.getName().startsWith("android.support.") | clazz.getName().startsWith("java.lang."))
                 break;
             Briefnessor proxy = findProxySuperActivity(clazz);
+            if (proxyActivity == null) proxyActivity = proxy;
             if (proxy != null) proxy.bind(target, view);
         }
         return proxyActivity;
