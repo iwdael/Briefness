@@ -3,6 +3,7 @@ package com.hacknife.briefness;
 import com.hacknife.briefness.bean.Bind;
 import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.bean.Field;
+import com.hacknife.briefness.bean.Immersive;
 import com.hacknife.briefness.bean.Link;
 import com.hacknife.briefness.bean.Method;
 import com.hacknife.briefness.bean.View;
@@ -45,6 +46,8 @@ public class Briefnessor {
     private String javaSource;
     private String host;
     private List<String> imports = new ArrayList<>();
+    private String packages;
+    private String buidPath;
 
     public Briefnessor(Elements elementUtils, TypeElement classElement) {
         this.typeElement = classElement;
@@ -68,6 +71,8 @@ public class Briefnessor {
             host = "host.";
         else
             host = "view.";
+        this.packages = packages;
+        this.buidPath = buidPath;
         javaSource = String.format(Constant.javaPath, buidPath, packageName.replace(".", "/"), className);
         briefness = new Briefness();
         ClassParser.parser(javaSource, briefness);
@@ -573,14 +578,50 @@ public class Briefnessor {
 
     private String generateContentView() {
         if (ClassUtil.instanceOfActivity(className)) {
-            if (briefness.getLayout() != null)
+            if (briefness.getImmersive() != null) {
+                ImmersiveConfig config = new ImmersiveConfig();
+                config.writeCode(buidPath + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/briefness/ImmersiveConfig.java", packages);
+                imports.add("com.hacknife.immersive.Immersive");
+                Immersive immersive = briefness.getImmersive();
+                StringBuilder builder = new StringBuilder();
+                builder.append("        Immersive.setContentView(host, R.layout.").append(briefness.getLayout()).append(", ");
+                if (immersive.getStatusColor() != null) {
+                    builder.append(immersive.getStatusColor()).append(",");
+                } else {
+                    imports.add(packages + ".briefness.ImmersiveConfig");
+                    builder.append("ImmersiveConfig.statusColor(host)").append(",");
+                }
+                if (immersive.getNavigationColor() != null) {
+                    builder.append(" ").append(immersive.getNavigationColor()).append(",");
+                } else {
+                    imports.add(packages + ".briefness.ImmersiveConfig");
+                    builder.append(" ").append("ImmersiveConfig.navigationColor(host)").append(",");
+                }
+                if (immersive.getStatusEmbed() != null) {
+                    builder.append(" ").append(immersive.getStatusEmbed()).append(",");
+                } else {
+                    imports.add(packages + ".briefness.ImmersiveConfig");
+                    builder.append(" ").append("ImmersiveConfig.statusEmbed(host)").append(",");
+                }
+                if (immersive.getNavigationEmbed() != null) {
+                    builder.append(" ").append(immersive.getNavigationEmbed()).append(");\n");
+                } else {
+                    imports.add(packages + ".briefness.ImmersiveConfig");
+                    builder.append(" ").append("ImmersiveConfig.navigationEmbed(host)").append(");\n");
+                }
+                return builder.toString();
+            } else if (briefness.getLayout() != null)
                 return "        if (!Utils.contentViewExist(host)) {\n" +
                         "            host.setContentView(R.layout." + briefness.getLayout() + ");\n" +
                         "        }\n";
             else
                 return "";
         } else {
-            return "        View view = (View) source;\n";
+            if (briefness.getLayout() == null) return "";
+            return "        if (obj instanceof LayoutInflater)\n" +
+                    "            view = ((LayoutInflater) obj).inflate(R.layout." + briefness.getLayout() + ", null);\n" +
+                    "        else\n" +
+                    "            view = (View) obj;\n";
         }
     }
 

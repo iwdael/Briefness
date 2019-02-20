@@ -14,7 +14,7 @@ import static com.hacknife.briefness.XmlParser.SPLIT;
  * project : Briefness
  */
 
-public class JavaInjector {
+public class ViewInjector {
 
     public static String PACKAGE(String packages) {
         return
@@ -115,7 +115,7 @@ public class JavaInjector {
                 "}";
     }
 
-    public void witeCode(String path, String packages) {
+    public void writeCode(String path, String packages) {
 
         String java = path + SPLIT
                 + "src/main/java/"

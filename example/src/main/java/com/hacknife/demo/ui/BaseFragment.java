@@ -29,8 +29,8 @@ public abstract class BaseFragment<T extends Briefnessor> extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(attachLayoutRes(), container, false);
-        briefnessor = (T) Briefness.bind(this, view);
+        View view = inflater.inflate(attachLayoutRes(),  null);
+        briefnessor = (T) Briefness.bind(this, inflater);
         return view;
     }
 

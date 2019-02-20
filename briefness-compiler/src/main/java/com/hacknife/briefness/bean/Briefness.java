@@ -12,6 +12,7 @@ public class Briefness {
     List<Method> methods;
     List<Field> fileds;
     Label label;
+    Immersive immersive;
 
     public List<Field> getFileds() {
         return fileds;
@@ -57,5 +58,13 @@ public class Briefness {
 
     public List<Method> getMethods() {
         return methods;
+    }
+
+    public void setImmersive(Immersive immersive) {
+        this.immersive = immersive;
+    }
+
+    public Immersive getImmersive() {
+        return immersive;
     }
 }

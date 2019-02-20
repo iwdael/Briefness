@@ -52,21 +52,23 @@ public class Constant {
             "import android.app.Activity;\n" +
             "import android.view.View;\n" +
             "import --iPackage--.--className--;\n" +
-            "import com.hacknife.briefness.Briefnessor;\n" +
+            "import com.hacknife.briefness.B;\n" +
             "import com.hacknife.briefness.LiveData;\n" +
-            "--iimport--"+
+            "import android.view.LayoutInflater;\n" +
+            "--iimport--" +
             "import --package--.R;\n" +
             "--iView--" +
             "--iJavabean--" +
             "import com.hacknife.briefness.Utils;\n" +
             "import --package--.BriefnessInjector;\n" +
             "\n" +
-            "public class --proxy-- implements Briefnessor<--className--> {\n" +
+            "public class --proxy-- extends B<--className--> {\n" +
             "--view--" +
             "--javabean--" +
             "\n" +
             "    @Override\n" +
-            "    public void bind(final --className-- host, Object source) {\n" +
+            "    public void bind(final --className-- target, Object obj) {\n" +
+            "        super.bind(target,obj);\n" +
             "--setContentView--" +
             "--findView--" +
             "--transfer--" +

@@ -3,6 +3,7 @@ package com.hacknife.demo.ui;
 import android.widget.Toast;
 
 import com.hacknife.briefness.BindLayout;
+import com.hacknife.briefness.Immersive;
 import com.hacknife.demo.R;
 import com.hacknife.demo.bean.User;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * github  : http://github.com/hacknife
  * project : briefness
  */
+@Immersive
 @BindLayout(R.layout.activity_normal)
 public class NormalActivity extends BaseActivity<NormalActivityBriefnessor> {
     @Override

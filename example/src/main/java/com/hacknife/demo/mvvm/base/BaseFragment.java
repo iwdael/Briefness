@@ -28,8 +28,7 @@ public abstract class BaseFragment<T extends IBaseViewModel, B extends Briefness
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(attachLayoutRes(), null);
-        briefnessor = (B) Briefness.bind(this, view);
+        briefnessor = (B) Briefness.bind(this, inflater);
         viewModel = createViewModel(briefnessor);
         briefnessor.bindViewModel(viewModel);
         initView();

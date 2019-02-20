@@ -1,5 +1,7 @@
 package com.hacknife.briefness;
 
+import android.view.View;
+
 /**
  * author  : Hacknife
  * e-mail  : 4884280@qq.com
@@ -17,4 +19,6 @@ public interface Briefnessor<T> {
     void bindViewModel(Object viewModel);
 
     void notifyDataChange(Class clazz);
+
+    View inflate();
 }

@@ -5,7 +5,7 @@ import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
 import com.hacknife.briefness.Briefnessor;
 import com.hacknife.briefness.Constant;
-import com.hacknife.briefness.JavaInjector;
+import com.hacknife.briefness.ViewInjector;
 import com.hacknife.briefness.util.Logger;
 import com.google.auto.service.AutoService;
 import com.hacknife.briefness.util.StringUtil;
@@ -103,8 +103,8 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
                         buidPath = StringUtil.findBuildDir(fileObject.toUri().getPath());
                         Logger.v("find build directory:" + buidPath);
                         //ViewInjector
-                        JavaInjector injector = new JavaInjector();
-                        injector.witeCode(buidPath, packages);
+                        ViewInjector injector = new ViewInjector();
+                        injector.writeCode(buidPath, packages);
                         //BriefnessInjector
                         Writer openWriter = fileObject.openWriter();
                         openWriter.write(injector.getBriefnessInjectorCode(buidPath, packages));

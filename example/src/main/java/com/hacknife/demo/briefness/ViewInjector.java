@@ -3,10 +3,6 @@
 package com.hacknife.demo.briefness;
 
 import android.view.View;
-import android.widget.TextView;
-
-import com.hacknife.demo.bean.TextColor;
-import com.hacknife.demo.bean.ViewState;
 
 /**
  * author  : Hacknife
@@ -16,14 +12,6 @@ import com.hacknife.demo.bean.ViewState;
  */
 public class ViewInjector {
     public static boolean injector(View view, Object value) {
-        if (view instanceof View && value instanceof ViewState) {
-            view.setVisibility(value == ViewState.SHOW ? View.VISIBLE : View.GONE);
-            return true;
-        } else if (view instanceof TextView && value instanceof TextColor) {
-            ((TextView) view).setTextColor(view.getResources().getColor(((TextColor) value).getColor()));
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 }
