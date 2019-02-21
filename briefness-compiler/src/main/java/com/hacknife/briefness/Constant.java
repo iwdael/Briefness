@@ -75,19 +75,10 @@ public class Constant {
             "\n" +
             "    }\n" +
             "\n" +
-            "    @Override\n" +
-            "    public void clear() {\n" +
             "--clear--" +
-            "    }\n" +
             "\n" +
-            "    @Override\n" +
-            "    public void clearAll() {\n" +
             "--clearAll--" +
-            "    }\n\n" +
-            "    @Override\n" +
-            "    public void bindViewModel(Object viewModel) {\n" +
             "--viewModel--" +
-            "    }\n" +
             "\n" +
             "--set--" +
             "\n" +

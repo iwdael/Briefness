@@ -109,6 +109,7 @@ public class Briefnessor {
 
     private String generateNotify() {
         List<Link> links = briefness.getLabel().getLinkes();
+        if (links.size() == 0) return "";
         StringBuilder builder = new StringBuilder();
         builder.append("    @Override\n" +
                 "    public void notifyDataChange(Class clazz) {\n" +
@@ -130,7 +131,11 @@ public class Briefnessor {
         List<Link> links = briefness.getLabel().getLinkes();
         for (Link link : links) {
             if (link.getAlisa().equalsIgnoreCase("viewModel")) {
-                return "        this.viewModel = (" + link.getClassName() + ") viewModel;\n";
+                return "    @Override\n" +
+                        "    public void bindViewModel(Object viewModel) {\n" +
+                        "        this.viewModel = (" + link.getClassName() + ") viewModel;\n" +
+                        "    }\n"
+                        ;
             }
         }
         return "";
@@ -464,10 +469,17 @@ public class Briefnessor {
         if (briefness.getLayout() == null) return clear;
         List<View> views = briefness.getLabel().getViews();
         StringBuilder builder = new StringBuilder();
-        builder.append(clear);
+        builder.append(
+                "    @Override\n" +
+                        "    public void clearAll() {\n" +
+                        "        super.clearAll();\n"
+        );
+        if (clear.length() > 3)
+            builder.append("        clear();\n");
         for (View view : views) {
             builder.append("        this.").append(view.getId()).append(" = null;\n");
         }
+        builder.append("    }\n\n");
         return builder.toString();
 
     }
@@ -475,13 +487,18 @@ public class Briefnessor {
     private String generateClear() {
         if (briefness.getLayout() == null) return "";
         List<Link> links = briefness.getLabel().getLinkes();
+        if (links.size() == 0) return "";
         StringBuilder builder = new StringBuilder();
+        builder.append(
+                "    @Override\n" +
+                        "    public void clear() {\n");
         for (Link link : links) {
             builder.append("        if (this." + link.getAlisa() + " != null && (((Object) this." + link.getAlisa() + ")) instanceof LiveData) {\n" +
                     "            ((LiveData) ((Object) " + link.getAlisa() + ")).bindTape(null);\n" +
                     "        }\n");
             builder.append("        this.").append(link.getAlisa()).append(" = null;\n");
         }
+        builder.append("    }\n");
         return builder.toString();
     }
 
@@ -579,35 +596,35 @@ public class Briefnessor {
     private String generateContentView() {
         if (ClassUtil.instanceOfActivity(className)) {
             if (briefness.getImmersive() != null) {
-                ImmersiveConfig config = new ImmersiveConfig();
-                config.writeCode(buidPath + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/briefness/ImmersiveConfig.java", packages);
-                imports.add("com.hacknife.immersive.Immersive");
+                ImmersiveInjector config = new ImmersiveInjector();
+                config.writeCode(buidPath + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/briefness/ImmersiveInjector.java", packages);
+                imports.add(packages+".briefness.ImmersiveInjector");
                 Immersive immersive = briefness.getImmersive();
                 StringBuilder builder = new StringBuilder();
-                builder.append("        Immersive.setContentView(host, R.layout.").append(briefness.getLayout()).append(", ");
+                builder.append("        ImmersiveInjector.setContentView(host, R.layout.").append(briefness.getLayout()).append(", ");
                 if (immersive.getStatusColor() != null) {
                     builder.append(immersive.getStatusColor()).append(",");
                 } else {
-                    imports.add(packages + ".briefness.ImmersiveConfig");
-                    builder.append("ImmersiveConfig.statusColor(host)").append(",");
+                    imports.add(packages + ".briefness.ImmersiveInjector");
+                    builder.append("ImmersiveInjector.statusColor(host)").append(",");
                 }
                 if (immersive.getNavigationColor() != null) {
                     builder.append(" ").append(immersive.getNavigationColor()).append(",");
                 } else {
-                    imports.add(packages + ".briefness.ImmersiveConfig");
-                    builder.append(" ").append("ImmersiveConfig.navigationColor(host)").append(",");
+                    imports.add(packages + ".briefness.ImmersiveInjector");
+                    builder.append(" ").append("ImmersiveInjector.navigationColor(host)").append(",");
                 }
                 if (immersive.getStatusEmbed() != null) {
                     builder.append(" ").append(immersive.getStatusEmbed()).append(",");
                 } else {
-                    imports.add(packages + ".briefness.ImmersiveConfig");
-                    builder.append(" ").append("ImmersiveConfig.statusEmbed(host)").append(",");
+                    imports.add(packages + ".briefness.ImmersiveInjector");
+                    builder.append(" ").append("ImmersiveInjector.statusEmbed(host)").append(",");
                 }
                 if (immersive.getNavigationEmbed() != null) {
                     builder.append(" ").append(immersive.getNavigationEmbed()).append(");\n");
                 } else {
-                    imports.add(packages + ".briefness.ImmersiveConfig");
-                    builder.append(" ").append("ImmersiveConfig.navigationEmbed(host)").append(");\n");
+                    imports.add(packages + ".briefness.ImmersiveInjector");
+                    builder.append(" ").append("ImmersiveInjector.navigationEmbed(host)").append(");\n");
                 }
                 return builder.toString();
             } else if (briefness.getLayout() != null)

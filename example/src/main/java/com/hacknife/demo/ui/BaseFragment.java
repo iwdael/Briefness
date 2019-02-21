@@ -25,7 +25,8 @@ import com.hacknife.demo.R;
 public abstract class BaseFragment<T extends Briefnessor> extends Fragment {
 
     T briefnessor;
-
+    @BindView(R.id.all)
+    TextView a;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
