@@ -29,7 +29,7 @@ publish{
     userOrg = 'hacknife'
     groupId = 'com.hacknife.briefness'
     artifactId = 'briefness'
-    publishVersion = '1.9.7'
+    publishVersion = '1.9.8'
     desc = 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.'
     website = 'https://github.com/hacknife/briefness'
 }
