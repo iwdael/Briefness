@@ -253,6 +253,6 @@ public class ViewCollection {
             return ".getText().toString().trim()";
         else if (fullClassName.equals("android.widget.CheckBox"))
             return ".isChecked()";
-        return "";
+        return ".getText().toString().trim()";
     }
 }
