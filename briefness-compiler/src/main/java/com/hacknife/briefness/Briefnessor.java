@@ -634,7 +634,7 @@ public class Briefnessor {
                         "            host.setContentView(R.layout." + briefness.getLayout() + ");\n" +
                         "        }\n";
             else
-                return "";
+                return "        super.bind(target, obj);\n";
         } else {
             if (briefness.getLayout() == null) return "        super.bind(target,obj,0);\n";
             return "        super.bind(target, obj, R.layout." + briefness.getLayout() + ");\n";
