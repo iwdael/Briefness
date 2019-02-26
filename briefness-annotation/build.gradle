@@ -13,7 +13,7 @@ publish{
     userOrg = 'hacknife'
     groupId = 'com.hacknife.briefness'
     artifactId = 'briefness-annotation'
-    publishVersion = '2.0.1'
+    publishVersion = '2.0.4'
     desc = 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.'
     website = 'https://github.com/hacknife/briefness'
 }

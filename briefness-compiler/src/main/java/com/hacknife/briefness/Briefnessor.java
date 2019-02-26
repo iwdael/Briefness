@@ -636,7 +636,7 @@ public class Briefnessor {
             else
                 return "        super.bind(target, obj);\n";
         } else {
-            if (briefness.getLayout() == null) return "        super.bind(target,obj,0);\n";
+            if (briefness.getLayout() == null) return "        super.bind(target, obj, LAYOUT_NULL);\n";
             return "        super.bind(target, obj, R.layout." + briefness.getLayout() + ");\n";
         }
     }

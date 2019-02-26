@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public class B<T> implements Briefnessor<T> {
+    protected static int LAYOUT_NULL = 0;
     protected View view;
     protected T host;
 
@@ -17,11 +18,11 @@ public class B<T> implements Briefnessor<T> {
         if (source == null) {
         } else if (layout == 0 && source instanceof View) {
             view = (View) source;
-        } else if (layout !=0){
+        } else if (layout != 0) {
             if (source instanceof View)
                 view = (View) source;
             else if (source instanceof LayoutInflater)
-                view= ((LayoutInflater) source).inflate(layout,null);
+                view = ((LayoutInflater) source).inflate(layout, null);
         }
     }
 

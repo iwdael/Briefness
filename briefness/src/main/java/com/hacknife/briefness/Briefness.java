@@ -19,8 +19,11 @@ public class Briefness {
 
     public static Briefnessor bind(Object target, Object view) {
         Briefnessor proxyActivity = findProxyActivity(target);
-        if (proxyActivity != null)
+        Object proxyView = null;
+        if (proxyActivity != null) {
             proxyActivity.bind(target, view);
+            proxyView = proxyActivity.inflate();
+        }
         Class<?> clazz = target.getClass();
         while (true) {
             clazz = clazz.getSuperclass();
@@ -28,7 +31,8 @@ public class Briefness {
                 break;
             Briefnessor proxy = findProxySuperActivity(clazz);
             if (proxyActivity == null) proxyActivity = proxy;
-            if (proxy != null) proxy.bind(target, view);
+            if (proxy != null) proxy.bind(target, proxyView == null ? view : proxyView);
+            proxyView = proxy.inflate();
         }
         return proxyActivity;
     }

@@ -67,7 +67,7 @@ public class Constant {
             "--javabean--" +
             "\n" +
             "    @Override\n" +
-            "    public void bind(final --className-- target, Object obj) {\n" +
+            "    public void bind(--className-- target, Object obj) {\n" +
             "--setContentView--" +
             "--findView--" +
             "--transfer--" +
