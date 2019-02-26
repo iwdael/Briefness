@@ -68,7 +68,6 @@ public class Constant {
             "\n" +
             "    @Override\n" +
             "    public void bind(final --className-- target, Object obj) {\n" +
-            "        super.bind(target,obj);\n" +
             "--setContentView--" +
             "--findView--" +
             "--transfer--" +

@@ -595,12 +595,13 @@ public class Briefnessor {
 
     private String generateContentView() {
         if (ClassUtil.instanceOfActivity(className)) {
-            if (briefness.getImmersive() != null) {
+            if (briefness.getImmersive() != null && briefness.getLayout() != null) {
                 ImmersiveInjector config = new ImmersiveInjector();
                 config.writeCode(buidPath + "/src/main/java/" + packages.replaceAll("\\.", "/") + "/briefness/ImmersiveInjector.java", packages);
-                imports.add(packages+".briefness.ImmersiveInjector");
+                imports.add(packages + ".briefness.ImmersiveInjector");
                 Immersive immersive = briefness.getImmersive();
                 StringBuilder builder = new StringBuilder();
+                builder.append("        super.bind(target, obj);\n");
                 builder.append("        ImmersiveInjector.setContentView(host, R.layout.").append(briefness.getLayout()).append(", ");
                 if (immersive.getStatusColor() != null) {
                     builder.append(immersive.getStatusColor()).append(",");
@@ -628,17 +629,15 @@ public class Briefnessor {
                 }
                 return builder.toString();
             } else if (briefness.getLayout() != null)
-                return "        if (!Utils.contentViewExist(host)) {\n" +
+                return "        super.bind(target, obj);\n" +
+                        "        if (!Utils.contentViewExist(host)) {\n" +
                         "            host.setContentView(R.layout." + briefness.getLayout() + ");\n" +
                         "        }\n";
             else
                 return "";
         } else {
-            if (briefness.getLayout() == null) return "";
-            return "        if (obj instanceof LayoutInflater)\n" +
-                    "            view = ((LayoutInflater) obj).inflate(R.layout." + briefness.getLayout() + ", null);\n" +
-                    "        else\n" +
-                    "            view = (View) obj;\n";
+            if (briefness.getLayout() == null) return "        super.bind(target,obj,0);\n";
+            return "        super.bind(target, obj, R.layout." + briefness.getLayout() + ");\n";
         }
     }
 
