@@ -30,7 +30,7 @@ Briefness能够避免在项目开发中一些重复繁琐的工作，规避因�
 |pageSelected|选择变化监听|ViewPager|
 |progressChanged|进度变化监听|SeekBar|
 |radioChanged|选择变化监听|RadioButton|
-|Immersive|选择变化监听|Activity|
+|Immersive|沉浸式|Activity|
 
 |注解|功能|
 |:------:|:------:|
