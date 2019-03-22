@@ -10,11 +10,11 @@ import android.view.ViewGroup;
  * project : Briefness
  */
 public class Utils {
-    public static boolean contentViewExist(Activity activity) {
-        ViewGroup content = activity.findViewById(android.R.id.content);
+    public static boolean contentViewNoExist(Object activity) {
+        ViewGroup content = ((Activity)activity).findViewById(android.R.id.content);
         if (content.getChildCount() == 0)
-            return false;
-        else
             return true;
+        else
+            return false;
     }
 }

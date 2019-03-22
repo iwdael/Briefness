@@ -1,5 +1,6 @@
 package com.hacknife.briefness;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,9 @@ public class B<T> implements Briefnessor<T> {
 
     public void bind(T target, Object source, int layout) {
         host = target;
-        if (source == null) {
+        if (target instanceof Activity && Utils.contentViewNoExist(host)) {
+            ((Activity) host).setContentView(layout);
+        } else if (source == null) {
         } else if (layout == 0 && source instanceof View) {
             view = (View) source;
         } else if (layout != 0) {

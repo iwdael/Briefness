@@ -640,10 +640,7 @@ public class Briefnessor {
                 }
                 return builder.toString();
             } else if (briefness.getLayout() != null)
-                return "        super.bind(target, obj);\n" +
-                        "        if (!Utils.contentViewExist(host)) {\n" +
-                        "            host.setContentView(R.layout." + briefness.getLayout() + ");\n" +
-                        "        }\n";
+                return "        super.bind(target, obj, R.layout."+briefness.getLayout()+");\n";
             else
                 return "        super.bind(target, obj);\n";
         } else {
