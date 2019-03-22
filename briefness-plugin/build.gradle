@@ -22,7 +22,7 @@ dependencies {
 }
 publish{
     userOrg = bintray.userOrg
-    groupId = bintray.userOrg
+    groupId = bintray.groupId
     artifactId = 'briefness-plugin'
     publishVersion = bintray.publishVersion
     desc = bintray.desc

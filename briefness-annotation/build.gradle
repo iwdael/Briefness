@@ -11,7 +11,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 publish {
     userOrg = bintray.userOrg
-    groupId = bintray.userOrg
+    groupId = bintray.groupId
     artifactId = 'briefness-annotation'
     publishVersion = bintray.publishVersion
     desc = bintray.desc

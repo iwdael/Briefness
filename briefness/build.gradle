@@ -25,7 +25,7 @@ dependencies {
 
 publish {
     userOrg = bintray.userOrg
-    groupId = bintray.userOrg
+    groupId = bintray.groupId
     artifactId = 'briefness'
     publishVersion = bintray.publishVersion
     desc = bintray.desc

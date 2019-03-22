@@ -14,7 +14,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 publish {
     userOrg = bintray.userOrg
-    groupId = bintray.userOrg
+    groupId = bintray.groupId
     artifactId = 'briefness-compiler'
     publishVersion = bintray.publishVersion
     desc = bintray.desc
