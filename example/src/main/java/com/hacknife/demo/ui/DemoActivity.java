@@ -1,8 +1,5 @@
 package com.hacknife.demo.ui;
 
-import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
-
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.demo.R;
 import com.hacknife.demo.mvvm.LoginActivity;
@@ -29,7 +26,7 @@ public class DemoActivity extends BaseActivity<DemoActivityBriefnessor> {
         startActivity(NormalActivity.class);
     }
 
-    public void onMultipleClick( ) {
+    public void onMultipleClick() {
 
         startActivity(MultipleActivity.class);
     }
