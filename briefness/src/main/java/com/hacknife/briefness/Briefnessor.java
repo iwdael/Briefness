@@ -16,7 +16,7 @@ public interface Briefnessor<T> {
 
     void clearAll();
 
-    void bindViewModel(Object viewModel);
+    void bindViewModel(Object... viewModel);
 
     void notifyDataChange(Class clazz);
 

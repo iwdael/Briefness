@@ -128,17 +128,21 @@ public class Briefnessor {
 
     private String generateViewModel() {
         if (briefness.getLayout() == null) return "";
-        List<Link> links = briefness.getLabel().getLinkes();
-        for (Link link : links) {
-            if (link.getAlisa().equalsIgnoreCase("viewModel")) {
-                return "    @Override\n" +
-                        "    public void bindViewModel(Object viewModel) {\n" +
-                        "        this.viewModel = (" + link.getClassName() + ") viewModel;\n" +
-                        "    }\n"
-                        ;
-            }
+        List<Link> links = briefness.getLabel().getViewModels();
+        if (links.size() == 0) return "";
+        StringBuilder builder = new StringBuilder();
+        builder.append("    @Override\n" +
+                "    public void bindViewModels(Object viewModel) {\n");
+        for (int i = 0; i < links.size(); i++) {
+            if (i == 0)
+                builder.append("        if (viewModel instanceof " + links.get(i).getClassName() + ")\n");
+            else
+                builder.append("        else if (viewModel instanceof " + links.get(i).getClassName() + ")\n");
+            builder.append("            this." + links.get(i).getAlisa() + " = (" + links.get(i).getClassName() + ") viewModel;\n");
         }
-        return "";
+
+        builder.append("    }\n");
+        return builder.toString();
     }
 
     private String generateTransfer() {
@@ -468,6 +472,7 @@ public class Briefnessor {
         String clear = generateClear();
         if (briefness.getLayout() == null) return clear;
         List<View> views = briefness.getLabel().getViews();
+        List<Link> viewModels = briefness.getLabel().getViewModels();
         StringBuilder builder = new StringBuilder();
         builder.append(
                 "    @Override\n" +
@@ -478,6 +483,9 @@ public class Briefnessor {
             builder.append("        clear();\n");
         for (View view : views) {
             builder.append("        this.").append(view.getId()).append(" = null;\n");
+        }
+        for (Link viewModel : viewModels) {
+            builder.append("        this.").append(viewModel.getAlisa()).append(" = null;\n");
         }
         builder.append("    }\n\n");
         return builder.toString();
@@ -511,13 +519,7 @@ public class Briefnessor {
                 continue;
             builder.append("    public void set" + StringUtil.toUpperCase(link.getAlisa()) + "(" + StringUtil.toUpperCase(link.getClassName()) + " " + link.getAlisa() + ") {\n" +
                     "        if (" + link.getAlisa() + " == null) return;\n" +
-                    "        if ((this." + link.getAlisa() + " == null || this." + link.getAlisa() + " != " + link.getAlisa() + ") && (((Object) " + link.getAlisa() + ") instanceof LiveData)) {\n" +
-                    "            ((LiveData) ((Object) " + link.getAlisa() + ")).bindTape(this);\n" +
-                    "        }\n" +
-                    "        if (this." + link.getAlisa() + " != null && this." + link.getAlisa() + " != " + link.getAlisa() + " && (((Object) this." + link.getAlisa() + ")) instanceof LiveData) {\n" +
-                    "            ((LiveData) ((Object) this." + link.getAlisa() + ")).bindTape(null);\n" +
-                    "        }\n" +
-                    "        this." + link.getAlisa() + " = " + link.getAlisa() + ";\n");
+                    "        this." + link.getAlisa() + " = " + "setEntity(this." + link.getAlisa() + ", " + link.getAlisa() + ");\n");
             List<View> views = briefness.getLabel().getViews();
             for (View view : views) {
                 Bind bind = view.getBind();
@@ -560,6 +562,10 @@ public class Briefnessor {
         for (Link link : links) {
             builder.append("    public ").append(link.getClassName()).append(" ").append(link.getAlisa()).append(";\n");
         }
+        links = briefness.getLabel().getViewModels();
+        for (Link link : links) {
+            builder.append("    private ").append(link.getClassName()).append(" ").append(link.getAlisa()).append(";\n");
+        }
         return builder.toString();
     }
 
@@ -586,6 +592,11 @@ public class Briefnessor {
         if (briefness.getLayout() == null) return "";
         List<Link> links = briefness.getLabel().getLinkes();
         StringBuilder builder = new StringBuilder();
+        for (Link link : links) {
+            if (!StringUtil.stringContainString(builder, link.getFullClassName()))
+                builder.append("import ").append(link.getFullClassName()).append(";\n");
+        }
+        links = briefness.getLabel().getViewModels();
         for (Link link : links) {
             if (!StringUtil.stringContainString(builder, link.getFullClassName()))
                 builder.append("import ").append(link.getFullClassName()).append(";\n");
@@ -636,7 +647,8 @@ public class Briefnessor {
             else
                 return "        super.bind(target, obj);\n";
         } else {
-            if (briefness.getLayout() == null) return "        super.bind(target, obj, LAYOUT_NULL);\n";
+            if (briefness.getLayout() == null)
+                return "        super.bind(target, obj, LAYOUT_NULL);\n";
             return "        super.bind(target, obj, R.layout." + briefness.getLayout() + ");\n";
         }
     }

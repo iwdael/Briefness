@@ -9,14 +9,18 @@ import java.util.List;
 
 public class Label {
     List<Link> linkes;
-
+    List<Link> viewModels;
     List<View> views;
 
     public Label() {
         linkes = new ArrayList<>();
         views = new ArrayList<>();
+        viewModels = new ArrayList<>();
     }
 
+    public void addViewModel(Link link){
+        viewModels.add(link);
+    }
     public void addLink(Link link) {
         linkes.add(link);
     }
@@ -31,6 +35,10 @@ public class Label {
                 "linkes=" + linkes +
                 ", views=" + views +
                 '}';
+    }
+
+    public List<Link> getViewModels() {
+        return viewModels;
     }
 
     public List<Link> getLinkes() {

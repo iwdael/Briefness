@@ -74,14 +74,30 @@ public class XmlParser {
                         //获取引用
                         for (int i = 0; i < count; i++) {
                             if (parser.getAttributeName(i).endsWith(viewModel)) {
-                                if (parser.getAttributeValue(i).contains(";") || parser.getAttributeValue(i).contains("|")) {
+                                if (parser.getAttributeValue(i).contains(";")) {
                                     error(
                                             processingEnv,
                                             "Briefness: viewModel tag error in " + layoutName + ".xml",
                                             typeElement
                                     );
                                 }
-                                briefness.getLabel().addLink(new Link(parser.getAttributeValue(i).replaceAll(" ", ""), "viewModel"));
+                                String[] links = parser.getAttributeValue(i).replaceAll(" ", "").split("\\|");
+                                if (links.length == 1) {
+                                    String[] split = links[0].split(",");
+                                    if (split.length == 1)
+                                        briefness.getLabel().addViewModel(new Link(split[0], "viewModel"));
+                                    else
+                                        briefness.getLabel().addViewModel(new Link(split[0], split[1]));
+                                } else {
+                                    for (String link : links) {
+                                        String[] split = link.split(",");
+                                        if (split.length == 1)
+                                            briefness.getLabel().addViewModel(new Link(split[0], null));
+                                        else
+                                            briefness.getLabel().addViewModel(new Link(split[0], split[1]));
+                                    }
+                                }
+
                             }
                             if (parser.getAttributeName(i).endsWith(imports)) {
                                 String[] links;
@@ -91,7 +107,7 @@ public class XmlParser {
                                     links = parser.getAttributeValue(i).replaceAll(" ", "").split(";");
                                 }
                                 for (String link : links) {
-                                    if (link.contains("|") || link.contains(";") || (!link.contains(",")))
+                                    if (link.contains("|") || link.contains(";"))
                                         error(
                                                 processingEnv,
                                                 "Briefness: imports tag error in " + layoutName + ".xml",
@@ -100,7 +116,11 @@ public class XmlParser {
                                 }
                                 for (String link : links) {
                                     String[] split = link.split(",");
-                                    Link aLink = new Link(split[0], split[1]);
+                                    Link aLink;
+                                    if (split.length == 1)
+                                        aLink = new Link(split[0], null);
+                                    else
+                                        aLink = new Link(split[0], split[1]);
                                     briefness.getLabel().addLink(aLink);
                                 }
                             }
@@ -140,7 +160,7 @@ public class XmlParser {
                                         name.endsWith(tabUnselected) ||
                                         name.endsWith(progressChanged) ||
                                         name.endsWith(pageSelected)
-                                        ) {
+                                ) {
                                     String str = deleteBlank(value);
                                     if (!checkLegality(str)) {
                                         error(

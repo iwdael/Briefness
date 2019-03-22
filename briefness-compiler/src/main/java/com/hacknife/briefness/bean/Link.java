@@ -11,8 +11,13 @@ public class Link {
 
     public Link(String fullClassName, String alisa) {
         this.fullClassName = fullClassName;
-        this.alisa = alisa;
+
         this.className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
+        if (alisa == null) {
+            this.alisa = className.substring(0, 1).toLowerCase() + className.substring(1);
+        } else {
+            this.alisa = alisa;
+        }
     }
 
     @Override

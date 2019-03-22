@@ -1,6 +1,6 @@
 package com.hacknife.briefness;
 
-public abstract class LiveData {
+public abstract class LiveData implements ILiveData {
     private Briefnessor briefnessor;
 
     protected void notifyDataChange() {

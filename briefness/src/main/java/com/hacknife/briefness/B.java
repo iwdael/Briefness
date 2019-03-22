@@ -1,5 +1,6 @@
 package com.hacknife.briefness;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -23,6 +24,8 @@ public class B<T> implements Briefnessor<T> {
                 view = (View) source;
             else if (source instanceof LayoutInflater)
                 view = ((LayoutInflater) source).inflate(layout, null);
+            else if (source instanceof Context)
+                view = LayoutInflater.from((Context) source).inflate(layout, null);
         }
     }
 
@@ -37,8 +40,13 @@ public class B<T> implements Briefnessor<T> {
     }
 
     @Override
-    public void bindViewModel(Object viewModel) {
+    public void bindViewModel(Object... viewModels) {
+        for (Object viewModel : viewModels) {
+            bindViewModels(viewModel);
+        }
+    }
 
+    protected void bindViewModels(Object viewModel) {
     }
 
     @Override
@@ -49,5 +57,16 @@ public class B<T> implements Briefnessor<T> {
     @Override
     public View inflate() {
         return view;
+    }
+
+
+    public <T> T setEntity(Object local, Object set) {
+        if ((local == null || local != set) && (set instanceof ILiveData)) {
+            ((ILiveData) (set)).bindTape(this);
+        }
+        if (local != null && local != set && local instanceof ILiveData) {
+            ((ILiveData) local).bindTape(null);
+        }
+        return (T) set;
     }
 }
