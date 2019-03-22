@@ -11,13 +11,12 @@ dependencies {
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
-group='com.hacknife.android'
 
-publish{
-    userOrg = 'hacknife'
-    groupId = 'com.hacknife.briefness'
+publish {
+    userOrg = bintray.userOrg
+    groupId = bintray.userOrg
     artifactId = 'briefness-compiler'
-    publishVersion = '2.0.4'
-    desc = 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.'
-    website = 'https://github.com/hacknife/briefness'
+    publishVersion = bintray.publishVersion
+    desc = bintray.desc
+    website = bintray.website
 }

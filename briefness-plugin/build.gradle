@@ -15,18 +15,16 @@ uploadArchives {
     }
 }
 
-group = "com.hacknife"//project属性
-version = "1.8.7"//project属性
 dependencies {
-    implementation deps.android.gradlePlugin
+    implementation 'com.android.tools.build:gradle:3.1.4'
     implementation 'com.github.javaparser:javaparser-core:3.5.14'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.71'
 }
 publish{
-    userOrg = 'hacknife'
-    groupId = 'com.hacknife.briefness'
+    userOrg = bintray.userOrg
+    groupId = bintray.userOrg
     artifactId = 'briefness-plugin'
-    publishVersion = '2.0.4'
-    desc = 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.'
-    website = 'https://github.com/hacknife/briefness'
+    publishVersion = bintray.publishVersion
+    desc = bintray.desc
+    website = bintray.website
 }

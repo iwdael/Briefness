@@ -6,13 +6,12 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '27.0.3'
+    compileSdkVersion buildConfig.compileSdkVersion
     defaultConfig {
-        minSdkVersion 11
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion buildConfig.minSdkVersion
+        targetSdkVersion buildConfig.targetSdkVersion
+        versionCode buildConfig.versionCode
+        versionName buildConfig.versionName
     }
     lintOptions {
         abortOnError false
@@ -21,15 +20,14 @@ android {
 }
 
 dependencies {
-	 compile project(path: ':briefness-annotation')
+    compile project(path: ':briefness-annotation')
 }
-group='com.hacknife.android'
 
-publish{
-    userOrg = 'hacknife'
-    groupId = 'com.hacknife.briefness'
+publish {
+    userOrg = bintray.userOrg
+    groupId = bintray.userOrg
     artifactId = 'briefness'
-    publishVersion = '2.0.4'
-    desc = 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.'
-    website = 'https://github.com/hacknife/briefness'
+    publishVersion = bintray.publishVersion
+    desc = bintray.desc
+    website = bintray.website
 }
