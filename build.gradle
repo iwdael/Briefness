@@ -12,7 +12,7 @@ buildscript {
     ext.bintray = [
             'userOrg'       : 'hacknife',
             'groupId'       : 'com.hacknife.briefness',
-            'publishVersion': '2.0.7',
+            'publishVersion': '2.1.0',
             'desc'          : 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.',
             'website'       : 'https://github.com/hacknife/briefness',
     ]
@@ -29,7 +29,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.71"
         classpath 'com.hacknife.briefness:briefness-plugin:1.9.1'
         classpath 'com.novoda:bintray-release:0.7.0'
-
     }
 
 

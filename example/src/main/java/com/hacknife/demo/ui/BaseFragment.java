@@ -25,14 +25,11 @@ import com.hacknife.demo.R;
 public abstract class BaseFragment<T extends Briefnessor> extends Fragment {
 
     T briefnessor;
-    @BindView(R.id.all)
-    TextView a;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(attachLayoutRes(),  null);
         briefnessor = (T) Briefness.bind(this, inflater);
-        return view;
+        return briefnessor.inflate();
     }
 
     protected abstract int attachLayoutRes();

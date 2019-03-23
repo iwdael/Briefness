@@ -23,8 +23,6 @@ dependencies {
     implementation project(':briefness')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     annotationProcessor project(':briefness-compiler')
-//    implementation 'com.hacknife.briefness:briefness:1.9.1'
-//    annotationProcessor 'com.hacknife.briefness:briefness-compiler:1.9.1'
     implementation 'com.android.support:recyclerview-v7:26.+'
     implementation 'com.hacknife:immersive:1.1.0+'
 }
