@@ -12,11 +12,12 @@ dependencies {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+
 publish {
-    userOrg = bintray.userOrg
-    groupId = bintray.groupId
+    userOrg = 'hacknife'
+    groupId = 'com.hacknife.briefness'
     artifactId = 'briefness-compiler'
     publishVersion = bintray.publishVersion
-    desc = bintray.desc
-    website = bintray.website
+    desc = 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.'
+    website = 'https://github.com/hacknife/briefness'
 }

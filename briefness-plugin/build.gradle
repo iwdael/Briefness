@@ -20,11 +20,11 @@ dependencies {
     implementation 'com.github.javaparser:javaparser-core:3.5.14'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.71'
 }
-publish{
-    userOrg = bintray.userOrg
-    groupId = bintray.groupId
+publish {
+    userOrg = 'hacknife'
+    groupId = 'com.hacknife.briefness'
     artifactId = 'briefness-plugin'
     publishVersion = bintray.publishVersion
-    desc = bintray.desc
-    website = bintray.website
+    desc = 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.'
+    website = 'https://github.com/hacknife/briefness'
 }
