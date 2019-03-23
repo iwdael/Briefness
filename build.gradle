@@ -10,7 +10,11 @@ buildscript {
             'versionName'      : '1.0',
     ]
     ext.bintray = [
-            'publishVersion': '2.2.0'
+            'userOrg'       : 'hacknife',
+            'groupId'       : 'com.hacknife.briefness',
+            'publishVersion': '2.2.0',
+            'desc'          : 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.',
+            'website'       : 'https://github.com/hacknife/briefness',
     ]
     repositories {
         jcenter()
