@@ -20,7 +20,7 @@ android {
 }
 
 dependencies {
-    api project(path: ':briefness-annotation')
+    compile project(path: ':briefness-annotation')
 }
 
 publish {

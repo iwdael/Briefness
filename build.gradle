@@ -10,7 +10,7 @@ buildscript {
             'versionName'      : '1.0',
     ]
     ext.bintray = [
-            'publishVersion': '2.1.5'
+            'publishVersion': '2.2.0'
     ]
     repositories {
         jcenter()
