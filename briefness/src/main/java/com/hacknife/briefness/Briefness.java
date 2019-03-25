@@ -32,7 +32,7 @@ public class Briefness {
             Briefnessor proxy = findProxySuperActivity(clazz);
             if (proxyActivity == null) proxyActivity = proxy;
             if (proxy != null) proxy.bind(target, proxyView == null ? view : proxyView);
-            proxyView = proxy.inflate();
+            if (proxy != null) proxyView = proxy.inflate();
         }
         return proxyActivity;
     }

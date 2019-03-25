@@ -12,7 +12,7 @@ buildscript {
     ext.bintray = [
             'userOrg'       : 'hacknife',
             'groupId'       : 'com.hacknife.briefness',
-            'publishVersion': '2.2.5',
+            'publishVersion': '2.2.6',
             'desc'          : 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.',
             'website'       : 'https://github.com/hacknife/briefness',
     ]
