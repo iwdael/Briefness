@@ -199,7 +199,7 @@ public class Briefnessor {
 
     private void generateRadioChanged(StringBuilder builder, String id, String[] method, String[] protect) {
         imports.add("com.hacknife.briefness.OnRadioButtonCheckedChangeListener");
-        builder.append("        " + id + ".setOnCheckedChangeListener(new OnRadioButtonCheckedChangeListener() {\n" +
+        builder.append("        " + id + ".setOnCheckedChangeListener(new OnRadioButtonCheckedChangeListener(" + id + ") {\n" +
                 "            @Override\n" +
                 "            public void onChecked(RadioGroup radioGroup, int id) {\n");
         for (int i = 0; i < method.length; i++) {
