@@ -72,4 +72,10 @@ public class B<T> implements Briefnessor<T> {
         }
         return (T) set;
     }
+
+    protected void clearLiveData(Object live) {
+        if (live != null && (live) instanceof LiveData) {
+            ((LiveData) live).bindTape(null);
+        }
+    }
 }

@@ -480,7 +480,7 @@ public class Briefnessor {
                         "        super.clearAll();\n"
         );
         if (clear.length() > 3)
-            builder.append("        clear();\n");
+            builder.append("        this.clear();\n");
         for (View view : views) {
             builder.append("        this.").append(view.getId()).append(" = null;\n");
         }
@@ -501,9 +501,7 @@ public class Briefnessor {
                 "    @Override\n" +
                         "    public void clear() {\n");
         for (Link link : links) {
-            builder.append("        if (this." + link.getAlisa() + " != null && (((Object) this." + link.getAlisa() + ")) instanceof LiveData) {\n" +
-                    "            ((LiveData) ((Object) " + link.getAlisa() + ")).bindTape(null);\n" +
-                    "        }\n");
+            builder.append("        super.clearLiveData(" + link.getAlisa() + ");\n");
             builder.append("        this.").append(link.getAlisa()).append(" = null;\n");
         }
         builder.append("    }\n");
@@ -640,7 +638,7 @@ public class Briefnessor {
                 }
                 return builder.toString();
             } else if (briefness.getLayout() != null)
-                return "        super.bind(target, obj, R.layout."+briefness.getLayout()+");\n";
+                return "        super.bind(target, obj, R.layout." + briefness.getLayout() + ");\n";
             else
                 return "        super.bind(target, obj);\n";
         } else {
