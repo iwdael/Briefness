@@ -276,6 +276,12 @@ public class StringUtil {
         return method.substring(0, index).contains(".");
     }
 
+    public static String methodPreffixProtect(String method) {
+        int index = method.indexOf("(");
+        index = method.substring(0, index).indexOf(".");
+        return "if(" + method.substring(0, index) + " != null) ";
+    }
+
     public static String insertParamter(String method, String para) {
         StringBuilder builder = new StringBuilder();
         int index = method.indexOf("(") + 1;

@@ -206,13 +206,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "radioGroup, id") + "\n");
             }
@@ -231,13 +231,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
+                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
             }
@@ -262,13 +262,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "tab") + "\n");
+                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "tab") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "tab") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "tab") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
             }
@@ -295,13 +295,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "tab") + "\n");
+                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "tab") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "tab") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "tab") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
             }
@@ -320,13 +320,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "checked") + "\n");
+                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "checked") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "checked") + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "checked") + "\n");
+                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "checked") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "checked") + "\n");
             }
@@ -354,13 +354,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "position") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "position") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "position") + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "position") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "position") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "position") + "\n");
             }
@@ -378,13 +378,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "content") + "\n");
+                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "content") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "content") + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + StringUtil.insertParamter(method[i], "content") + "\n");
+                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "content") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "content") + "\n");
             }
@@ -401,13 +401,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + method[i] + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + method[i] + "\n");
                 else
                     builder.append("                host." + method[i] + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + method[i] + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + method[i] + "\n");
                 else
                     builder.append("                host." + method[i] + "\n");
             }
@@ -425,13 +425,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + method[i] + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + method[i] + "\n");
                 else
                     builder.append("                host." + method[i] + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                " + method[i] + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + method[i] + "\n");
                 else
                     builder.append("                host." + method[i] + "\n");
             }
