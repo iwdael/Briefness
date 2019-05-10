@@ -10,6 +10,7 @@ public class Field {
     String className;
     String variable;
     String[] ids;
+    String fullClass;
 
     public String getClassName() {
         return className.replace("[", "").replace("]", "");
@@ -39,18 +40,24 @@ public class Field {
         this.ids = ids;
     }
 
-    public Field(String className, String variable, String[] ids) {
+    public Field(String className, String variable, String[] ids, String fullClass) {
         this.className = className;
         this.variable = variable;
         this.ids = ids;
+        this.fullClass = fullClass;
+    }
+
+    public String getFullClass() {
+        return fullClass;
     }
 
     @Override
     public String toString() {
-        return "Field{" +
-                "className='" + className + '\'' +
-                ", variable='" + variable + '\'' +
-                ", ids=" + Arrays.toString(ids) +
+        return "{" +
+                "\"className\":\'" + className + "\'" +
+                ", \"variable\":\'" + variable + "\'" +
+                ", \"ids\":" + Arrays.toString(ids) +
+                ", \"fullClass\":\'" + fullClass + "\'" +
                 '}';
     }
 }

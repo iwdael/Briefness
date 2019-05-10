@@ -1,6 +1,7 @@
 package com.hacknife.briefness.processor;
 
 import com.hacknife.briefness.BindClick;
+import com.hacknife.briefness.BindField;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
 import com.hacknife.briefness.Briefnessor;
@@ -32,6 +33,23 @@ public class BriefnessProcessor extends AbstractBriefnessProcessor {
     String buidPath;
     String packages;
 
+
+    @Override
+    protected void processField(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        Set<? extends Element> elementsWithBind = roundEnv.getElementsAnnotatedWith(BindField.class);
+        for (Element element : elementsWithBind) {
+            if (!checkAnnotationValid(element, BindField.class)) continue;
+            VariableElement variableElement = (VariableElement) element;
+            TypeElement classElement = (TypeElement) variableElement.getEnclosingElement();
+            String fullClassName = classElement.getQualifiedName().toString();
+            Briefnessor briefnessor = mProxyMap.get(fullClassName);
+            if (briefnessor == null) {
+                briefnessor = new Briefnessor(elementUtils, classElement);
+                mProxyMap.put(fullClassName, briefnessor);
+            }
+
+        }
+    }
 
     @Override
     protected void processClick(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {

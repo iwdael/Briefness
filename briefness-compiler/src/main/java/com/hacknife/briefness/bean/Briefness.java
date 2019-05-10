@@ -13,6 +13,7 @@ public class Briefness {
     List<Field> fileds;
     Label label;
     Immersive immersive;
+    List<Field> bundles;
 
     public List<Field> getFileds() {
         return fileds;
@@ -21,6 +22,15 @@ public class Briefness {
     public Briefness() {
         methods = new ArrayList<>();
         fileds = new ArrayList<>();
+        bundles = new ArrayList<>();
+    }
+
+    public void addBunlde(Field field){
+        bundles.add(field);
+    }
+
+    public List<Field> getBundles() {
+        return bundles;
     }
 
     public void addField(Field field) {

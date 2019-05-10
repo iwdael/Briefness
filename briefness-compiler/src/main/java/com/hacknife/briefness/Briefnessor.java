@@ -84,6 +84,7 @@ public class Briefnessor {
                 .replaceAll(Constant.proxy, proxyClassName)
                 .replaceAll(Constant.packages, packages)
                 .replaceAll(Constant.setContentView, generateContentView())
+                .replaceAll(Constant.bindField, generateBindField())
                 .replaceAll(Constant.iJavabean, generateIJavabean())
                 .replaceAll(Constant.iView, generateIView())
                 .replaceAll(Constant.javabean, generateJavabean())
@@ -96,6 +97,85 @@ public class Briefnessor {
                 .replaceAll(Constant.viewModel, generateViewModel())
                 .replaceAll(Constant.notify, generateNotify())
                 .replaceAll(Constant.iimport, generateImport());
+    }
+
+    private String generateBindField() {
+        StringBuilder builder = new StringBuilder();
+        List<Field> bundles = briefness.getBundles();
+        if (bundles.size() != 0) {
+            for (Field bundle : bundles) {
+                Logger.v(bundle.toString());
+
+                if (bundle.getClassType().equals("int") || bundle.getClassType().equals("Integer")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getIntExtra(").append(bundle.getIds()[0]).append(", 0);");
+                } else if (bundle.getClassType().equals("short") || bundle.getClassType().equals("Short")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getShortExtra(").append(bundle.getIds()[0]).append(", (short) 0);");
+                } else if (bundle.getClassType().equals("long") || bundle.getClassType().equals("Long")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getLongExtra(").append(bundle.getIds()[0]).append(",0);");
+                } else if (bundle.getClassType().equals("double") || bundle.getClassType().equals("Double")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getDoubleExtra(").append(bundle.getIds()[0]).append(",0);");
+                } else if (bundle.getClassType().equals("float") || bundle.getClassType().equals("Float")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getFloatExtra(").append(bundle.getIds()[0]).append(",0);");
+                } else if (bundle.getClassType().equals("char")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getCharExtra(").append(bundle.getIds()[0]).append(", (char) 0);");
+                } else if (bundle.getClassType().equals("boolean") || bundle.getClassType().equals("Boolean")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getBooleanExtra(").append(bundle.getIds()[0]).append(", false);");
+                } else if (bundle.getClassType().equals("String")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getStringExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("[") && bundle.getClassType().contains("int")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getIntArrayExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("[") && bundle.getClassType().contains("short")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getShortArrayExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("[") && bundle.getClassType().contains("long")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getLongArrayExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("[") && bundle.getClassType().contains("double")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getDoubleArrayExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("[") && bundle.getClassType().contains("float")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getFloatArrayExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("[") && bundle.getClassType().contains("char")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getCharArrayExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("[") && bundle.getClassType().contains("boolean")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getBooleanArrayExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("[") && bundle.getClassType().contains("String")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getStringArrayExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("List") && bundle.getClassType().contains("String")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getStringArrayListExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("List") && bundle.getClassType().contains("Integer")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getIntegerArrayListExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("List")) {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getParcelableArrayListExtra(").append(bundle.getIds()[0]).append(");");
+                } else if (bundle.getClassType().contains("[")) {
+                    if (bundle.getFullClass() != null)
+                        imports.add(bundle.getFullClass());
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("(").append(bundle.getClassType()).append(") ").append("host.getIntent().");
+                    builder.append("getParcelableArrayExtra(").append(bundle.getIds()[0]).append(");");
+                } else {
+                    builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
+                    builder.append("getParcelableExtra(").append(bundle.getIds()[0]).append(");");
+                }
+                builder.append("\n");
+            }
+        }
+        return builder.toString();
     }
 
     private String generateImport() {
@@ -237,7 +317,7 @@ public class Briefnessor {
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "seekBar, state, progress, fromUser") + "\n");
             }
@@ -262,7 +342,7 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "tab") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "tab") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
                 builder.append("                }\n");
@@ -295,7 +375,7 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "tab") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "tab") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "tab") + "\n");
                 builder.append("                }\n");
@@ -320,13 +400,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "checked") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "checked") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "checked") + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "checked") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "checked") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "checked") + "\n");
             }
@@ -378,13 +458,13 @@ public class Briefnessor {
             if (protect[i].length() > 0) {
                 builder.append("                if(" + protect[i] + ") {\n");
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "content") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "content") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "content") + "\n");
                 builder.append("                }\n");
             } else {
                 if (StringUtil.checkMethodHavePreffix(method[i]))
-                    builder.append("                "  + StringUtil.methodPreffixProtect(method[i])+ StringUtil.insertParamter(method[i], "content") + "\n");
+                    builder.append("                " + StringUtil.methodPreffixProtect(method[i]) + StringUtil.insertParamter(method[i], "content") + "\n");
                 else
                     builder.append("                host." + StringUtil.insertParamter(method[i], "content") + "\n");
             }

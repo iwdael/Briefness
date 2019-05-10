@@ -2,11 +2,24 @@ package com.hacknife.briefness;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.AssignExpr;
+import com.github.javaparser.ast.expr.ClassExpr;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
+import com.github.javaparser.ast.expr.MethodReferenceExpr;
+import com.github.javaparser.ast.expr.VariableDeclarationExpr;
+import com.github.javaparser.ast.stmt.AssertStmt;
+import com.github.javaparser.ast.stmt.DoStmt;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.TypeParameter;
+import com.github.javaparser.ast.type.VarType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import com.hacknife.briefness.bean.Briefness;
 import com.hacknife.briefness.bean.Field;
@@ -15,6 +28,8 @@ import com.hacknife.briefness.bean.Method;
 import com.hacknife.briefness.util.Logger;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Hacknife on 2018/10/31.
@@ -24,6 +39,7 @@ public class ClassParser {
     public static String BindClick = "BindClick";
     public static String BindView = "BindView";
     public static String BindLayout = "BindLayout";
+    public static String BindField = "BindField";
     public static String Immersive = "Immersive";
     public static String Immersive_statusColor = "statusColor";
     public static String Immersive_navigationColor = "navigationColor";
@@ -34,6 +50,8 @@ public class ClassParser {
         try {
             CompilationUnit parse = JavaParser.parse(new File(path));
             VoidVisitorAdapter<Object> adapter = new VoidVisitorAdapter<Object>() {
+                List<String> imports = new ArrayList<>();
+
                 @Override
                 public void visit(ClassOrInterfaceDeclaration n, Object arg) {
                     super.visit(n, arg);
@@ -47,8 +65,39 @@ public class ClassParser {
                 public void visit(FieldDeclaration n, Object arg) {
                     super.visit(n, arg);
                     String[] ids = checkAnnatation(n.getAnnotations());
-                    if (ids != null)
-                        briefness.addField(new Field(n.getCommonType().toString(), n.getVariable(0).toString(), ids));
+                    if (ids != null) {
+                        String clazz = n.getCommonType().toString().replace("[", "").replace("]", "").replaceAll(" ", "");
+                        if (clazz.contains("<"))
+                            clazz = clazz.substring(0, clazz.indexOf("<"));
+                        String ip = null;
+                        for (String anImport : imports) {
+                            if (anImport.endsWith("." + clazz)) {
+                                ip = anImport;
+                                break;
+                            }
+                        }
+                        if (ip == null) {
+                            Logger.v("not found class :" + clazz);
+                        }
+                        briefness.addField(new Field(n.getCommonType().toString(), n.getVariable(0).toString(), ids,ip));
+                    }
+                    String bundle = checkBundle(n.getAnnotations());
+                    if (bundle != null) {
+                        String clazz = n.getCommonType().toString().replace("[", "").replace("]", "").replaceAll(" ", "");
+                        if (clazz.contains("<"))
+                            clazz = clazz.substring(0, clazz.indexOf("<"));
+                        String ip = null;
+                        for (String anImport : imports) {
+                            if (anImport.endsWith("." + clazz)) {
+                                ip = anImport;
+                                break;
+                            }
+                        }
+                        if (ip == null) {
+                            Logger.v("not found class :" + clazz);
+                        }
+                        briefness.addBunlde(new Field(n.getCommonType().toString(), n.getVariable(0).toString(), new String[]{bundle},ip));
+                    }
                 }
 
                 @Override
@@ -60,11 +109,24 @@ public class ClassParser {
                 }
 
 
+                @Override
+                public void visit(ImportDeclaration n, Object arg) {
+                    super.visit(n, arg);
+                    imports.add(n.getName().asString());
+                }
             };
             adapter.visit(parse, null);
         } catch (Exception e) {
             Logger.v(e.getMessage());
         }
+    }
+
+    private static String checkBundle(NodeList<AnnotationExpr> annotationExprs) {
+        for (AnnotationExpr annotationExpr : annotationExprs) {
+            if (annotationExpr.toString().contains(BindField))
+                return annotationExpr.toString().replace(BindField, "").replace("(", "").replace(")", "").replace("@", "");
+        }
+        return null;
     }
 
     private static String[] checkAnnatation(NodeList<AnnotationExpr> annotationExprs) {

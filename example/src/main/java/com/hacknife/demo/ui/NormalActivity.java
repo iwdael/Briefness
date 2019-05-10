@@ -2,11 +2,14 @@ package com.hacknife.demo.ui;
 
 import android.widget.Toast;
 
+import com.hacknife.briefness.BindField;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.Immersive;
 import com.hacknife.demo.R;
+import com.hacknife.demo.bean.PaCs;
 import com.hacknife.demo.bean.User;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +26,82 @@ public class NormalActivity extends BaseActivity<NormalActivityBriefnessor> {
     protected int attachTitleRes() {
         return R.string.title_normal;
     }
+
+    @BindField("short_1")
+    short short_a;
+    @BindField("short_2")
+    Short short_b;
+    @BindField("number_1")
+    int number_a;
+    @BindField("number_2")
+    Integer number_b;
+
+    @BindField("long_1")
+    long long_a;
+    @BindField("long_2")
+    Long long_b;
+
+    @BindField("double_1")
+    double double_a;
+
+    @BindField("double_2")
+    Double double_b;
+
+    @BindField("float_1")
+    float float_a;
+
+    @BindField("float_2")
+    Float float_b;
+
+    @BindField("char_1")
+    char char_a;
+
+    @BindField("boolean_1")
+    boolean bool_a;
+
+
+    @BindField("boolean_2")
+    Boolean bool_b;
+
+    @BindField("content_1")
+    String content;
+
+    @BindField("list_shoe")
+    short[] shortList;
+
+    @BindField("list_integer")
+    int[] integerList;
+
+
+    @BindField("list_long")
+    long[] longList;
+
+    @BindField("list_double")
+    double[] doubleList;
+
+    @BindField("list_float")
+    float[] floatList;
+
+    @BindField("list_bool")
+    boolean[] booleans;
+
+    @BindField("list_str")
+    String[] stringList;
+
+    @BindField("list_i")
+    List<Integer> integers;
+
+    @BindField("list_s")
+    List<String> stringss;
+
+    @BindField("asdasd")
+    PaCs[] asds;
+
+    @BindField("asdasd")
+    List<PaCs> asds_asdasd;
+
+    @BindField("aswwwwwwdasd")
+    PaCs asdwqes_asdasd;
 
     @Override
     protected void onResume() {

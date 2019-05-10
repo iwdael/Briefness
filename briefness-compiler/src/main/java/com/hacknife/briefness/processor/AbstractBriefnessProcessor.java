@@ -1,6 +1,7 @@
 package com.hacknife.briefness.processor;
 
 import com.hacknife.briefness.BindClick;
+import com.hacknife.briefness.BindField;
 import com.hacknife.briefness.BindLayout;
 import com.hacknife.briefness.BindView;
 import com.hacknife.briefness.Briefnessor;
@@ -42,9 +43,12 @@ public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
         processLayout(annotations, roundEnv);
         processView(annotations, roundEnv);
         processClick(annotations, roundEnv);
+        processField(annotations, roundEnv);
         process();
         return true;
     }
+
+    protected abstract void processField(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
 
 
     protected abstract void processClick(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv);
@@ -69,6 +73,7 @@ public abstract class AbstractBriefnessProcessor extends AbstractProcessor {
         supportType.add(BindLayout.class.getCanonicalName());
         supportType.add(BindView.class.getCanonicalName());
         supportType.add(BindClick.class.getCanonicalName());
+        supportType.add(BindField.class.getCanonicalName());
         return supportType;
     }
 
