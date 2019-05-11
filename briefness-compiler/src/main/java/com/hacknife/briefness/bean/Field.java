@@ -11,6 +11,7 @@ public class Field {
     String variable;
     String[] ids;
     String fullClass;
+    String[] refrence;
 
     public String getClassName() {
         return className.replace("[", "").replace("]", "");
@@ -40,15 +41,20 @@ public class Field {
         this.ids = ids;
     }
 
-    public Field(String className, String variable, String[] ids, String fullClass) {
+    public Field(String className, String variable, String[] ids, String fullClass, String[] refrence) {
         this.className = className;
         this.variable = variable;
         this.ids = ids;
         this.fullClass = fullClass;
+        this.refrence = refrence;
     }
 
     public String getFullClass() {
         return fullClass;
+    }
+
+    public String[] getRefrence() {
+        return refrence;
     }
 
     @Override
@@ -58,6 +64,7 @@ public class Field {
                 ", \"variable\":\'" + variable + "\'" +
                 ", \"ids\":" + Arrays.toString(ids) +
                 ", \"fullClass\":\'" + fullClass + "\'" +
+                ", \"refrence\":" + Arrays.toString(refrence) +
                 '}';
     }
 }

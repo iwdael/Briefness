@@ -14,6 +14,7 @@ import com.hacknife.briefness.util.StringUtil;
 import com.hacknife.briefness.util.ViewCollection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +76,7 @@ public class Briefnessor {
         this.buidPath = buidPath;
         javaSource = String.format(Constant.javaPath, buidPath, packageName.replace(".", "/"), className);
         briefness = new Briefness();
-        ClassParser.parser(javaSource, briefness);
+        ClassParser.parser(javaSource, briefness, packageName + "." + className);
         Logger.p(javaSource + ":" + briefness.getLayout());
         XmlParser.parser(buidPath, briefness.getLayout(), briefness, processingEnv, typeElement);
         return Constant.briefnessor
@@ -101,11 +102,17 @@ public class Briefnessor {
 
     private String generateBindField() {
         StringBuilder builder = new StringBuilder();
+        if (!ClassUtil.instanceOfActivity(className)) {
+            return builder.toString();
+        }
         List<Field> bundles = briefness.getBundles();
         if (bundles.size() != 0) {
             for (Field bundle : bundles) {
-                Logger.v(bundle.toString());
-
+//                Logger.v(bundle.toString());
+                if (bundle.getRefrence() != null) {
+                    String[] refs = bundle.getRefrence();
+                    imports.addAll(Arrays.asList(refs));
+                }
                 if (bundle.getClassType().equals("int") || bundle.getClassType().equals("Integer")) {
                     builder.append("        host.").append(bundle.getVariable()).append(" = ").append("host.getIntent().");
                     builder.append("getIntExtra(").append(bundle.getIds()[0]).append(", 0);");

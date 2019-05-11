@@ -8,10 +8,13 @@ import com.hacknife.briefness.Immersive;
 import com.hacknife.demo.R;
 import com.hacknife.demo.bean.PaCs;
 import com.hacknife.demo.bean.User;
+import com.hacknife.demo.constant.Transfer;
 
-import java.nio.charset.Charset;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.hacknife.demo.constant.Transfer.BUNDLE_NUMBER;
 
 /**
  * author  : hacknife
@@ -102,6 +105,17 @@ public class NormalActivity extends BaseActivity<NormalActivityBriefnessor> {
 
     @BindField("aswwwwwwdasd")
     PaCs asdwqes_asdasd;
+
+    @BindField(Transfer.BUNDLE_NUMBER)
+    PaCs ad;
+
+    @BindField(BUNDLE_NUMBER)
+    Long cssd;
+
+    public static final String TAG="tag";
+
+    @BindField(TAG)
+    char adsasdas;
 
     @Override
     protected void onResume() {
