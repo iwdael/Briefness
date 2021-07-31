@@ -12,6 +12,7 @@ buildscript {
             'versionName'      : '1.0',
     ]
     repositories {
+        jcenter()
         google()
     }
     dependencies {
