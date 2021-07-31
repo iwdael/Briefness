@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -20,13 +19,4 @@ android {
 
 dependencies {
     compile project(path: ':briefness-annotation')
-}
-
-publish {
-    userOrg = bintray.userOrg
-    groupId = bintray.groupId
-    artifactId = 'briefness'
-    publishVersion = bintray.publishVersion
-    desc = bintray.desc
-    website = bintray.website
 }

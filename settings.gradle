@@ -1,4 +1,4 @@
-include ':example'
+//include ':example'
 include':briefness'
 include':briefness-annotation'
 include':briefness-compiler'

@@ -17,18 +17,11 @@ buildscript {
             'website'       : 'https://github.com/hacknife/briefness',
     ]
     repositories {
-        jcenter()
         google()
-        maven {
-            url 'https://dl.bintray.com/hacknife/maven'
-        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.71"
-        classpath 'com.hacknife.briefness:briefness-plugin:1.9.1'
-        classpath 'com.novoda:bintray-release:0.7.0'
     }
 
 
@@ -36,7 +29,6 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
         google()
         maven {
             url 'https://dl.bintray.com/hacknife/maven'

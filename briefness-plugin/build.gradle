@@ -1,7 +1,5 @@
 apply plugin: 'java-gradle-plugin'
 apply plugin: 'kotlin'
-apply plugin: 'maven'
-apply plugin: 'com.novoda.bintray-release'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -19,12 +17,4 @@ dependencies {
     implementation 'com.android.tools.build:gradle:3.1.4'
     implementation 'com.github.javaparser:javaparser-core:3.5.14'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.71'
-}
-publish{
-    userOrg = bintray.userOrg
-    groupId = bintray.groupId
-    artifactId = 'briefness-plugin'
-    publishVersion = bintray.publishVersion
-    desc = bintray.desc
-    website = bintray.website
 }
