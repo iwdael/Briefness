@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -11,11 +10,3 @@ dependencies {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
-publish {
-    userOrg = bintray.userOrg
-    groupId = bintray.groupId
-    artifactId = 'briefness-compiler'
-    publishVersion = bintray.publishVersion
-    desc = bintray.desc
-    website = bintray.website
-}

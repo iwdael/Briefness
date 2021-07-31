@@ -2,6 +2,8 @@
 
 buildscript {
 
+    ext.kotlin_version = "1.3.72"
+
     ext.buildConfig = [
             'compileSdkVersion': 28,
             'minSdkVersion'    : 11,
@@ -9,19 +11,12 @@ buildscript {
             'versionCode'      : 1,
             'versionName'      : '1.0',
     ]
-    ext.bintray = [
-            'userOrg'       : 'hacknife',
-            'groupId'       : 'com.hacknife.briefness',
-            'publishVersion': '2.3.1',
-            'desc'          : 'Data binding, layout binding, control binding, event binding, data exception preprocessing, and development are much simpler.',
-            'website'       : 'https://github.com/hacknife/briefness',
-    ]
     repositories {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.71"
+        classpath "com.android.tools.build:gradle:4.0.1"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 
 
@@ -30,9 +25,8 @@ buildscript {
 allprojects {
     repositories {
         google()
-        maven {
-            url 'https://dl.bintray.com/hacknife/maven'
-        }
+        jcenter()
+
     }
 
     tasks.withType(Javadoc) {
