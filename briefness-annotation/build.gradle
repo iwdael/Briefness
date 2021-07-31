@@ -1,9 +1,14 @@
 apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+publish {
+    userOrg = 'hacknife'
+    groupId = 'com.hacknife.briefness'
+    artifactId = 'briefness-annotation'
+    publishVersion = "${bintrayVer}"
+    bintrayUser = 'hacknife'
+    bintrayKey = "${bintrayKey}"
+    desc = ''
+    website = 'https://github.com/hacknife/briefness'
 }
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
